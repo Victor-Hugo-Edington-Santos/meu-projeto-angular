@@ -13,14 +13,29 @@ Comunidade neuroinclusiva — projeto para o desafio final do Ford Enter (Trilha
 - Node `^22.22.3 || ^24.15.0 || >=26` (exigido pelo Angular 22)
 - npm 11+
 
+## Como rodar em um PC novo (Windows)
+1. `git clone https://github.com/Victor-Hugo-Edington-Santos/meu-projeto-angular.git`
+2. **Dê duplo clique no `setup.bat`**
+3. `npm start` → abra http://localhost:4200
+
+O `setup.bat` faz tudo sozinho: confere se o Node instalado atende ao
+`engines` do `package.json` (e diz qual versão instalar se não atender), roda
+`npm ci`, e valida o `.env` e os arquivos de `src/environments`. Não precisa
+criar nenhum arquivo na mão — o `.env` já vem no clone.
+
 ## Como rodar
 git clone https://github.com/Victor-Hugo-Edington-Santos/meu-projeto-angular.git
 cd meu-projeto-angular
-npm install
+setup.bat
 npm start
 Acesse http://localhost:4200
 
-Não é preciso criar `.env` nem `src/environments/` na mão: ambos vêm no clone.
+No macOS/Linux sem `setup.bat`, o equivalente é:
+
+```
+npm ci
+npm start
+```
 
 Use `npm start` (ou `npx ng serve`). **`npx start` não funciona** — o npx
 procura executáveis em `node_modules/.bin` e não lê os scripts do
@@ -54,7 +69,9 @@ porque é onde o GitHub Pages publica. Site: https://victor-hugo-edington-santos
 - src/app/pages/* — páginas
 - src/app/services/* — AuthService, SupabaseService
 - src/environments/* — config Supabase (gerada do .env)
+- setup.bat — setup automático no Windows (checagem de Node + npm ci + validações)
 - scripts/generate-environments.mjs — gera src/environments a partir do .env
+- scripts/setup-check.mjs — checagens de setup (versão do Node, arquivos de env)
 - public/img/* — assets
 
 ## Funcionalidades
