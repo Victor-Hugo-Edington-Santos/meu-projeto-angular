@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 // --- Item do banco de leis local (mesmos campos do direitos.js) ---
 interface Lei {
@@ -56,6 +56,14 @@ const IMAGENS_POR_CATEGORIA: Record<string, string[]> = {
   ],
 };
 
+// --- Categorias do filtro da biblioteca de leis ---
+const CATEGORIAS_VALIDAS: readonly string[] = [
+  'educacional',
+  'saude',
+  'social',
+  'acessibilidade',
+];
+
 @Component({
   imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-direitos',
@@ -64,6 +72,8 @@ const IMAGENS_POR_CATEGORIA: Record<string, string[]> = {
   templateUrl: './direitos.html',
 })
 export class Direitos {
+  private readonly route = inject(ActivatedRoute);
+
   // --- Estado de filtro (currentFilter/currentSearch do original) ---
   filtroCategoria = 'todas';
   busca = '';
@@ -77,6 +87,14 @@ export class Direitos {
       email: ['', [Validators.required, Validators.email]],
       descricao: ['', Validators.required],
     });
+
+    // --- Deep-link: /direitos?categoria=social abre a biblioteca já filtrada.
+    // Usado pelos chips "Seus Direitos" da home, que apontavam para um
+    // /direitos/direitos.html inexistente. Valores fora da lista são ignorados.
+    const categoriaInicial = this.route.snapshot.queryParamMap.get('categoria');
+    if (categoriaInicial && CATEGORIAS_VALIDAS.includes(categoriaInicial)) {
+      this.filtroCategoria = categoriaInicial;
+    }
   }
 
   // --- Leis após filtro de categoria + busca (renderLaws do original) ---

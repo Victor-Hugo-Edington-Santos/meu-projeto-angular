@@ -510,12 +510,12 @@
                         <p>Traduzimos as leis para você saber exatamente o que exigir na escola, no trabalho ou na saúde.</p>
                         
                         <div class="rights-chips">
-                            <a href="/direitos/direitos.html#trabalho" class="chip"><i class="fa-solid fa-briefcase"></i> Adaptações no Trabalho</a>
-                            <a href="/direitos/direitos.html#escola" class="chip"><i class="fa-solid fa-graduation-cap"></i> Direitos na Escola/Faculdade</a>
-                            <a href="/direitos/direitos.html#bpc" class="chip"><i class="fa-solid fa-hand-holding-dollar"></i> BPC / LOAS Simplificado</a>
-                            <a href="/direitos/direitos.html#laudo" class="chip"><i class="fa-solid fa-file-medical"></i> Como emitir o Laudo</a>
-                            <a href="/direitos/direitos.html#saude" class="chip"><i class="fa-solid fa-hospital"></i> Saúde e Terapias</a>
-                            <a href="/direitos/direitos.html#inclusao" class="chip"><i class="fa-solid fa-people-group"></i> Inclusão Social</a>
+                            <a routerLink="/direitos" [queryParams]="{ categoria: 'social' }" fragment="leis" class="chip"><i class="fa-solid fa-briefcase"></i> Adaptações no Trabalho</a>
+                            <a routerLink="/direitos" [queryParams]="{ categoria: 'educacional' }" fragment="leis" class="chip"><i class="fa-solid fa-graduation-cap"></i> Direitos na Escola/Faculdade</a>
+                            <a routerLink="/direitos" [queryParams]="{ categoria: 'social' }" fragment="leis" class="chip"><i class="fa-solid fa-hand-holding-dollar"></i> BPC / LOAS Simplificado</a>
+                            <a routerLink="/direitos" [queryParams]="{ categoria: 'saude' }" fragment="leis" class="chip"><i class="fa-solid fa-file-medical"></i> Como emitir o Laudo</a>
+                            <a routerLink="/direitos" [queryParams]="{ categoria: 'saude' }" fragment="leis" class="chip"><i class="fa-solid fa-hospital"></i> Saúde e Terapias</a>
+                            <a routerLink="/direitos" [queryParams]="{ categoria: 'acessibilidade' }" fragment="leis" class="chip"><i class="fa-solid fa-people-group"></i> Inclusão Social</a>
                         </div>
                     </div>
                 </div>

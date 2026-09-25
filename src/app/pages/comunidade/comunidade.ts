@@ -1176,12 +1176,13 @@ export class Comunidade implements OnInit, OnDestroy {
         mensagens: [],
         naoLidas: 0,
       }));
-      // Deduplica por id (o backend pode retornar "Geral" + duplicata)
+      // Deduplica por id (o backend pode retornar "Geral" + duplicata).
+      // A chave precisa ser só o id: o @for usa track c.id, então duas linhas
+      // com o mesmo id e nomes diferentes ainda colidiam.
       const vistos = new Set<string>();
       this.conversas = this.conversas.filter((c) => {
-        const chave = c.id + '|' + c.nome.toLowerCase();
-        if (vistos.has(chave)) return false;
-        vistos.add(chave);
+        if (vistos.has(c.id)) return false;
+        vistos.add(c.id);
         return true;
       });
       this.conversaAtiva = this.conversas[0] ?? null;
@@ -1199,11 +1200,12 @@ export class Comunidade implements OnInit, OnDestroy {
   async carregarMensagens(c: ConversaMock): Promise<void> {
     // IDs de seed não podem ser enviados para uma RPC cujo argumento é UUID.
     // O canal legado "Geral" é normalizado para o UUID persistido no banco.
-    let conversationId = c.id?.trim() ?? '';
-    if (!UUID_REGEX.test(conversationId)) {
+    // A normalização é só local: gravar o UUID de volta em c.id fazia duas
+    // conversas distintas (Geral + Apoio mútuo) ficarem com o mesmo id, e o
+    // @for (track c.id) reclamava NG0955 e apagar uma apagava as duas.
+    const conversationId = UUID_REGEX.test(c.id?.trim() ?? '') ? c.id.trim() : CHAT_GERAL_ID;
+    if (conversationId !== c.id?.trim()) {
       this.pararPollingChat();
-      conversationId = CHAT_GERAL_ID;
-      c.id = conversationId;
     }
 
     try {
@@ -1284,9 +1286,11 @@ export class Comunidade implements OnInit, OnDestroy {
   // --- Conversa: seleciona, zera lidas, carrega mensagens e assina realtime da conversa ---
   async selecionarConversa(c: ConversaMock): Promise<void> {
     const rawId = c.id?.trim() ?? '';
+    // conversationId é local de propósito: sobrescrever c.id fazia o canal de
+    // seed ("Apoio mútuo") passar a ter o mesmo id do "Geral", e o
+    // @for (track c.id) do template acusava NG0955.
     const conversationId = UUID_REGEX.test(rawId) ? rawId : CHAT_GERAL_ID;
     if (conversationId !== rawId) this.pararPollingChat();
-    c.id = conversationId;
 
     this.conversaAtiva = c;
     c.naoLidas = 0;

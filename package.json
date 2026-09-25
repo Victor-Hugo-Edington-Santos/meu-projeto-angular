@@ -3,13 +3,20 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/generate-environments.mjs",
     "start": "ng serve",
+    "prebuild": "node scripts/generate-environments.mjs",
     "build": "ng build",
+    "prewatch": "node scripts/generate-environments.mjs",
     "watch": "ng build --watch --configuration development",
+    "pretest": "node scripts/generate-environments.mjs",
     "test": "ng test"
   },
   "private": true,
   "packageManager": "npm@11.13.0",
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || >=26.0.0"
+  },
   "dependencies": {
     "@angular/common": "^22.2.0",
     "@angular/compiler": "^22.2.0",

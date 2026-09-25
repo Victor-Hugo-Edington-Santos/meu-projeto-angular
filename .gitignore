@@ -39,8 +39,13 @@ testem.log
 /typings
 __screenshots__/
 
-# Supabase keys (nunca commitar)
-src/environments/
+# Config de ambiente (.env + src/environments/) e versionada de proposito:
+# sem ela o build quebra em clone novo, porque src/app/services/
+# supabase.service.ts importa ../../environments/environment. O .env so
+# guarda a publishable key do Supabase (sb_publishable_), que e publica por
+# design e vai no bundle do browser. So passe a ignorar isto aqui se
+# algum dia entrar um segredo real (service_role) -- e nesse caso mova a
+# leitura para uma edge function.
 
 # System files
 .DS_Store

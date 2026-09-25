@@ -21,21 +21,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Angular 22 exige ^22.22.3 || ^24.15.0 || >=26 (ver engines no
+          # package.json). Node 20 nao e suportado por esta toolchain.
+          node-version: 24
           cache: npm
       - run: npm ci
-      # environments/ é gitignored: recria a partir dos Secrets (Settings → Secrets → Actions)
-      - name: Criar environment.prod.ts a partir dos Secrets
-        run: |
-          cat > src/environments/environment.prod.ts <<EOF
-          export const environment = {
-            production: true,
-            supabaseUrl: '${{ secrets.SUPABASE_URL }}',
-            supabaseKey: '${{ secrets.SUPABASE_KEY }}',
-          };
-          EOF
+      # src/environments/* é versionado e gerado do .env (que só tem a
+      # publishable key, pública por design). O hook prebuild regenera os
+      # arquivos a partir do .env antes do ng build.
       # Troque --base-href pelo nome do SEU repositório: /<repo>/
-      - run: npx ng build --configuration production --base-href /amor-neurodivergente/
+      - run: npm run build -- --base-href /amor-neurodivergente/
       - run: cp dist/meu-projeto-angular/browser/index.html dist/meu-projeto-angular/browser/404.html
       - run: touch dist/meu-projeto-angular/browser/.nojekyll
       - uses: actions/upload-pages-artifact@v3

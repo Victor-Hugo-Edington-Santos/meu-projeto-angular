@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SupabaseService } from '../../services/supabase.service';
 
 // --- Chave do atendimento salvo (mesma do Explorar.js) ---
@@ -13,6 +13,8 @@ const LS_ATENDIMENTO = 'amn_atendimento_ativo';
   templateUrl: './explorar.html',
 })
 export class Explorar implements AfterViewInit, OnDestroy {
+  private readonly route = inject(ActivatedRoute);
+
   /** Seção atualmente selecionada na barra de navegação. */
   secaoAtiva = 'destaques';
 
@@ -80,6 +82,39 @@ export class Explorar implements AfterViewInit, OnDestroy {
     this.initFaq();
     this.initHl();
     this.initAtendimento();
+    this.rolarParaFragmento();
+  }
+
+  /**
+   * Entra em /explorar#faq (link "FAQ" do menu Ajuda) rolando até a seção.
+   *
+   * O anchorScrolling do router mede a posição do #faq antes das imagens da
+   * página terminarem de carregar, então erra a posição em ~1.4k px. Aqui
+   * esperamos as imagens assentarem e reaplicamos a rolagem pelo mesmo
+   * rolarPara() que os chips internos da página já usam.
+   */
+  private rolarParaFragmento(): void {
+    const alvo = this.route.snapshot.fragment;
+    if (!alvo) return;
+
+    const rolar = () => this.rolarPara(alvo);
+    const pendentes = Array.from(
+      this.host.nativeElement.querySelectorAll('img'),
+    ).filter((img) => !img.complete);
+
+    if (pendentes.length === 0) {
+      rolar();
+      return;
+    }
+
+    let restantes = pendentes.length;
+    const aoAssentar = () => {
+      if (--restantes === 0) rolar();
+    };
+    for (const img of pendentes) {
+      img.addEventListener('load', aoAssentar, { once: true });
+      img.addEventListener('error', aoAssentar, { once: true });
+    }
   }
 
   ngOnDestroy(): void {
