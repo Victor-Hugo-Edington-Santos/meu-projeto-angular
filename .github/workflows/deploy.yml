@@ -29,8 +29,9 @@ jobs:
       # src/environments/* é versionado e gerado do .env (que só tem a
       # publishable key, pública por design). O hook prebuild regenera os
       # arquivos a partir do .env antes do ng build.
-      # Troque --base-href pelo nome do SEU repositório: /<repo>/
-      - run: npm run build -- --base-href /amor-neurodivergente/
+      # O --base-href tem que ser o nome do repositório, porque o GitHub Pages
+      # publica em /<owner>/<repo>/. Repo: meu-projeto-angular
+      - run: npm run build -- --base-href /meu-projeto-angular/
       - run: cp dist/meu-projeto-angular/browser/index.html dist/meu-projeto-angular/browser/404.html
       - run: touch dist/meu-projeto-angular/browser/.nojekyll
       - uses: actions/upload-pages-artifact@v3

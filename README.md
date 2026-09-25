@@ -44,7 +44,10 @@ rodam `scripts/generate-environments.mjs`, que gera `src/environments/`
 arquivos também são versionados, para que um clone novo já compile.
 
 ## Como buildar
-npm run build -- --base-href "/amor-neurodivergente/"
+npm run build -- --base-href "/meu-projeto-angular/"
+
+O `--base-href` tem que ser `/meu-projeto-angular/` (o nome do repositório),
+porque é onde o GitHub Pages publica. Site: https://victor-hugo-edington-santos.github.io/meu-projeto-angular/
 
 ## Estrutura
 - src/app/layouts/main-layout — shell compartilhado
