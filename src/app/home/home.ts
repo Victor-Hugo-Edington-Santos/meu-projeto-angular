@@ -31,7 +31,7 @@ export class Home implements AfterViewInit, OnDestroy {
   @ViewChild('hlNext') hlNext!: ElementRef<HTMLButtonElement>;
 
   // --- Estado interno do carrossel (espelha o inicio.js original) ---
-  private readonly totalSlides = 6;
+  private readonly totalSlides = 5;
   private currentIndex = 0;
   private readonly slideDuration = 3000;
   private autoPlayTimer: ReturnType<typeof setInterval> | null = null;
@@ -136,13 +136,13 @@ export class Home implements AfterViewInit, OnDestroy {
     }, 50);
   }
 
-  // --- Avança com wrap-around (5 -> 0) ---
+  // --- Avança com wrap-around (4 -> 0) ---
   private nextSlide(): void {
     this.currentIndex = (this.currentIndex + 1) % this.totalSlides;
     this.updateCarousel();
   }
 
-  // --- Volta com wrap-around (0 -> 5) ---
+  // --- Volta com wrap-around (0 -> 4) ---
   private prevSlide(): void {
     this.currentIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
     this.updateCarousel();
