@@ -7,7 +7,6 @@ import { Explorar } from './pages/explorar/explorar';
 import { Blog } from './pages/blog/blog';
 import { BlogPost } from './pages/blog-post/blog-post';
 import { Recursos } from './pages/recursos/recursos';
-import { Eventos } from './pages/eventos/eventos';
 import { Arquivo3leis } from './pages/arquivo3leis/arquivo3leis';
 import { Apoiar } from './pages/apoiar/apoiar';
 import { Loja } from './pages/loja/loja';
@@ -56,6 +55,5 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'redefinir-senha', component: RedefinirSenha },
   { path: 'painel-admin', component: PainelAdmin, canActivate: [adminGuard] },
-  { path: 'eventos', component: Eventos },
   { path: '**', redirectTo: '' },
 ];

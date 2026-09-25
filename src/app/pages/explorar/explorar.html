@@ -24,25 +24,22 @@
 
         <nav class="explore-nav" aria-label="Categorias do Explorar">
             <div class="explore-nav__container">
-                <a href="#destaques" (click)="$event.preventDefault(); rolarPara('destaques')" class="explore-nav__chip is-active">
+                <a href="#destaques" (click)="$event.preventDefault(); rolarPara('destaques')" [class.is-active]="secaoAtiva === 'destaques'" [attr.aria-current]="secaoAtiva === 'destaques' ? 'location' : null" class="explore-nav__chip">
                     <i class="fa-solid fa-star"></i> Destaques
                 </a>
-                <a href="#ultimas" (click)="$event.preventDefault(); rolarPara('ultimas')" class="explore-nav__chip">
+                <a href="#ultimas" (click)="$event.preventDefault(); rolarPara('ultimas')" [class.is-active]="secaoAtiva === 'ultimas'" [attr.aria-current]="secaoAtiva === 'ultimas' ? 'location' : null" class="explore-nav__chip">
                     <i class="fa-solid fa-newspaper"></i> Recentes
                 </a>
-                <a href="#artigos" (click)="$event.preventDefault(); rolarPara('artigos')" class="explore-nav__chip">
+                <a href="#artigos" (click)="$event.preventDefault(); rolarPara('artigos')" [class.is-active]="secaoAtiva === 'artigos'" [attr.aria-current]="secaoAtiva === 'artigos' ? 'location' : null" class="explore-nav__chip">
                     <i class="fa-solid fa-book-open"></i> Artigos
                 </a>
-                <a href="#blog" (click)="$event.preventDefault(); rolarPara('blog')" class="explore-nav__chip">
+                <a href="#blog" (click)="$event.preventDefault(); rolarPara('blog')" [class.is-active]="secaoAtiva === 'blog'" [attr.aria-current]="secaoAtiva === 'blog' ? 'location' : null" class="explore-nav__chip">
                     <i class="fa-solid fa-pen-nib"></i> Blog
                 </a>
                 <a routerLink="/recursos" class="explore-nav__chip">
                     <i class="fa-solid fa-wrench"></i> Ferramentas
                 </a>
-                <a href="#eventos" (click)="$event.preventDefault(); rolarPara('eventos')" class="explore-nav__chip">
-                    <i class="fa-regular fa-calendar-days"></i> Eventos
-                </a>
-                <a href="#faq" (click)="$event.preventDefault(); rolarPara('faq')" class="explore-nav__chip">
+                <a href="#faq" (click)="$event.preventDefault(); rolarPara('faq')" [class.is-active]="secaoAtiva === 'faq'" [attr.aria-current]="secaoAtiva === 'faq' ? 'location' : null" class="explore-nav__chip">
                     <i class="fa-regular fa-circle-question"></i> FAQ
                 </a>
             </div>
@@ -147,7 +144,7 @@
                             <div class="hl-card__media">
                                 <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=600&fit=crop" alt="Comunicação inclusiva" loading="lazy">
                                 <div class="hl-card__overlay"></div>
-                                <button class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></button>
+                                <span class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></span>
                                 <h3 class="hl-card__title">Como tornar a comunicação mais inclusiva para profissionais neurodivergentes</h3>
                             </div>
                         </a>
@@ -156,7 +153,7 @@
                             <div class="hl-card__media">
                                 <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=600&fit=crop" alt="Neurodivergência na infância" loading="lazy">
                                 <div class="hl-card__overlay"></div>
-                                <button class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></button>
+                                <span class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></span>
                                 <h3 class="hl-card__title">Neurodivergência na infância e adolescência</h3>
                             </div>
                         </a>
@@ -173,7 +170,7 @@
                             <div class="hl-card__media">
                                 <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop" alt="Autismo e saúde mental" loading="lazy">
                                 <div class="hl-card__overlay"></div>
-                                <button class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></button>
+                                <span class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></span>
                                 <h3 class="hl-card__title">Autismo e Saúde Mental</h3>
                             </div>
                         </a>
@@ -352,50 +349,6 @@
                 </article>
             </div>
         </section>
-
-      
-
-        <!-- =============================================
-             EVENTOS
-             ============================================= -->
-        <section class="explore-featured explore-section explore-section-reverse" id="eventos">
-            <div class="container">
-                <header class="section-head">
-                    <div class="section-head__title-group">
-                        <span class="section-icon"><i class="fa-regular fa-calendar-days"></i></span>
-                        <h2>Eventos</h2>
-                    </div>
-                    <a routerLink="/eventos" class="section-head__link">
-                        Ver agenda <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </header>
-
-                <article class="featured-card">
-                    <div class="featured-card__media explore-section-image">
-                        <img src="img/Grupo de pessoas sentadas em círculo, algumas com fones de ouvido, em uma sala com iluminação suave.avif" alt="Grupo de pessoas sentadas em círculo" loading="lazy">
-                    </div>
-                    <div class="featured-card__body explore-section-text">
-                        <span class="tag tag--autismo">Encontros</span>
-                        <h3 class="featured-card__title">Grupos de apoio e workshops</h3>
-                        <p class="featured-card__excerpt">
-                            Grupos de apoio, workshops e encontros sobre neurodiversidade — em ambientes seguros,
-                            com respeito ao seu tempo e ao seu limite sensorial.
-                        </p>
-                        <div class="featured-card__meta">
-                            <span class="author">
-                                <span class="author__avatar">L</span>
-                                <span class="author__name">Luti Christóforo <em>· Psicólogo</em></span>
-                            </span>
-                            <span class="meta-time"><i class="fa-regular fa-clock"></i> 4 min de leitura</span>
-                        </div>
-                        <a routerLink="/eventos" class="explore-btn">
-                            Ver Eventos <i class="fa-solid fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </article>
-            </div>
-        </section>
-
         <!-- =============================================
              FAQ
              ============================================= -->

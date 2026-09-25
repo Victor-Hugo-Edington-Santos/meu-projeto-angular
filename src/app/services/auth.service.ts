@@ -41,6 +41,16 @@ export class AuthService {
     return this.usuarioSubject.value;
   }
 
+  /**
+   * Atualiza o espelho local após o perfil salvar avatar/nome.
+   * Mantém sidebar, avatar da comunidade e demais telas em sincronia.
+   */
+  atualizarUsuarioLocal(updates: Partial<Usuario>): void {
+    const atual = this.usuarioSubject.value;
+    if (!atual) return;
+    this.persistirSessao({ ...atual, ...updates });
+  }
+
   // --- Equivale ao isLoggedIn() do auth-global.js ---
   estaLogado(): boolean {
     return this.usuarioSubject.value !== null;

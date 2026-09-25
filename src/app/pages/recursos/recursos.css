@@ -1239,3 +1239,12 @@ body.a11y-reduce-motion .btn-primary {
     --azul-editorial-dark: #0284c7;
     --explore-editorial: #c0392b;
 }
+
+/* Compensa o header fixo e a barra inferior ao rolar pelos chips. */
+#artigos-externos,
+#artigos-equipe,
+#categorias,
+#em-breve {
+    scroll-margin-top: 84px;
+    scroll-margin-bottom: 90px;
+}

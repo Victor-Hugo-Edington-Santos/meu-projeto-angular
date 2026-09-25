@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -93,6 +93,7 @@ export class MainLayout implements AfterViewInit, OnDestroy {
 
   // --- Reaplica cadeados a cada navegação (páginas entram via outlet depois) ---
   private navSub: Subscription | null = null;
+  private breadcrumbRenderTimer: ReturnType<typeof setTimeout> | null = null;
 
   // --- Botão "Sair" criado no header quando logado (espelha auth-global) ---
   private headerLogoutBtn: HTMLAnchorElement | null = null;
@@ -180,11 +181,12 @@ export class MainLayout implements AfterViewInit, OnDestroy {
     private readonly router: Router,
     private readonly viewportScroller: ViewportScroller,
     private readonly supabase: SupabaseService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   // --- Inicializa o shell após a view existir ---
   ngAfterViewInit(): void {
-    this.atualizarBreadcrumb(this.router.url);
+    this.renderizarBreadcrumb(this.router.url);
     window.addEventListener('pagina-trilha', this.onTrilhaExtra);
     this.initSidebar();
     this.initHeaderScroll();
@@ -213,6 +215,8 @@ export class MainLayout implements AfterViewInit, OnDestroy {
     this.authSub = null;
     this.navSub?.unsubscribe();
     this.navSub = null;
+    if (this.breadcrumbRenderTimer) clearTimeout(this.breadcrumbRenderTimer);
+    this.breadcrumbRenderTimer = null;
     document.removeEventListener('click', this.onDocumentoClickCadeado, true);
     this.host.nativeElement
       .querySelector('#logoutBtn')
@@ -367,29 +371,77 @@ export class MainLayout implements AfterViewInit, OnDestroy {
   private readonly onTrilhaExtra = (e: Event) => {
     const rotulo = (e as CustomEvent<string>).detail;
     this.rotuloExtra = typeof rotulo === 'string' && rotulo ? rotulo : null;
-    this.atualizarBreadcrumb(this.router.url);
+    this.renderizarBreadcrumb(this.router.url);
   };
+
+  private renderizarBreadcrumb(url: string): void {
+    this.atualizarBreadcrumb(url);
+    this.cdr.detectChanges();
+    if (this.breadcrumbRenderTimer) clearTimeout(this.breadcrumbRenderTimer);
+    this.breadcrumbRenderTimer = setTimeout(() => {
+      this.breadcrumbRenderTimer = null;
+      this.cdr.detectChanges();
+    }, 0);
+  }
 
   private atualizarBreadcrumb(url: string): void {
     const base = url.split('?')[0].split('#')[0].replace(/\/+$/, '') || '/';
-    const segs = base.split('/').filter(Boolean);
+    const segs = base
+      .split('/')
+      .filter(Boolean)
+      .map((segmento) => {
+        try {
+          return decodeURIComponent(segmento);
+        } catch {
+          return segmento;
+        }
+      });
+
+    const inicio: { rotulo: string; url: string | null } = { rotulo: 'Início', url: '/' };
     if (!segs.length) {
-      this.trilha = [{ rotulo: 'Início', url: null }];
+      this.trilha = [inicio];
       this.paginaAtual = 'Início';
       return;
     }
-    const trilha: Array<{ rotulo: string; url: string | null }> = [{ rotulo: 'Início', url: '/' }];
+
+    // O UUID é apenas o identificador da rota. Nunca deve aparecer no breadcrumb.
+    const ehRotaPerfil = segs[0] === 'comunidade' && segs[1] === 'perfil';
+    if (ehRotaPerfil) {
+      const id = segs[2];
+      const trilha: Array<{ rotulo: string; url: string | null }> = [
+        inicio,
+        { rotulo: 'Comunidade', url: '/comunidade' },
+        { rotulo: 'Perfil', url: null },
+      ];
+
+      if (!id) {
+        // Perfil próprio sem :id.
+        trilha.push({ rotulo: 'Meu Perfil', url: null });
+      } else if (this.rotuloExtra?.trim()) {
+        // O PerfilComponent publica @username depois de carregar os dados.
+        const usuario = this.rotuloExtra.trim();
+        trilha.push({
+          rotulo: usuario.startsWith('@') ? usuario : '@' + usuario.replace(/^@+/, ''),
+          url: null,
+        });
+      }
+      // Enquanto o username não chega, mantém somente ... > Perfil.
+      this.trilha = trilha;
+      this.paginaAtual = trilha[trilha.length - 1].rotulo;
+      return;
+    }
+
+    const trilha: Array<{ rotulo: string; url: string | null }> = [inicio];
     let acumulado = '';
     segs.forEach((s, i) => {
+      // Evita expor qualquer UUID em rotas futuras que não tenham um rótulo próprio.
+      if (/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(s)) return;
       acumulado += '/' + s;
       const ultimo = i === segs.length - 1;
-      // Último segmento UUID (ex: /comunidade/perfil/:id): usa o rótulo da página (@username)
-      const ehUuid = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(s);
-      const rotulo = ultimo && ehUuid && this.rotuloExtra ? this.rotuloExtra : this.nomeSegmento(s);
-      trilha.push({ rotulo, url: ultimo ? null : acumulado });
+      trilha.push({ rotulo: this.nomeSegmento(s), url: ultimo ? null : acumulado });
     });
-    this.trilha = trilha;
-    this.paginaAtual = trilha[trilha.length - 1].rotulo;
+    this.trilha = trilha.length > 1 ? trilha : [inicio];
+    this.paginaAtual = this.trilha[this.trilha.length - 1].rotulo;
   }
 
   private nomeSegmento(s: string): string {
@@ -437,7 +489,7 @@ export class MainLayout implements AfterViewInit, OnDestroy {
       this.refreshAuthUI(this.auth.getUsuarioAtual());
       // Limpa rótulo de página anterior (ex: @ de outro perfil); a página nova reenvia se preciso
       this.rotuloExtra = null;
-      this.atualizarBreadcrumb(ev.urlAfterRedirects);
+      this.renderizarBreadcrumb(ev.urlAfterRedirects);
       this.closeSidebar();
       this.viewportScroller.scrollToPosition([0, 0]);
     });

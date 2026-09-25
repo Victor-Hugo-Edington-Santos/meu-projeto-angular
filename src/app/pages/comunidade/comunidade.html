@@ -9,9 +9,9 @@
             <span>Voltar ao site</span>
         </a>
 
-        <button class="header-profile-btn" id="headerProfileBtn" aria-label="Perfil" routerLink="/comunidade/perfil">
-            <img src="img/foto-padrão.jpg" alt="Perfil" class="header-avatar" id="headerAvatar">
-        </button>
+        <a class="header-profile-btn" id="headerProfileBtn" routerLink="/comunidade/perfil" aria-label="Abrir meu perfil" title="Abrir meu perfil">
+            <img [src]="avatarUsuario" (error)="corrigirAvatar($event)" alt="Meu perfil" class="header-avatar" id="headerAvatar">
+        </a>
     </header>
 
     <!-- ============================================
@@ -616,7 +616,7 @@
     <div class="modal-overlay" id="createGroupModal" [hidden]="!mostrarModalGrupo">
         <div class="modal-container">
             <div class="modal-header">
-                <h2><i class="fa-solid fa-users-plus"></i> Criar Grupo</h2>
+                <h2><i class="fa-solid fa-user-group"></i> Criar Grupo</h2>
                 <button class="modal-close" id="closeCreateGroupModal" (click)="mostrarModalGrupo = false"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">

@@ -26,17 +26,17 @@
        
         <nav class="recursos-nav" aria-label="Categorias">
             <div class="recursos-nav__container">
-                <a href="#artigos-externos" class="recursos-nav__chip is-active">
+                <a href="#artigos-externos" (click)="$event.preventDefault(); rolarPara('artigos-externos')" [class.is-active]="secaoAtiva === 'artigos-externos'" [attr.aria-current]="secaoAtiva === 'artigos-externos' ? 'location' : null" class="recursos-nav__chip">
                     <i class="fa-solid fa-globe"></i> Artigos de fora
                 </a>
-                <a href="#artigos-equipe" class="recursos-nav__chip">
+                <a href="#artigos-equipe" (click)="$event.preventDefault(); rolarPara('artigos-equipe')" [class.is-active]="secaoAtiva === 'artigos-equipe'" [attr.aria-current]="secaoAtiva === 'artigos-equipe' ? 'location' : null" class="recursos-nav__chip">
                     <i class="fa-solid fa-pen-nib"></i> Da nossa equipe
                 </a>
-                <a href="#categorias" class="recursos-nav__chip">
+                <a href="#categorias" (click)="$event.preventDefault(); rolarPara('categorias')" [class.is-active]="secaoAtiva === 'categorias'" [attr.aria-current]="secaoAtiva === 'categorias' ? 'location' : null" class="recursos-nav__chip">
                     <i class="fa-solid fa-layer-group"></i> Por categoria
                 </a>
-                <a href="#em-breve" class="recursos-nav__chip">
-                    <i class="fa-solid fa-sparkles"></i> Em breve
+                <a href="#em-breve" (click)="$event.preventDefault(); rolarPara('em-breve')" [class.is-active]="secaoAtiva === 'em-breve'" [attr.aria-current]="secaoAtiva === 'em-breve' ? 'location' : null" class="recursos-nav__chip">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Em breve
                 </a>
             </div>
         </nav>
@@ -54,14 +54,14 @@
                             Textos selecionados de fontes externas que valem a leitura. Cada um com link direto para o original.
                         </p>
                     </div>
-                    <a href="#" class="recursos-head__link">
-                        Ver todos <i class="fa-solid fa-arrow-right"></i>
+                    <a href="https://hbr.org/topic/subject/neurodiversity" class="recursos-head__link" target="_blank" rel="noopener">
+                        Ver mais <i class="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </header>
 
                 <div class="recursos-grid">
 
-                    <a href="#" class="externo-card" target="_blank" rel="noopener">
+                    <a href="https://hbr.org/2017/05/neurodiversity-as-a-competitive-advantage" class="externo-card" target="_blank" rel="noopener">
                         <div class="externo-card__media">
                             <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" alt="Artigo externo" loading="lazy">
                             <span class="externo-card__badge">Externo</span>
@@ -78,7 +78,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="externo-card" target="_blank" rel="noopener">
+                    <a href="https://www.theatlantic.com/business/archive/2016/12/autism-workplace/510959/" class="externo-card" target="_blank" rel="noopener">
                         <div class="externo-card__media">
                             <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=600&h=400&fit=crop" alt="Artigo externo" loading="lazy">
                             <span class="externo-card__badge">Externo</span>
@@ -95,7 +95,7 @@
                         </div>
                     </a>
 
-                    <a href="#" class="externo-card" target="_blank" rel="noopener">
+                    <a href="https://www.scientificamerican.com/article/autism-and-the-social-mind/" class="externo-card" target="_blank" rel="noopener">
                         <div class="externo-card__media">
                             <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=600&h=400&fit=crop" alt="Artigo externo" loading="lazy">
                             <span class="externo-card__badge">Externo</span>
@@ -129,20 +129,20 @@
                             Artigos escritos por profissionais, pessoas neurodivergentes e aliados que fazem parte do Amor NeuroDivergente.
                         </p>
                     </div>
-                    <a href="#" class="recursos-head__link">
+                    <a routerLink="/blog" class="recursos-head__link">
                         Ver todos <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </header>
 
                 <!-- Artigo em destaque -->
                 <article class="equipe-featured">
-                    <a routerLink="/recursos" class="equipe-featured__media">
+                    <a routerLink="/blog/post-masking" class="equipe-featured__media">
                         <img src="img/recursos-hero-DaGrMSNl - Copia.jpg" alt="Artigo em destaque" loading="lazy">
                     </a>
                     <div class="equipe-featured__body">
                         <span class="recursos-tag tag-autismo">Autismo</span>
                         <h3 class="equipe-featured__title">
-                            <a routerLink="/recursos">O dia em que você para de sobreviver e começa a viver</a>
+                            <a routerLink="/blog/post-masking">O dia em que você para de sobreviver e começa a viver</a>
                         </h3>
                         <p class="equipe-featured__excerpt">
                             Existe uma diferença silenciosa entre estar vivo e sentir que estamos vivendo.
@@ -156,7 +156,7 @@
                             </span>
                             <span class="equipe-meta"><i class="fa-regular fa-clock"></i> 4 min de leitura</span>
                         </div>
-                        <a routerLink="/recursos" class="recursos-btn">
+                        <a routerLink="/blog/post-masking" class="recursos-btn">
                             Ler artigo <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     </div>
@@ -166,7 +166,7 @@
             <div class="explore-topics__container">
                 <div class="explore-topics__grid">
 
-                    <a href="#artigos" class="topic-card">
+                    <a href="#artigos-equipe" (click)="$event.preventDefault(); rolarPara('artigos-equipe')" class="topic-card">
                         <div class="topic-card__media">
                             <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=500&fit=crop"
                                  alt="Pessoas colaborando em ambiente calmo" loading="lazy">
@@ -183,7 +183,7 @@
                         </div>
                     </a>
 
-                    <a href="#ferramentas" class="topic-card">
+                    <a href="#categorias" (click)="$event.preventDefault(); rolarPara('categorias')" class="topic-card">
                         <div class="topic-card__media">
                             <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop"
                                  alt="Pessoa analisando gráficos" loading="lazy">
@@ -200,7 +200,7 @@
                         </div>
                     </a>
 
-                    <a href="#blog" class="topic-card">
+                    <a routerLink="/blog" class="topic-card">
                         <div class="topic-card__media">
                             <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=500&fit=crop"
                                  alt="Pessoa estudando" loading="lazy">
@@ -345,7 +345,7 @@
         <section class="recursos-section recursos-section--alt" id="em-breve">
             <div class="recursos-section__container">
                 <header class="recursos-head recursos-head--center">
-                    <span class="recursos-head__eyebrow"><i class="fa-solid fa-sparkles"></i> Em breve</span>
+                    <span class="recursos-head__eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Em breve</span>
                     <h2 class="recursos-head__title">Novos temas chegando</h2>
                     <p class="recursos-head__sub">
                         Estamos preparando conteúdos sobre outras neurodivergências. Volte sempre!

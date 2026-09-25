@@ -229,37 +229,6 @@
     text-decoration: underline;
 }
 
-/* Acesso Admin */
-.admin-access {
-    text-align: center;
-    margin-top: 1.5rem;
-}
-
-.admin-link {
-    color: #64748b !important;
-    font-size: 0.8rem !important;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.admin-link:hover {
-    color: #94a3b8 !important;
-}
-
-.admin-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background-color: rgba(234, 179, 8, 0.1);
-    color: #facc15;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
 /* ==========================================================================
    SEÇÃO DA FOTO / ILUSTRAÇÃO (Direita) + LOGO GIGANTE TRANSPARENTE
    ========================================================================== */

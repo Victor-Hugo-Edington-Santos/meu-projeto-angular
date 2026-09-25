@@ -86,9 +86,12 @@
              <nav class="breadcrumb-nav" aria-label="Breadcrumb">
                 @for (item of trilha; track item.rotulo; let ultimo = $last) {
                     @if (!ultimo && item.url) {
-                        <a [routerLink]="item.url">{{ item.rotulo }}</a><span class="breadcrumb-sep">›</span>
+                        <a [routerLink]="item.url">{{ item.rotulo }}</a>
                     } @else {
                         <span>{{ item.rotulo }}</span>
+                    }
+                    @if (!ultimo) {
+                        <span class="breadcrumb-sep">›</span>
                     }
                 }
             </nav>

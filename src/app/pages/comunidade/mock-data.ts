@@ -137,6 +137,9 @@ export interface MensagemMock {
   minha: boolean;
 }
 
+// O canal Geral é um UUID real no banco. Não use IDs de MOCK em chamadas RPC.
+export const CHAT_GERAL_ID = '00000000-0000-0000-0000-000000000001';
+
 export interface ConversaMock {
   id: string;
   nome: string;
@@ -168,7 +171,7 @@ export const SEED_EVENTOS: EventoMock[] = [
 
 export const SEED_CONVERSAS: ConversaMock[] = [
   {
-    id: 'c-geral',
+    id: CHAT_GERAL_ID,
     nome: 'Geral',
     membros: '1.2k membros',
     naoLidas: 2,

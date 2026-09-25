@@ -5,6 +5,7 @@ import { SupabaseService } from '../../services/supabase.service';
 import { PostMock, SEED_POSTS } from './mock-data';
 import {
   AmigoMock,
+  CHAT_GERAL_ID,
   ConversaMock,
   EventoMock,
   GrupoMock,
@@ -16,6 +17,8 @@ import {
   USUARIOS_HOVER,
   UsuarioHover,
 } from './mock-data';
+
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // PARTE A — Abas + feed MOCK (render/criar/curtir/responder).
 // PARTE B (pendente): amizades/convites, grupos/membros, canais/chat, eventos,
@@ -56,15 +59,15 @@ export class Comunidade implements OnInit, OnDestroy {
   readonly regrasComunidade = [
     { icone: 'fa-hands-holding', titulo: 'Respeito mútuo, sempre', texto: 'Cada pessoa tem seu ritmo e sua história.' },
     { icone: 'fa-user-xmark', titulo: 'Bullying dá ban', texto: 'Xingamento, preconceito ou ataque: tolerância zero.' },
-    { icone: 'fa-diary', titulo: 'Privacidade não se expõe', texto: 'Nada de dados pessoais — seus ou dos outros.' },
+    { icone: 'fa-book', titulo: 'Privacidade não se expõe', texto: 'Nada de dados pessoais — seus ou dos outros.' },
     { icone: 'fa-person-circle-exclamation', titulo: 'Assédio é ban direto', texto: 'Insistência e invasão não têm segunda chance.' },
     { icone: 'fa-ribbon', titulo: 'Acolha quem chega', texto: 'Gentileza também é contribuição.' },
     { icone: 'fa-child-reaching', titulo: 'Para todas as idades', texto: 'Nada impróprio para menores.' },
     { icone: 'fa-infinity', titulo: 'Assunto: neurodiversidade', texto: 'Spam e polêmica fora do tema ficam de fora.' },
   ];
 
-  // --- MOCK telas Grupos/Eventos/Conversa (Parte B: RPCs + realtime) ---
-  grupos: GrupoMock[] = SEED_GRUPOS.map((g) => ({ ...g }));
+  // --- Dados sociais começam vazios; seeds MOCK são apenas fallback de falha ---
+  grupos: GrupoMock[] = [];
 
   // --- Eventos reais: from events ativos/futuros (espelha renderEvents) ---
   // Fallback: seed MOCK. RSVP via event_participants (espelha o original).
@@ -135,7 +138,7 @@ export class Comunidade implements OnInit, OnDestroy {
     mensagens: c.mensagens.map((m) => ({ ...m })),
   }));
   conversaAtiva: ConversaMock | null = this.conversas[0] ?? null;
-  amigos: AmigoMock[] = SEED_AMIGOS.map((a) => ({ ...a }));
+  amigos: AmigoMock[] = [];
 
   // --- Menu de moderação por post (MOCK: Denunciar/Ocultar locais) ---
   menuModId: string | null = null;
@@ -420,6 +423,9 @@ export class Comunidade implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.carregarNotificacoes();
     await this.carregarFeed();
+    // get_friends/get_user_groups dependem do JWT. Aguarda a restauração
+    // antes de decidir se a resposta vazia é uma lista válida ou uma corrida.
+    await this.aguardarSessaoSupabase();
     await this.carregarAmigos();
     await this.carregarGrupos();
     await this.carregarEventos();
@@ -618,20 +624,36 @@ export class Comunidade implements OnInit, OnDestroy {
   trocarAba(aba: 'forum' | 'grupos' | 'eventos' | 'conversa'): void {
     this.aba = aba;
     if (aba === 'forum') void this.carregarFeed();
-    if (aba === 'conversa') this.iniciarPollingChat();
-    else this.pararPollingChat();
+    if (aba === 'grupos') void this.carregarGrupos();
+    if (aba === 'conversa') {
+      void this.carregarAmigos();
+      this.iniciarPollingChat();
+    } else {
+      this.pararPollingChat();
+    }
   }
 
   // --- Polling de fallback do chat (5s) enquanto a Conversa está ativa ---
   // Realtime pode falhar (WS/CORS); o polling garante mensagens sem F5.
   private pollingChat: ReturnType<typeof setInterval> | null = null;
 
+  private get currentChatId(): string | null {
+    return this.conversaAtiva?.id ?? null;
+  }
+
   private iniciarPollingChat(): void {
     this.pararPollingChat();
+    const conversationId = this.currentChatId;
+    if (!conversationId || !UUID_REGEX.test(conversationId)) return;
+
     this.pollingChat = setInterval(() => {
-      if (this.aba === 'conversa' && this.conversaAtiva) {
-        void this.carregarMensagens(this.conversaAtiva);
+      const conversa = this.conversaAtiva;
+      const id = this.currentChatId;
+      if (this.aba !== 'conversa' || !conversa || !id || !UUID_REGEX.test(id)) {
+        this.pararPollingChat();
+        return;
       }
+      void this.carregarMensagens(conversa);
     }, 5000);
   }
 
@@ -976,32 +998,53 @@ export class Comunidade implements OnInit, OnDestroy {
     return u;
   }
 
-  async carregarAmigos(): Promise<void> {
+  private async aguardarSessaoSupabase(): Promise<void> {
     try {
-      const sb = this.supabase.getClient();
+      const { data } = await this.supabase.getClient().auth.getSession();
+      console.log('[auth] Sessão para dados sociais:', data.session?.user?.id ?? 'anônima');
+    } catch (e) {
+      console.warn('[auth] Falha ao restaurar sessão antes dos dados sociais:', e);
+    }
+  }
+
+  async carregarAmigos(): Promise<void> {
+    const sb = this.supabase.getClient();
+
+    try {
       const { data: amigos, error } = await sb.rpc('get_friends');
+      console.log('[amigos] Recebidos do Supabase:', amigos?.length ?? 0);
       if (error) throw error;
-      const lista = (amigos ?? []) as Array<Record<string, unknown>>;
-      if (lista.length) {
-        this.amigos = lista.map((f) => ({
-          id: String(f['friend_id'] ?? f['id']),
-          nome: String(f['username'] ?? 'Usuário'),
-          username: String(f['username'] ?? 'usuario').toLowerCase(),
-          avatar: this.avatarValido(f['avatar_url']),
-          friend_id: String(f['friend_id'] ?? f['id']),
-          conversation_id: String(f['conversation_id'] ?? ''),
-        }));
-      }
-      const { data: pends, error: erroPend } = await sb.rpc('get_pending_requests');
-      if (erroPend) throw erroPend;
-      this.solicitacoes = ((pends ?? []) as Array<Record<string, unknown>>).map((f) => ({
-        id: String(f['friendship_id'] ?? f['id']),
+
+      // Uma resposta vazia é válida: não substitui por MOCK.
+      this.amigos = ((amigos ?? []) as Array<Record<string, unknown>>).map((f) => ({
+        id: String(f['friend_id'] ?? f['id'] ?? ''),
         nome: String(f['username'] ?? 'Usuário'),
-        avatar: (f['avatar_url'] as string) || 'img/foto-padrão.jpg',
+        username: String(f['username'] ?? 'usuario').toLowerCase(),
+        avatar: this.avatarValido(f['avatar_url']),
+        friend_id: String(f['friend_id'] ?? f['id'] ?? ''),
+        conversation_id: String(f['conversation_id'] ?? ''),
       }));
     } catch (e) {
-      console.warn('Amigos MOCK (RPCs falharam):', e);
+      console.warn('Amigos MOCK (get_friends falhou):', e);
+      this.amigos = SEED_AMIGOS.map((a) => ({ ...a }));
     }
+
+    // Solicitações são um recurso separado; uma falha aqui não deve
+    // restaurar amigos MOCK depois de get_friends ter retornado dados reais.
+    try {
+      const { data: pends, error } = await sb.rpc('get_pending_requests');
+      if (error) throw error;
+      this.solicitacoes = ((pends ?? []) as Array<Record<string, unknown>>).map((f) => ({
+        id: String(f['friendship_id'] ?? f['id'] ?? ''),
+        nome: String(f['username'] ?? 'Usuário'),
+        avatar: this.avatarValido(f['avatar_url']),
+      }));
+    } catch (e) {
+      console.warn('Solicitações de amizade (get_pending_requests falhou):', e);
+      this.solicitacoes = [];
+    }
+
+    this.cdr.detectChanges();
   }
 
   // --- Busca usuários via rpc search_users (espelha o original) ---
@@ -1052,15 +1095,17 @@ export class Comunidade implements OnInit, OnDestroy {
     }
   }
 
-  // --- Grupos reais via rpc get_user_groups (fallback: seed) ---
+  // --- Grupos reais via rpc get_user_groups (fallback: seed somente em erro) ---
   async carregarGrupos(): Promise<void> {
     try {
       const { data, error } = await this.supabase.getClient().rpc('get_user_groups');
+      console.log('[grupos] Recebidos do Supabase:', data?.length ?? 0);
       if (error) throw error;
-      const linhas = (data ?? []) as Array<Record<string, unknown>>;
-      if (!linhas.length) return;
-      this.grupos = linhas.map((g) => ({
-        id: String(g['id']),
+
+      // Resposta vazia significa que o usuário não pertence a grupos;
+      // não deve ser trocada pelos dois cards MOCK.
+      this.grupos = ((data ?? []) as Array<Record<string, unknown>>).map((g) => ({
+        id: String(g['id'] ?? ''),
         nome: String(g['name'] ?? 'Grupo'),
         descricao: String(g['description'] ?? 'Sem descrição'),
         membros: Number(g['members'] ?? 0),
@@ -1071,7 +1116,10 @@ export class Comunidade implements OnInit, OnDestroy {
       }));
     } catch (e) {
       console.warn('Grupos MOCK (get_user_groups falhou):', e);
+      this.grupos = SEED_GRUPOS.map((g) => ({ ...g }));
     }
+
+    this.cdr.detectChanges();
   }
 
   // --- Entrar/sair via *_with_cleanup (espelha o original; fallback MOCK) ---
@@ -1097,6 +1145,11 @@ export class Comunidade implements OnInit, OnDestroy {
   }
   irParaConversa(): void {
     this.aba = 'conversa';
+    if (this.conversaAtiva) {
+      void this.selecionarConversa(this.conversaAtiva);
+    } else {
+      this.iniciarPollingChat();
+    }
   }
 
   // --- Eventos: lista real, RSVP real (event_participants) ---
@@ -1112,7 +1165,8 @@ export class Comunidade implements OnInit, OnDestroy {
       if (error) throw error;
       const linhas = (data ?? []) as Array<Record<string, unknown>>;
       if (!linhas.length) {
-        if (!this.conversaAtiva && this.conversas.length) this.conversaAtiva = this.conversas[0];
+        const fallback = this.conversaAtiva ?? this.conversas[0];
+        if (fallback) await this.selecionarConversa(fallback);
         return;
       }
       this.conversas = linhas.map((c) => ({
@@ -1132,21 +1186,30 @@ export class Comunidade implements OnInit, OnDestroy {
       });
       this.conversaAtiva = this.conversas[0] ?? null;
       if (this.conversaAtiva) {
-        this.assinarConversa(this.conversaAtiva.id);
-        await this.carregarMensagens(this.conversaAtiva);
+        await this.selecionarConversa(this.conversaAtiva);
       }
     } catch (e) {
       console.warn('Canais MOCK (get_user_chat_channels falhou):', e);
-      if (!this.conversaAtiva && this.conversas.length) this.conversaAtiva = this.conversas[0];
+      const fallback = this.conversaAtiva ?? this.conversas[0];
+      if (fallback) await this.selecionarConversa(fallback);
     }
   }
 
   // --- Mensagens via rpc get_messages + nomes/avatares via profiles ---
   async carregarMensagens(c: ConversaMock): Promise<void> {
+    // IDs de seed não podem ser enviados para uma RPC cujo argumento é UUID.
+    // O canal legado "Geral" é normalizado para o UUID persistido no banco.
+    let conversationId = c.id?.trim() ?? '';
+    if (!UUID_REGEX.test(conversationId)) {
+      this.pararPollingChat();
+      conversationId = CHAT_GERAL_ID;
+      c.id = conversationId;
+    }
+
     try {
       const { data, error } = await this.supabase
         .getClient()
-        .rpc('get_messages', { p_conversation_id: c.id, p_limit: 50 });
+        .rpc('get_messages', { p_conversation_id: conversationId, p_limit: 50 });
       if (error) throw error;
       const uid = this.auth.getUsuarioAtual()?.id ?? '';
       const linhas = (data ?? []) as Array<Record<string, unknown>>;
@@ -1220,10 +1283,18 @@ export class Comunidade implements OnInit, OnDestroy {
 
   // --- Conversa: seleciona, zera lidas, carrega mensagens e assina realtime da conversa ---
   async selecionarConversa(c: ConversaMock): Promise<void> {
+    const rawId = c.id?.trim() ?? '';
+    const conversationId = UUID_REGEX.test(rawId) ? rawId : CHAT_GERAL_ID;
+    if (conversationId !== rawId) this.pararPollingChat();
+    c.id = conversationId;
+
     this.conversaAtiva = c;
     c.naoLidas = 0;
-    this.assinarConversa(c.id);
-    if (!c.mensagens.length) await this.carregarMensagens(c);
+    this.assinarConversa(conversationId);
+    // Sempre consulta o backend: o seed pode conter uma mensagem demonstrativa,
+    // mas não deve impedir a carga das mensagens persistidas.
+    await this.carregarMensagens(c);
+    if (this.aba === 'conversa' && UUID_REGEX.test(rawId)) this.iniciarPollingChat();
   }
 
   // --- ITEM 5: realtime por conversation_id (espelha channel messages:conversation_id=eq.X) ---

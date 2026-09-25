@@ -38,7 +38,7 @@
                         <p class="slide-description">Informações embasadas e diretas sobre regulação emocional, autoadvocacia e rotina.</p>
                         <div class="button-group">
                             <a routerLink="/recursos" class="btn-primary">Ler Artigos</a>
-                            <a href="#" class="btn-secondary">Ver tópicos</a>
+                            <a routerLink="/recursos" class="btn-secondary">Ver tópicos</a>
                         </div>
                     </div>
                 </div>
@@ -50,26 +50,13 @@
                         <h1 class="slide-title">Recursos para o seu dia a dia</h1>
                         <p class="slide-description">Guias de organização, rotinas visuais e soluções práticas criadas para simplificar suas tarefas.</p>
                         <div class="button-group">
-                            <a href="/ferramentas/ferramentas.html" class="btn-primary">Conhecer Ferramentas</a>
-                            <a href="/ferramentas/ferramentas.html" class="btn-secondary">Ver guias</a>
+                            <a routerLink="/recursos" class="btn-primary">Conhecer Ferramentas</a>
+                            <a routerLink="/recursos" class="btn-secondary">Ver guias</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- SLIDE 5 -->
-                <div class="slide">
-                    <div class="slide-content">
-                        <span class="category-tag">Eventos</span>
-                        <h1 class="slide-title">Encontros acolhedores e seguros</h1>
-                        <p class="slide-description">Participe de conversas e encontros onde você pode ser você mesmo sem precisar se explicar.</p>
-                        <div class="button-group">
-                            <a routerLink="/eventos" class="btn-primary">Ver Agenda</a>
-                            <a routerLink="/eventos" class="btn-secondary">Saber mais</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SLIDE 6 -->
                 <div class="slide">
                     <div class="slide-content">
                         <span class="category-tag">Direitos</span>
@@ -87,7 +74,7 @@
             <div class="controls">
                 <div class="counter-container">
                     <div class="counter">
-                        <span id="current" #current>01</span> / 06
+                        <span id="current" #current>01</span> / 05
                     </div>
                     <div class="progress-bar-bg">
                         <div class="progress-bar-fill" id="progressBar" #progressBar></div>
@@ -245,30 +232,7 @@
         </a>
 
         <!-- Card 5 -->
-        <a routerLink="/eventos" class="ct-card">
-          <div class="ct-card__media">
-            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop"
-                 alt="Eventos e grupos de apoio" loading="lazy">
-            <span class="ct-card__badge" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);">
-              Ao Vivo
-            </span>
-          </div>
-          <div class="ct-card__body">
-            <h3 class="ct-card__title">Eventos e grupos de apoio</h3>
-            <p class="ct-card__desc">
-              Aulas, rodas de acolhimento e grupos de partilha com especialistas.
-            </p>
-            <div class="ct-card__meta">
-              <span><i class="fa-regular fa-clock"></i> há 5 dias</span>
-              <span class="ct-card__link">
-                Ver agenda <i class="fa-solid fa-arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Card 6 -->
-        <a href="/ferramentas/ferramentas.html" class="ct-card">
+        <a routerLink="/recursos" class="ct-card">
           <div class="ct-card__media">
             <img src="img/blog-post-1-DvwhQAY4 - Copia.jpg"
                  alt="Ferramentas que transformam" loading="lazy">

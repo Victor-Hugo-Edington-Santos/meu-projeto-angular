@@ -141,11 +141,16 @@ body {
 }
 
 .header-glass .header-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     flex-shrink: 0;
+    text-decoration: none;
+    line-height: 0;
 }
 
 .header-glass .header-avatar {

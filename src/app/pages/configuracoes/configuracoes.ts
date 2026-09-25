@@ -468,6 +468,7 @@ export class Configuracoes implements OnInit, AfterViewInit, OnDestroy {
       }
       this.nome = nomeLimpo;
       this.bio = bioLimpa;
+      this.auth.atualizarUsuarioLocal({ nome: nomeLimpo, avatarUrl: this.avatarUrl });
       this.persistirLocais();
       this.mostrarToast(
         salvouBanco ? 'Perfil salvo com sucesso.' : 'Perfil atualizado localmente (offline).',
@@ -534,6 +535,7 @@ export class Configuracoes implements OnInit, AfterViewInit, OnDestroy {
         console.warn('[configuracoes] metadados de avatar não atualizados:', err);
       }
       this.avatarUrl = publicUrl;
+      this.auth.atualizarUsuarioLocal({ avatarUrl: publicUrl });
       this.persistirLocais();
       this.mostrarToast('Foto de perfil salva com sucesso.');
     } catch (err) {
@@ -604,6 +606,7 @@ export class Configuracoes implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       this.avatarUrl = AVATAR_PADRAO;
+      this.auth.atualizarUsuarioLocal({ avatarUrl: AVATAR_PADRAO });
       this.persistirLocais();
       this.mostrarToast('Avatar restaurado para o padrão.');
     } catch (err) {

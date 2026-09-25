@@ -13,6 +13,9 @@ const LS_ATENDIMENTO = 'amn_atendimento_ativo';
   templateUrl: './explorar.html',
 })
 export class Explorar implements AfterViewInit, OnDestroy {
+  /** Seção atualmente selecionada na barra de navegação. */
+  secaoAtiva = 'destaques';
+
   // --- Carrossel destaques (.hl-*) com paginação ---
   @ViewChild('hlTrack') hlTrack!: ElementRef<HTMLElement>;
   @ViewChild('hlPrev') hlPrev!: ElementRef<HTMLButtonElement>;
@@ -65,9 +68,10 @@ export class Explorar implements AfterViewInit, OnDestroy {
     private readonly supabase: SupabaseService,
   ) {}
 
-  // --- Rolagem suave até a seção (âncoras do projeto antigo: #destaques, #artigos...) ---
-  // href="#x" puro não funciona no SPA (router ignora mesma URL), por isso o (click).
+  // --- Rolagem suave até a seção e atualização do chip ativo ---
+  // O clique é tratado no componente para não depender do scroll nativo do router.
   rolarPara(id: string): void {
+    this.secaoAtiva = id;
     const el = this.host.nativeElement.querySelector('#' + CSS.escape(id));
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }

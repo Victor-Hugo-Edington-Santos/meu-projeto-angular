@@ -257,6 +257,10 @@ export class Perfil implements OnInit, OnDestroy {
         }
       }
       if (this.ehMeuPerfil) {
+        this.auth.atualizarUsuarioLocal({
+          nome,
+          ...(avatar ? { avatarUrl: avatar } : {}),
+        });
         try {
           localStorage.setItem('userName', nome);
           localStorage.setItem('userBio', this.bioPerfil);

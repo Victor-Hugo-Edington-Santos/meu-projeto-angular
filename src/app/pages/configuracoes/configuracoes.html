@@ -120,7 +120,7 @@
             <div class="settings-content-modal" style="display:block;">
               <div class="settings-container-center">
                 <div class="painel-mudar">
-                  <h1 class="modal-title"><i class="fas fa-lock"></i> Senha</h1>
+                  <h1 class="modal-title"><i class="fa-solid fa-lock"></i> Senha</h1>
                   <button type="button" class="bnt-x" (click)="fecharModalSenha()" aria-label="Fechar">X</button>
                 </div>
                 <div class="senha-antiga">
@@ -136,7 +136,7 @@
                   </div>
                 </div>
                 <div class="senha-nova">
-                  <h2><i class="fas fa-shield-alt"></i> Senha Nova</h2>
+                  <h2><i class="fa-solid fa-shield-halved"></i> Senha Nova</h2>
                   <div class="input-wrapper">
                     <input
                       [type]="verNovaSenha ? 'text' : 'password'"
@@ -155,7 +155,7 @@
           }
 
           <div class="settings-content-card">
-            <div class="panel-title" style="color:#ef4444;"><i class="fa-solid fa-trash-alt"></i> Remoção da conta</div>
+            <div class="panel-title" style="color:#ef4444;"><i class="fa-solid fa-trash-can"></i> Remoção da conta</div>
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Desativar sua conta significa que você poderá recuperá-la quando quiser.</p>
             <button type="button" class="btn-danger-red" (click)="desativarConta()">Desativar conta</button>
             <button type="button" class="btn-danger-outline" (click)="excluirConta()">Excluir conta</button>
