@@ -1,0 +1,421 @@
+    <div class="profile-backbar">
+        <a routerLink="/comunidade" class="btn-voltar-perfil">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Voltar à comunidade</span>
+        </a>
+    </div>
+
+    <!-- ============================================
+         ÁREA DO PERFIL
+         ============================================ -->
+    <main class="profile-page" id="profilePage">
+
+        @if (perfilNaoEncontrado) {
+        <div class="profile-not-found">
+            <i class="fa-regular fa-circle-question"></i>
+            <h2>Perfil não encontrado</h2>
+            <p>Este usuário não tem perfil na comunidade.</p>
+            <a routerLink="/comunidade" class="btn-voltar-site"><i class="fa-solid fa-arrow-left"></i> Voltar à comunidade</a>
+        </div>
+        }
+
+        <!-- Banner full width -->
+        <div class="profile-hero">
+            <div class="profile-hero-banner" id="profileBanner">
+                @if (temBanner) {
+                <img id="bannerImg" [src]="bannerPerfil" alt="" (error)="temBanner = false">
+                } @else {
+                <div class="profile-hero-banner-placeholder" id="bannerPlaceholder">
+                    <i class="fa-regular fa-image"></i>
+                </div>
+                }
+            </div>
+
+            <!-- Avatar + info + ações -->
+            <div class="profile-hero-bar">
+                <div class="profile-hero-avatar" id="avatarWrapper" [attr.data-frame]="moldura">
+                    @if (temAvatar) {
+                    <img id="profileAvatar" [src]="avatarPerfil" (error)="temAvatar = false" alt="Avatar" class="profile-avatar-img">
+                    } @else {
+                    <div class="profile-avatar-placeholder" id="avatarPlaceholder">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    }
+                </div>
+
+                <div class="profile-hero-info">
+                    <div class="profile-hero-name-row">
+                        <h1 id="profileName">{{ nomePerfil }}</h1>
+                        @if (isVerified) {
+                        <span class="verified-badge" id="verifiedBadge">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </span>
+                        }
+                        @if (isAdmin) {
+                        <span class="admin-badge" id="adminBadge">
+                            <i class="fa-solid fa-crown"></i> Admin
+                        </span>
+                        }
+                    </div>
+                    <p class="profile-hero-handle" id="profileHandle">{{ handlePerfil }}</p>
+                </div>
+
+                <div class="profile-hero-actions">
+                    <button class="btn-hero-secondary" id="shareProfileBtn" title="Compartilhar" (click)="compartilhar()">
+                        <i class="fa-regular fa-share-from-square"></i>
+                    </button>
+                    @if (ehMeuPerfil) {
+                    <button class="btn-hero-primary" id="openEditBtn" (click)="abrirEdicao()">
+                        <i class="fa-solid fa-pen"></i> Editar Perfil
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Corpo do perfil — 2 colunas -->
+        <div class="profile-body">
+
+            <!-- Coluna principal (esquerda) -->
+            <div class="profile-main-col">
+
+                <!-- Bio + meta -->
+                <div class="profile-about-card">
+                    <p class="profile-bio" id="profileBio" #bioTexto>{{ bioPerfil }}</p>
+                    <div class="profile-meta">
+                        @if (localizacao) {
+                        <span id="profileLocation">
+                            <i class="fa-regular fa-map"></i> <span>{{ localizacao }}</span>
+                        </span>
+                        }
+                        @if (website) {
+                        <span id="profileLink">
+                            <i class="fa-solid fa-link"></i> <a [href]="website" target="_blank">{{ websiteLabel }}</a>
+                        </span>
+                        }
+                        <span id="profileJoinDate">
+                            <i class="fa-regular fa-calendar"></i> Entrou em {{ dataEntrada }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ⭐ DESTAQUES DA COMUNIDADE -->
+                <section class="profile-highlights" id="profileHighlights">
+                    <div class="highlights-header">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Destaques da Comunidade</span>
+                    </div>
+                    <div class="highlights-scroll" id="highlightsScroll">
+                        @for (d of destaques; track d.id) {
+                        <div class="highlight-card">
+                            <div class="highlight-card-thumb">
+                                @if (d.imagem) {
+                                <img [src]="d.imagem" alt="">
+                                } @else {
+                                <div class="highlight-card-thumb-placeholder"><i class="fa-regular fa-image"></i></div>
+                                }
+                            </div>
+                            <div class="highlight-card-body">
+                                <div class="highlight-card-title">{{ d.titulo }}</div>
+                            </div>
+                        </div>
+                        }
+                        @if (destaques.length === 0) {
+                        <div class="highlights-empty">Nenhum destaque ainda — salve posts no fórum para vê-los aqui.</div>
+                        }
+                    </div>
+                </section>
+
+                <!-- Abas internas -->
+                <nav class="profile-inner-tabs" role="tablist">
+                    <button class="profile-inner-tab" [class.active]="abaInterna === 'posts'" (click)="trocarAba('posts')" role="tab">
+                        <i class="fa-regular fa-message"></i> Posts
+                    </button>
+                    <button class="profile-inner-tab" [class.active]="abaInterna === 'respostas'" (click)="trocarAba('respostas')" role="tab">
+                        <i class="fa-regular fa-comment"></i> Respostas
+                    </button>
+                    <button class="profile-inner-tab" [class.active]="abaInterna === 'midia'" (click)="trocarAba('midia')" role="tab">
+                        <i class="fa-regular fa-image"></i> Mídia
+                    </button>
+                    <button class="profile-inner-tab" [class.active]="abaInterna === 'curtidas'" (click)="trocarAba('curtidas')" role="tab">
+                        <i class="fa-regular fa-heart"></i> Curtidas
+                    </button>
+                    <button class="profile-inner-tab" [class.active]="abaInterna === 'salvos'" (click)="trocarAba('salvos')" role="tab">
+                        <i class="fa-regular fa-bookmark"></i> Salvos
+                    </button>
+                </nav>
+
+                <!-- ✅ SÓ UM profileContent agora -->
+                <div class="profile-content" id="profileContent">
+                    @if (abaInterna === 'posts') {
+                    @for (p of meusPosts; track p.id) {
+                    <article class="user-post" [attr.data-post-id]="p.id">
+                        <div class="user-post-header">
+                            @if (temAvatar) {
+                            <img class="user-post-avatar" [src]="avatarPerfil" [alt]="nomePerfil" (error)="temAvatar = false">
+                            } @else {
+                            <div class="user-post-avatar-fallback">{{ nomePerfil.charAt(0).toUpperCase() }}</div>
+                            }
+                            <div class="user-post-info">
+                                <span class="user-post-name">{{ nomePerfil }}</span>
+                                <span class="user-post-handle">{{ handlePerfil }}</span>
+                                <span class="user-post-date">· {{ p.tempoRel || p.tempo }}</span>
+                            </div>
+                        </div>
+                        <p class="user-post-text">{{ p.texto }}</p>
+                        @if (p.imagem) {
+                        <div class="user-post-image"><img [src]="p.imagem" alt="Imagem do post"></div>
+                        } @else if (p.video) {
+                        <div class="user-post-image"><video controls preload="metadata" style="width:100%;display:block;"><source [src]="p.video" type="video/mp4"></video></div>
+                        }
+                        <div class="user-post-actions">
+                            <span><i class="fa-regular fa-heart"></i> {{ p.curtidas }}</span>
+                            <span><i class="fa-regular fa-comment"></i> {{ p.comentarios }}</span>
+                        </div>
+                    </article>
+                    }
+                    @if (meusPosts.length === 0) {
+                    <p class="profile-empty">Nenhum post ainda.</p>
+                    }
+                    } @else if (abaInterna === 'respostas') {
+                    @for (r of respostas; track r.id) {
+                    <article class="user-post">
+                        <div class="user-post-header">
+                            @if (temAvatar) {
+                            <img class="user-post-avatar" [src]="avatarPerfil" [alt]="nomePerfil" (error)="temAvatar = false">
+                            } @else {
+                            <div class="user-post-avatar-fallback">{{ nomePerfil.charAt(0).toUpperCase() }}</div>
+                            }
+                            <div class="user-post-info">
+                                <span class="user-post-name">{{ nomePerfil }}</span>
+                                <span class="user-post-handle">{{ handlePerfil }}</span>
+                                <span class="user-post-date">· {{ r.tempo }}</span>
+                            </div>
+                        </div>
+                        <p class="user-post-text">{{ r.texto }}</p>
+                    </article>
+                    }
+                    @if (respostas.length === 0) {
+                    <p class="profile-empty">Nada por aqui ainda. <small>{{ mensagemVazia('respostas') }}</small></p>
+                    }
+                    } @else if (abaInterna === 'midia') {
+                    @for (p of postsMidia; track p.id) {
+                    <div class="user-post">
+                        <p class="user-post-text">{{ p.texto }}</p>
+                        @if (p.imagem) {
+                        <div class="user-post-image"><img [src]="p.imagem" alt="Imagem do post"></div>
+                        } @else if (p.video) {
+                        <div class="user-post-image"><video controls preload="metadata" style="width:100%;display:block;"><source [src]="p.video" type="video/mp4"></video></div>
+                        }
+                        <span class="user-post-date">{{ p.tempo }} · {{ p.curtidas }} curtidas</span>
+                    </div>
+                    }
+                    @if (postsMidia.length === 0) {
+                    <p class="profile-empty">Nada por aqui ainda. <small>{{ mensagemVazia('midia') }}</small></p>
+                    }
+                    } @else if (abaInterna === 'curtidas') {
+                    @for (c of curtidas; track c.id) {
+                    <article class="user-post">
+                        <div class="user-post-header">
+                            @if (temAvatar) {
+                            <img class="user-post-avatar" [src]="avatarPerfil" [alt]="nomePerfil" (error)="temAvatar = false">
+                            } @else {
+                            <div class="user-post-avatar-fallback">{{ nomePerfil.charAt(0).toUpperCase() }}</div>
+                            }
+                            <div class="user-post-info">
+                                <span class="user-post-name">{{ nomePerfil }}</span>
+                                <span class="user-post-handle">{{ handlePerfil }}</span>
+                                <span class="user-post-date">· {{ c.tempo }}</span>
+                            </div>
+                        </div>
+                        <p class="user-post-text">{{ c.texto }}</p>
+                    </article>
+                    }
+                    @if (curtidas.length === 0) {
+                    <p class="profile-empty">Nada por aqui ainda. <small>{{ mensagemVazia('curtidas') }}</small></p>
+                    }
+                    } @else if (abaInterna === 'salvos') {
+                    @for (p of salvos; track p.id) {
+                    <article class="user-post">
+                        <div class="user-post-header">
+                            @if (temAvatar) {
+                            <img class="user-post-avatar" [src]="avatarPerfil" [alt]="nomePerfil" (error)="temAvatar = false">
+                            } @else {
+                            <div class="user-post-avatar-fallback">{{ nomePerfil.charAt(0).toUpperCase() }}</div>
+                            }
+                            <div class="user-post-info">
+                                <span class="user-post-name">{{ nomePerfil }}</span>
+                                <span class="user-post-handle">{{ handlePerfil }}</span>
+                                <span class="user-post-date">· {{ p.tempo }}</span>
+                            </div>
+                        </div>
+                        <p class="user-post-text">{{ p.texto }}</p>
+                    </article>
+                    }
+                    @if (salvos.length === 0) {
+                    <p class="profile-empty">Nada salvo ainda. <small>{{ mensagemVazia('salvos') }}</small></p>
+                    }
+                    }
+                </div>
+            </div>
+
+            <!-- Coluna lateral (direita) -->
+            <aside class="profile-side-col">
+                <div class="profile-stats-card">
+                    <h3 class="stats-card-title">Sobre</h3>
+                    <div class="stats-row">
+                        <div class="stats-item">
+                            <strong id="statFollowing">{{ seguindo }}</strong>
+                            <span>Seguindo</span>
+                        </div>
+                        <div class="stats-item">
+                            <strong id="statFollowers">{{ seguidores }}</strong>
+                            <span>Seguidores</span>
+                        </div>
+                    </div>
+                    <div class="stats-contrib">
+                        <i class="fa-solid fa-star" style="color:#b8935a;"></i>
+                        <strong id="statContrib">{{ contribuicoes }}</strong>
+                        <span>contribuições</span>
+                    </div>
+                </div>
+
+                <!-- Quem seguir (MOCK + TODO: sem follows no original) -->
+                <div class="profile-stats-card">
+                    <h3 class="stats-card-title">Quem seguir</h3>
+                    @for (s of sugestoesSeguir; track s.id) {
+                    <div class="quem-seguir-item">
+                        <img [src]="s.avatar" [alt]="s.nome" (error)="corrigirAvatarSugestao($event)">
+                        <div class="quem-seguir-info">
+                            <strong>{{ s.nome }}</strong>
+                            <span>{{ s.username }}</span>
+                        </div>
+                        <button class="btn-seguir" [class.seguindo]="estaSeguindo(s.id)" (click)="alternarSeguir(s.id)">
+                            {{ estaSeguindo(s.id) ? 'Seguindo' : 'Seguir' }}
+                        </button>
+                    </div>
+                    }
+                    <a routerLink="/comunidade" class="stats-link">
+                        <i class="fa-solid fa-magnifying-glass"></i> Encontrar mais pessoas
+                    </a>
+                </div>
+
+                <div class="profile-stats-card">
+                    <h3 class="stats-card-title">Comunidade</h3>
+                    <a routerLink="/comunidade" class="stats-link">
+                        <i class="fa-regular fa-message"></i> Ir para o Fórum
+                    </a>
+                    <a routerLink="/comunidade" class="stats-link">
+                        <i class="fa-solid fa-users"></i> Explorar Grupos
+                    </a>
+                    <a routerLink="/comunidade" class="stats-link">
+                        <i class="fa-regular fa-comment-dots"></i> Conversar
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================
+         MODAL DE EDIÇÃO
+         ============================================ -->
+    <div class="edit-overlay" id="editOverlay" [hidden]="!mostrarEdicao">
+        <div class="edit-modal">
+            <div class="edit-modal-header">
+                <h2><i class="fa-solid fa-pen"></i> Editar Perfil</h2>
+                <button class="edit-close" id="closeEditBtn" (click)="mostrarEdicao = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="edit-modal-body">
+
+                <!-- Banner -->
+                <div class="edit-field">
+                    <label>Banner (capa)</label>
+                    <div class="edit-banner-preview" id="editBannerPreview" (click)="bannerFileInput.click()" role="button" tabindex="0" (keydown.enter)="bannerFileInput.click()">
+                        @if (previewBanner) {
+                        <img id="editBannerImg" [src]="previewBanner" alt="Prévia do banner">
+                        } @else if (temBanner) {
+                        <img id="editBannerImg" [src]="bannerPerfil" alt="Banner atual">
+                        } @else {
+                        <div class="edit-banner-placeholder" id="editBannerPlaceholder">
+                            <i class="fa-regular fa-image"></i>
+                            <span>Clique para enviar banner</span>
+                        </div>
+                        }
+                        <input type="file" #bannerFileInput id="editBannerInput" accept="image/*" hidden (change)="aoEscolherBanner($event)">
+                    </div>
+                </div>
+
+                <!-- Avatar -->
+                <div class="edit-field">
+                    <label>Foto de perfil</label>
+                    <div class="edit-avatar-preview" id="editAvatarPreview" [attr.data-frame]="moldura" (click)="avatarFileInput.click()" role="button" tabindex="0" (keydown.enter)="avatarFileInput.click()">
+                        @if (previewAvatar) {
+                        <img id="editAvatarImg" [src]="previewAvatar" alt="Prévia do avatar">
+                        } @else if (temAvatar) {
+                        <img id="editAvatarImg" [src]="avatarPerfil" alt="Foto atual">
+                        } @else {
+                        <div class="edit-avatar-placeholder" id="editAvatarPlaceholder">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        }
+                        <input type="file" #avatarFileInput id="editAvatarInput" accept="image/*" hidden (change)="aoEscolherAvatar($event)">
+                    </div>
+                </div>
+
+                <!-- ✅ Moldura do avatar -->
+                <div class="edit-field">
+                    <label>Moldura do avatar</label>
+                    <div class="edit-frame-picker" id="editFramePicker">
+                        @for (m of molduras; track m.id) {
+                        <button type="button" class="frame-option" [class.active]="moldura === m.id" [attr.data-frame]="m.id" [title]="m.titulo" (click)="selecionarMoldura(m.id)">
+                            <span class="frame-preview frame-{{ m.id }}"></span>
+                        </button>
+                        }
+                    </div>
+                    <small class="edit-hint">Sistema de molduras chega em breve — preview apenas.</small>
+                    <input type="hidden" id="editFrame" [value]="moldura">
+                </div>
+
+                <!-- Nome -->
+                <div class="edit-field">
+                    <label>Nome de exibição</label>
+                    <input type="text" id="editName" #nomeEdit maxlength="40" placeholder="Seu nome">
+                </div>
+
+                <!-- Username -->
+                <div class="edit-field">
+                    <label>@username</label>
+                    <input type="text" id="editUsername" maxlength="20" placeholder="@username">
+                </div>
+
+                <!-- Bio -->
+                <div class="edit-field">
+                    <label>Bio</label>
+                    <textarea id="editBio" #bioEdit rows="3" maxlength="160" placeholder="Conte um pouco sobre você..." (input)="aoDigitarBio($event)"></textarea>
+                    <small class="edit-counter"><span id="bioCounter" #contadorBio>0</span>/160</small>
+                </div>
+
+                <!-- Localização -->
+                <div class="edit-field">
+                    <label>Localização</label>
+                    <input type="text" id="editLocation" maxlength="40" placeholder="Cidade, País">
+                </div>
+
+                <!-- Link -->
+                <div class="edit-field">
+                    <label>Link</label>
+                    <input type="url" id="editLink" placeholder="https://...">
+                </div>
+            </div>
+            <div class="edit-modal-footer">
+                <button class="btn-cancel" id="cancelEditBtn" (click)="fecharEdicao()">Cancelar</button>
+                <button class="btn-save" id="saveEditBtn" (click)="salvarEdicao(nomeEdit.value, bioEdit.value)"><i class="fa-solid fa-check"></i> Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    @if (toastPerfil) {
+    <div class="toast-perfil" [class.erro]="toastPerfilErro">{{ toastPerfil }}</div>
+    }

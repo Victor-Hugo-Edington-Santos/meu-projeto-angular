@@ -1,0 +1,389 @@
+        <!-- =============================================
+             HERO EDITORIAL — Imagem full-width + título
+             ============================================= -->
+        <section class="rights-banner">
+            <div class="rights-banner__media">
+                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&h=900&fit=crop"
+                     alt="Documentos e símbolo de justiça" loading="eager">
+                <div class="rights-banner__overlay"></div>
+            </div>
+
+            <div class="rights-banner__content">
+                <span class="rights-banner__eyebrow">
+                    <i class="fa-solid fa-scale-balanced"></i> Seus Direitos
+                </span>
+                <h1 class="rights-banner__title">
+                    Juridiquês? <br>
+                    <span class="rights-banner__title-accent">Aqui a gente traduz.</span>
+                </h1>
+                <p class="rights-banner__sub">
+                    Conheça as leis que protegem você e saiba como usá-las no dia a dia. Sem palavras difíceis.
+                </p>
+            </div>
+        </section>
+
+        <!-- =============================================
+             NAV DE TÓPICOS — Chips de navegação
+             ============================================= -->
+        <nav class="rights-nav" aria-label="Categorias dos Direitos">
+            <div class="rights-nav__container">
+                <a href="#categorias" class="rights-nav__chip is-active">
+                    <i class="fa-solid fa-layer-group"></i> Categorias
+                </a>
+                <a href="#leis" class="rights-nav__chip">
+                    <i class="fa-solid fa-book"></i> Leis
+                </a>
+                <a href="#editorial" class="rights-nav__chip">
+                    <i class="fa-solid fa-lightbulb"></i> Aprenda
+                </a>
+                <a href="#recursos" class="rights-nav__chip">
+                    <i class="fa-solid fa-toolbox"></i> Recursos
+                </a>
+                <a href="#faq" class="rights-nav__chip">
+                    <i class="fa-regular fa-circle-question"></i> FAQ
+                </a>
+                <a href="#contato" class="rights-nav__chip">
+                    <i class="fa-solid fa-headset"></i> Contato
+                </a>
+            </div>
+        </nav>
+
+        <!-- =============================================
+             INTRO — Frase-guia
+             ============================================= -->
+        <section class="rights-intro">
+            <div class="rights-intro__container">
+                <h2 class="rights-intro__title">
+                    Direitos não se limitam a um site.
+                </h2>
+                <p class="rights-intro__sub">
+                    Além do nosso conteúdo, reunimos fontes oficiais e organizações sérias para você se aprofundar.
+                </p>
+                <ul class="rights-intro__links">
+                    <li><a href="https://www.gov.br" target="_blank" rel="noopener">Gov.br</a></li>
+                    <li><a href="https://www.defensoria.sp.def.br" target="_blank" rel="noopener">Defensoria Pública</a></li>
+                    <li><a href="https://www.mpf.mp.br" target="_blank" rel="noopener">Ministério Público</a></li>
+                    <li><a href="https://www.gov.br/inss/pt-br" target="_blank" rel="noopener">INSS</a></li>
+                    <li><a href="https://www.planalto.gov.br" target="_blank" rel="noopener">Planalto</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- =============================================
+             GRID DE CATEGORIAS — Padrão Ministério
+             ============================================= -->
+        <section class="categories-nav" id="categorias">
+            <div class="categories-nav__container">
+                <header class="categories-nav__head">
+                    <span class="section-badge"><i class="fa-solid fa-layer-group"></i> Explore por área</span>
+                    <h2 class="categories-nav__title">Escolha uma categoria</h2>
+                    <p class="categories-nav__sub">Encontre as leis que protegem você em cada área.</p>
+                </header>
+
+                <div class="categories-grid">
+                    <a href="#leis" class="category-tile" data-filter="educacional" (click)="filtrarPor('educacional')">
+                        <div class="category-tile__icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <span class="category-tile__title">Educação</span>
+                        <span class="category-tile__count">3 leis</span>
+                    </a>
+                    <a href="#leis" class="category-tile" data-filter="saude" (click)="filtrarPor('saude')">
+                        <div class="category-tile__icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                        <span class="category-tile__title">Saúde</span>
+                        <span class="category-tile__count">2 leis</span>
+                    </a>
+                    <a href="#leis" class="category-tile" data-filter="social" (click)="filtrarPor('social')">
+                        <div class="category-tile__icon"><i class="fa-solid fa-handshake"></i></div>
+                        <span class="category-tile__title">Assistência Social</span>
+                        <span class="category-tile__count">5 leis</span>
+                    </a>
+                    <a href="#leis" class="category-tile" data-filter="acessibilidade" (click)="filtrarPor('acessibilidade')">
+                        <div class="category-tile__icon"><i class="fa-solid fa-universal-access"></i></div>
+                        <span class="category-tile__title">Acessibilidade</span>
+                        <span class="category-tile__count">3 leis</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             SEÇÃO DE LEIS — Sem busca, card padrão
+             ============================================= -->
+        <section class="laws-section" id="leis">
+            <header class="laws-section__head">
+                <span class="section-badge"><i class="fa-solid fa-book"></i> Biblioteca de Leis</span>
+                <h2 class="laws-section-title">Leis que protegem você</h2>
+                <p class="laws-section-sub">Todas traduzidas para você — sem palavras difíceis.</p>
+            </header>
+
+            <div class="laws-grid" id="lawsGrid">
+                @for (lei of leisFiltradas; track lei.id; let i = $index) {
+                <article class="law-editorial-card law-editorial-card--{{ i % 2 === 0 ? 'left' : 'right' }}" [attr.data-category]="lei.categoria">
+                    <div class="law-editorial-card__image">
+                        <img [src]="imagemDaLei(lei, i)" [alt]="lei.titulo" loading="lazy">
+                        <div class="law-editorial-card__image-overlay"></div>
+                    </div>
+                    <div class="law-editorial-card__panel">
+                        <span class="law-editorial-card__category">
+                            <i [class]="lei.icone"></i> {{ nomeCategoria(lei.categoria) }}
+                        </span>
+                        <h3 class="law-editorial-card__title">{{ lei.titulo }}</h3>
+                        <p class="law-editorial-card__description">{{ lei.descricao }}</p>
+                        <div class="law-editorial-card__footer">
+                            <span class="law-editorial-card__number">Lei {{ lei.numero }}</span>
+                            <a [href]="lei.linkExterno" target="_blank" rel="noopener" class="law-editorial-card__link">
+                                Ver lei completa <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                }
+            </div>
+
+            <p class="laws-no-results" id="lawsNoResults" [hidden]="leisFiltradas.length > 0">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Nenhuma lei encontrada. Tente outra categoria.
+            </p>
+        </section>
+
+        <!-- =============================================
+             FONTES PARA SE APROFUNDAR
+             ============================================= -->
+        <section class="sources-banner">
+            <div class="sources-banner__container">
+                <h3 class="sources-banner__title">
+                    <i class="fa-solid fa-book-open-reader"></i> Quer se aprofundar?
+                </h3>
+                <p class="sources-banner__text">
+                    Sites oficiais e organizações sérias que tratam de direitos de pessoas neurodivergentes e PCD.
+                </p>
+                <div class="sources-banner__list">
+                    <a href="https://www.gov.br/mdh/pt-br" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-landmark"></i> Ministério dos Direitos Humanos
+                    </a>
+                    <a href="https://www.gov.br/mec/pt-br" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-graduation-cap"></i> MEC — Educação Inclusiva
+                    </a>
+                    <a href="https://www.gov.br/saude/pt-br" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-heart-pulse"></i> Ministério da Saúde
+                    </a>
+                    <a href="https://www.ipea.gov.br" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-chart-line"></i> IPEA — Estudos e Pesquisas
+                    </a>
+                    <a href="https://www.apaebrasil.org.br" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-people-group"></i> APAE Brasil
+                    </a>
+                    <a href="https://www.abda.org.br" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-hand-holding-heart"></i> ABDA — Autismo
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             EDITORIAL GRID — Aprenda + Conecte-se
+             ============================================= -->
+        <section class="editorial-grid" id="editorial">
+            <div class="editorial-grid__container">
+                <article class="editorial-card">
+                    <div class="editorial-card__media">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&q=80" alt="Pessoa estudando" loading="lazy">
+                    </div>
+                    <div class="editorial-card__panel">
+                        <span class="editorial-card__eyebrow">Aprenda</span>
+                        <h3 class="editorial-card__title">Conheça seus direitos antes de precisar deles</h3>
+                        <p class="editorial-card__text">
+                            Identifique seus pontos fortes, entenda o que a lei garante e saiba como exigir seus direitos na escola, no trabalho ou na saúde.
+                        </p>
+                        <a href="#leis" class="btn-primary">
+                            Ver leis <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="editorial-card editorial-card--reverse">
+                    <div class="editorial-card__media">
+                        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80" alt="Pessoas em reunião online" loading="lazy">
+                    </div>
+                    <div class="editorial-card__panel">
+                        <span class="editorial-card__eyebrow">Conecte-se</span>
+                        <h3 class="editorial-card__title">Encontre quem já passou pelo mesmo</h3>
+                        <p class="editorial-card__text">
+                            Nossa comunidade reúne pessoas neurodivergentes, famílias e profissionais. Compartilhe sua história e aprenda com quem entende.
+                        </p>
+                        <a routerLink="/comunidade" class="btn-primary">
+                            Entrar na comunidade <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- =============================================
+             RECURSOS ÚTEIS + ENVIE SEU CASO
+             ============================================= -->
+        <section class="resources-section" id="recursos">
+            <div class="resources-container">
+                <div class="resources-box">
+                    <div class="resources-box-header">
+                        <div class="resources-box-icon"><i class="fa-solid fa-circle-info"></i></div>
+                        <h3>Recursos Úteis</h3>
+                    </div>
+                    <p class="resources-box-sub">Ferramentas e documentos para fazer valer seus direitos</p>
+
+                    <div class="resources-list">
+                        <a href="#" class="resource-item">
+                            <span class="resource-item-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                            <div>
+                                <strong>Passo a passo para denunciar discriminação</strong>
+                                <span>Saiba como e onde registrar uma ocorrência</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#" class="resource-item">
+                            <span class="resource-item-icon"><i class="fa-solid fa-file-signature"></i></span>
+                            <div>
+                                <strong>Modelos de solicitação</strong>
+                                <span>Para escola, empresa e serviços públicos</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#" class="resource-item">
+                            <span class="resource-item-icon"><i class="fa-solid fa-building-user"></i></span>
+                            <div>
+                                <strong>ONGs e associações de apoio</strong>
+                                <span>Rede de suporte em todo o Brasil</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <a routerLink="/arquivo3leis" class="resources-download-btn">
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Baixar modelos de documentação
+                    </a>
+                </div>
+
+                <div class="case-box">
+                    <div class="case-box-glow"></div>
+                    <div class="case-box-content">
+                        <div class="case-box-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                        <h3>Conte-nos seu caso</h3>
+                        <p>Descreva sua situação e nossa equipe vai analisar com base nas <strong>3 leis principais</strong> que protegem pessoas neurodivergentes.</p>
+
+                        <form class="case-form" id="caseForm" [formGroup]="casoForm" (ngSubmit)="enviarCaso()">
+                            <div class="case-form-row">
+                                <input type="text" formControlName="nome" placeholder="Seu nome" required>
+                                <input type="email" formControlName="email" placeholder="Seu e-mail" required>
+                            </div>
+                            <textarea formControlName="descricao" placeholder="Descreva aqui a situação que você ou sua família está enfrentando. Quanto mais detalhes, melhor conseguimos ajudar." required></textarea>
+                            <button type="submit" class="case-submit-btn">
+                                <i class="fa-solid fa-file-pdf"></i> Enviar e receber análise gratuita
+                            </button>
+                        </form>
+
+                        <p class="case-disclaimer">
+                            <i class="fa-solid fa-shield-halved"></i> Seus dados estão seguros. Não compartilhamos com terceiros.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             FAQ DE DIREITOS
+             ============================================= -->
+        <section class="rights-faq" id="faq">
+            <header class="rights-faq__head">
+                <span class="section-badge"><i class="fa-regular fa-circle-question"></i> Dúvidas frequentes</span>
+                <h2>Perguntas sobre direitos</h2>
+                <p>As dúvidas mais comuns de quem chega até aqui.</p>
+            </header>
+
+            <div class="rights-faq__list">
+                <details class="faq-item">
+                    <summary>
+                        <span>Preciso de laudo médico para exigir meus direitos?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>Depende do direito. Para a Lei Brasileira de Inclusão (LBI), o laudo ajuda mas não é obrigatório — o que vale é a <strong>avaliação biopsicossocial</strong>. Já para benefícios como o BPC, o laudo é exigido.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span>Como pedir adaptações na escola ou faculdade?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>Faça um <strong>requerimento por escrito</strong> à coordenação, citando a Lei Brasileira de Inclusão (13.146/2015) e a Lei Berenice Piana (12.764/2012). Descreva as adaptações que você precisa e peça resposta formal.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span>Empresa pode me demitir por ser neurodivergente?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="faq-answer">
+                        <p><strong>Não.</strong> Isso configura discriminação, crime previsto na Lei 7.716/1989 e na Lei Brasileira de Inclusão. Se acontecer, procure o Ministério Público do Trabalho ou um advogado trabalhista.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span>O que é o BPC/LOAS e quem tem direito?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>É um <strong>salário mínimo mensal</strong> para pessoas com deficiência de baixa renda (renda por pessoa da família inferior a 1/4 do salário mínimo). Você solicita no CRAS ou pelo site do INSS.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span>Tenho direito a acompanhante terapêutico?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="faq-answer">
+                        <p><strong>Sim</strong>, quando houver indicação médica. A Lei 13.146/2015 garante o direito ao acompanhante especializado em instituições de ensino para pessoas com deficiência que precisam desse suporte.</p>
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>
+                        <span>Como denunciar discriminação?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </summary>
+                    <div class="faq-answer">
+                        <p>Você pode registrar <strong>Boletim de Ocorrência</strong> em qualquer delegacia, procurar o <strong>Ministério Público</strong>, ou denunciar pelo <strong>Disque 100</strong> (Direitos Humanos). Guarde provas: prints, e-mails, testemunhas.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- =============================================
+             CONTATO
+             ============================================= -->
+        <section class="rights-contact" id="contato">
+            <div class="rights-contact__card">
+                <div class="rights-contact__icon"><i class="fa-solid fa-robot"></i></div>
+                <div class="rights-contact__content">
+                    <h2>Ainda com dúvidas sobre seus direitos?</h2>
+                    <p>Converse com a <strong>AcolherIA</strong>, nossa assistente especializada em neurodivergência. Ela pode te orientar sobre leis, benefícios e como agir em situações específicas.</p>
+                    <div class="rights-contact__actions">
+                        <a href="/chat-Ia/chat-Ia.html" class="btn-primary">
+                            Conversar com AcolherIA <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a routerLink="/comunidade" class="btn-secondary">
+                            Entrar na comunidade
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="footer-col"><h4>Navegue</h4><a routerLink="/">Início</a><a routerLink="/explorar">Explorar</a><a routerLink="/comunidade">Comunidade</a><a routerLink="/direitos">Direitos</a><a href="/chat-Ia/chat-Ia.html">AcolherIA</a></div>
+                <div class="footer-col"><h4>Sobre</h4><a routerLink="/quem-somos">Quem somos</a><a routerLink="/blog">Blog</a><a routerLink="/contato">Contato</a></div>
+                <div class="footer-col"><h4>Apoie</h4><a routerLink="/loja">Loja</a><a routerLink="/apoiar">Doações</a></div>
+                <div class="footer-col"><h4>Redes</h4><div class="social-links"><a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a><a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a><a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a></div></div>
+            </div>
+            <div class="footer-bottom"><a routerLink="/politica-privacidade">Política de Privacidade</a><a routerLink="/termos-de-uso">Termos de Uso</a><p>© 2026 Amor NeuroDivergente</p></div>
+        </footer>

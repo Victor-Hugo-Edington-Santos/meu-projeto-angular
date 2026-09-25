@@ -1,0 +1,634 @@
+        <!-- =============================================
+             CARROSSEL PRINCIPAL
+             ============================================= -->
+        <div class="carousel-wrapper" id="carouselWrapper" #carouselWrapper>
+            <div class="carousel-track" id="track" #track>
+                
+                <!-- SLIDE 1 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <span class="category-tag">Comunidade</span>
+                        <h1 class="slide-title">Bem-vindo à comunidade</h1>
+                        <p class="slide-description">Um espaço acolhedor e feito para você. Explore nossas publicações, ferramentas, eventos e direitos sem precisar se explicar.</p>
+                        <div class="button-group">
+                            <a routerLink="/comunidade" class="btn-primary"> Entre na Comunidade </a>
+                            <a routerLink="/explorar" class="btn-secondary">Explorar recursos</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <span class="category-tag">Blog</span>
+                        <h1 class="slide-title">Reflexões e histórias da comunidade</h1>
+                        <p class="slide-description">Acompanhe relatos, novidades e textos informativos pensados para você ler no seu próprio tempo.</p>
+                        <div class="button-group">
+                            <a routerLink="/blog" class="btn-primary">Acessar o Blog</a>
+                            <a routerLink="/blog" class="btn-secondary">Explorar matérias</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <span class="category-tag">Artigos</span>
+                        <h1 class="slide-title">Conteúdo claro sobre TDAH e Autismo</h1>
+                        <p class="slide-description">Informações embasadas e diretas sobre regulação emocional, autoadvocacia e rotina.</p>
+                        <div class="button-group">
+                            <a routerLink="/recursos" class="btn-primary">Ler Artigos</a>
+                            <a href="#" class="btn-secondary">Ver tópicos</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 4 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <span class="category-tag">Ferramentas</span>
+                        <h1 class="slide-title">Recursos para o seu dia a dia</h1>
+                        <p class="slide-description">Guias de organização, rotinas visuais e soluções práticas criadas para simplificar suas tarefas.</p>
+                        <div class="button-group">
+                            <a href="/ferramentas/ferramentas.html" class="btn-primary">Conhecer Ferramentas</a>
+                            <a href="/ferramentas/ferramentas.html" class="btn-secondary">Ver guias</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 5 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <span class="category-tag">Eventos</span>
+                        <h1 class="slide-title">Encontros acolhedores e seguros</h1>
+                        <p class="slide-description">Participe de conversas e encontros onde você pode ser você mesmo sem precisar se explicar.</p>
+                        <div class="button-group">
+                            <a routerLink="/eventos" class="btn-primary">Ver Agenda</a>
+                            <a routerLink="/eventos" class="btn-secondary">Saber mais</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 6 -->
+                <div class="slide">
+                    <div class="slide-content">
+                        <span class="category-tag">Direitos</span>
+                        <h1 class="slide-title">Leis e benefícios traduzidos</h1>
+                        <p class="slide-description">Entenda seus direitos legais, laudos, prioridades e acessibilidade de maneira simples e objetiva.</p>
+                        <div class="button-group">
+                            <a routerLink="/direitos" class="btn-primary">Entender Direitos</a>
+                            <a routerLink="/direitos" class="btn-secondary">Guia simplificado</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Controles Inferior -->
+            <div class="controls">
+                <div class="counter-container">
+                    <div class="counter">
+                        <span id="current" #current>01</span> / 06
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar" #progressBar></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" id="prevBtn" #prevBtn aria-label="Anterior">
+                        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                    </button>
+                    <button class="nav-btn" id="nextBtn" #nextBtn aria-label="Próximo">
+                        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- =============================================
+             MISSÃO
+             ============================================= -->
+        <section class="mission-section">
+            <div class="mission-container">
+                <div class="mission-image">
+                    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=500&fit=crop" alt="Pessoas conversando em ambiente acolhedor" loading="lazy">
+                </div>
+                <div class="mission-content">
+                    <span class="section-badge"><i class="fa-solid fa-heart"></i> Nossa Missão</span>
+                    <h2>NINGUÉM PRECISA SE SENTIR SOZINHO.</h2>
+                    <p>Pessoas neurodivergentes têm duas a três vezes mais chances de enfrentar desafios de saúde mental. Mas o problema não é a neurodivergência — são a falta de informação, o capacitismo e o isolamento que a sociedade impõe.</p>
+                    <p>Criamos este espaço para que, juntos, possamos construir uma rede de apoio acessível, traduzir o conhecimento acadêmico em informações úteis e celebrar a diversidade neurológica como o que ela é: uma parte natural da experiência humana.</p>
+                </div>
+            </div>
+        </section>
+
+<!-- =============================================
+     DESTAQUE + FEED — Carrossel editorial discreto
+     ============================================= -->
+<section class="ct-section" id="destaques">
+  <div class="ct-container">
+
+    <!-- Header -->
+    <div class="ct-header">
+      <div class="ct-header__left">
+        <span class="ct-eyebrow">
+          <i class="fa-regular fa-bookmark"></i> Editorial
+        </span>
+        <h2 class="ct-title">O que você encontra por aqui</h2>
+        <p class="ct-sub">Espaços, ferramentas e acolhimento feitos para você</p>
+      </div>
+
+      <a routerLink="/blog" class="ct-see-all">
+        Ver todos <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <!-- ============ CARROSSEL ============ -->
+    <div class="ct-carousel" id="ctCarousel" #ctCarousel>
+
+      <button class="ct-arrow ct-arrow--prev" #ctPrev aria-label="Anterior">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="ct-track" id="ctTrack" #ctTrack>
+
+        <!-- Card 1 -->
+        <a routerLink="/blog" class="ct-card">
+          <div class="ct-card__media">
+            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=600&fit=crop"
+                 alt="Leitura prática" loading="lazy">
+            <span class="ct-card__badge" style="background:linear-gradient(135deg,#7c3aed,#a855f7);">
+              Destaque
+            </span>
+          </div>
+          <div class="ct-card__body">
+            <h3 class="ct-card__title">Leitura prática para o dia a dia</h3>
+            <p class="ct-card__desc">
+              Aprenda a lidar com procrastinação, organizar a rotina e reduzir a ansiedade.
+            </p>
+            <div class="ct-card__meta">
+              <span><i class="fa-regular fa-clock"></i> há 3 dias</span>
+              <span class="ct-card__link">
+                Explorar <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a routerLink="/comunidade" class="ct-card">
+          <div class="ct-card__media">
+            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&h=600&fit=crop"
+                 alt="Comunidade segura" loading="lazy">
+            <span class="ct-card__badge" style="background:linear-gradient(135deg,#db2777,#ec4899);">
+              Seguro
+            </span>
+          </div>
+          <div class="ct-card__body">
+            <h3 class="ct-card__title">Comunidade segura para compartilhar</h3>
+            <p class="ct-card__desc">
+              Compartilhe experiências em um espaço seguro e sem julgamentos.
+            </p>
+            <div class="ct-card__meta">
+              <span><i class="fa-regular fa-clock"></i> há 2 dias</span>
+              <span class="ct-card__link">
+                Participar <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a routerLink="/recursos" class="ct-card">
+          <div class="ct-card__media">
+            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop"
+                 alt="Conteúdos sobre TDAH e Autismo" loading="lazy">
+            <span class="ct-card__badge" style="background:linear-gradient(135deg,#10b981,#34d399);">
+              Novo
+            </span>
+          </div>
+          <div class="ct-card__body">
+            <h3 class="ct-card__title">Conteúdos sobre TDAH, Autismo e mais</h3>
+            <p class="ct-card__desc">
+              Conteúdos claros sobre TDAH, autismo adulto, autoestima e regulação emocional.
+            </p>
+            <div class="ct-card__meta">
+              <span><i class="fa-regular fa-clock"></i> há 1 dia</span>
+              <span class="ct-card__link">
+                Explorar <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a routerLink="/direitos" class="ct-card">
+          <div class="ct-card__media">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=600&fit=crop"
+                 alt="Leis e benefícios" loading="lazy">
+            <span class="ct-card__badge" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);">
+              Direitos
+            </span>
+          </div>
+          <div class="ct-card__body">
+            <h3 class="ct-card__title">Leis e benefícios traduzidos</h3>
+            <p class="ct-card__desc">
+              Informação prática sobre leis e benefícios. Sem juridiquês — a gente traduz.
+            </p>
+            <div class="ct-card__meta">
+              <span><i class="fa-regular fa-clock"></i> há 4 dias</span>
+              <span class="ct-card__link">
+                Consultar <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a routerLink="/eventos" class="ct-card">
+          <div class="ct-card__media">
+            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop"
+                 alt="Eventos e grupos de apoio" loading="lazy">
+            <span class="ct-card__badge" style="background:linear-gradient(135deg,#8b5cf6,#c084fc);">
+              Ao Vivo
+            </span>
+          </div>
+          <div class="ct-card__body">
+            <h3 class="ct-card__title">Eventos e grupos de apoio</h3>
+            <p class="ct-card__desc">
+              Aulas, rodas de acolhimento e grupos de partilha com especialistas.
+            </p>
+            <div class="ct-card__meta">
+              <span><i class="fa-regular fa-clock"></i> há 5 dias</span>
+              <span class="ct-card__link">
+                Ver agenda <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="/ferramentas/ferramentas.html" class="ct-card">
+          <div class="ct-card__media">
+            <img src="img/blog-post-1-DvwhQAY4 - Copia.jpg"
+                 alt="Ferramentas que transformam" loading="lazy">
+            <span class="ct-card__badge" style="background:linear-gradient(135deg,#f43f5e,#fb7185);">
+              Desafio
+            </span>
+          </div>
+          <div class="ct-card__body">
+            <h3 class="ct-card__title">Ferramentas que transformam o seu dia</h3>
+            <p class="ct-card__desc">
+              Pequenos passos mensais para transformar sua vida de forma leve.
+            </p>
+            <div class="ct-card__meta">
+              <span><i class="fa-regular fa-clock"></i> há 1 semana</span>
+              <span class="ct-card__link">
+                Começar <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+
+      <button class="ct-arrow ct-arrow--next" #ctNext aria-label="Próximo">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <!-- Barra de progresso -->
+    <div class="ct-progress">
+      <span class="ct-progress__bar" id="ctProgressBar" #ctProgressBar></span>
+    </div>
+
+    <!-- CTA final -->
+    <div class="ct-cta">
+      <a routerLink="/login" class="btn-glow">
+        Quero fazer parte <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+  </div>
+</section>
+        <!-- =============================================
+             🆕 PUBLICAÇÕES EM DESTAQUE — Carrossel editorial
+             ============================================= -->
+        <section class="explore-highlights" id="destaques">
+            <div class="container">
+                <header class="explore-highlights__head">
+                    <h2>Publicações em Destaque</h2>
+                </header>
+
+                <div class="explore-highlights__carousel" id="highlightsCarousel">
+                    <button class="hl-arrow hl-arrow--prev" #hlPrev aria-label="Anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <div class="hl-track" id="hlTrack" #hlTrack>
+                        <!-- Card 1 -->
+                        <a routerLink="/blog/post-masking" class="hl-card">
+                            <div class="hl-card__media">
+                                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&h=600&fit=crop"
+                                    alt="Pessoa em ambiente calmo" loading="lazy">
+                                <div class="hl-card__overlay"></div>
+                                <h3 class="hl-card__title">O dia em que você para de sobreviver e começa a viver</h3>
+                            </div>
+                        </a>
+
+                        <!-- Card 2 -->
+                        <a routerLink="/blog" class="hl-card">
+                            <div class="hl-card__media">
+                                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=600&fit=crop"
+                                    alt="Comunicação inclusiva" loading="lazy">
+                                <div class="hl-card__overlay"></div>
+                                <button class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></button>
+                                <h3 class="hl-card__title">Como tornar a comunicação mais inclusiva para profissionais neurodivergentes</h3>
+                            </div>
+                        </a>
+
+                        <!-- Card 3 -->
+                        <a routerLink="/blog" class="hl-card">
+                            <div class="hl-card__media">
+                                <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=600&fit=crop"
+                                    alt="Neurodivergência na infância" loading="lazy">
+                                <div class="hl-card__overlay"></div>
+                                <button class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></button>
+                                <h3 class="hl-card__title">Neurodivergência na infância e adolescência</h3>
+                            </div>
+                        </a>
+
+                        <!-- Card 4 -->
+                        <a routerLink="/blog" class="hl-card">
+                            <div class="hl-card__media">
+                                <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&h=600&fit=crop"
+                                    alt="Descobrindo o extraordinário" loading="lazy">
+                                <div class="hl-card__overlay"></div>
+                                <h3 class="hl-card__title">Descobrindo o extraordinário que existe no comum</h3>
+                            </div>
+                        </a>
+
+                        <!-- Card 5 -->
+                        <a routerLink="/blog" class="hl-card">
+                            <div class="hl-card__media">
+                                <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop"
+                                    alt="Autismo e saúde mental" loading="lazy">
+                                <div class="hl-card__overlay"></div>
+                                <button class="hl-card__play" aria-hidden="true"><i class="fa-solid fa-play"></i></button>
+                                <h3 class="hl-card__title">Autismo e Saúde Mental</h3>
+                            </div>
+                        </a>
+
+                        <!-- Card 6 -->
+                        <a routerLink="/blog" class="hl-card">
+                            <div class="hl-card__media">
+                                <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&h=600&fit=crop"
+                                    alt="Burnout em mães atípicas" loading="lazy">
+                                <div class="hl-card__overlay"></div>
+                                <h3 class="hl-card__title">Burnout em mães atípicas: quem cuida de quem cuida?</h3>
+                            </div>
+                        </a>
+                    </div>
+
+                    <button class="hl-arrow hl-arrow--next" #hlNext aria-label="Próximo">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             🆕 ÚLTIMAS PUBLICAÇÕES — 1 grande + 3 pequenos
+             ============================================= -->
+        <section class="explore-latest" id="ultimas">
+            <div class="container">
+                <header class="explore-latest__head">
+                    <span class="section-badge"><i class="fa-solid fa-newspaper"></i> Últimas publicações</span>
+                    <h2>Leituras recentes da comunidade</h2>
+                </header>
+
+                <div class="explore-latest__grid">
+                    <!-- Card grande -->
+                    <article class="latest-feature">
+                        <a routerLink="/blog/post-masking" class="latest-feature__media">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&h=600&fit=crop"
+                                alt="Pessoa em ambiente calmo" loading="lazy">
+                        </a>
+                        <div class="latest-feature__body">
+                            <div class="latest-feature__meta">
+                                <span class="latest-avatar">L</span>
+                                <div class="latest-meta-text">
+                                    <strong>Luti Christóforo</strong>
+                                    <span>há 1 dia · 4 min de leitura</span>
+                                </div>
+                            </div>
+                            <h3 class="latest-feature__title">
+                                <a routerLink="/blog/post-masking">O dia em que você para de sobreviver e começa a viver</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- Lista pequena -->
+                    <div class="latest-list">
+                        <a routerLink="/blog" class="latest-item">
+                            <div class="latest-item__text">
+                                <h4>Como tornar a comunicação mais inclusiva para profissionais neurodivergentes.</h4>
+                                <span class="latest-item__date">há 3 dias</span>
+                            </div>
+                            <div class="latest-item__thumb">
+                                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop"
+                                    alt="" loading="lazy">
+                                <span class="latest-item__play"><i class="fa-solid fa-play"></i></span>
+                            </div>
+                        </a>
+
+                        <a routerLink="/blog" class="latest-item">
+                            <div class="latest-item__text">
+                                <h4>Neurodivergência na infância e adolescência</h4>
+                                <span class="latest-item__date">há 3 dias</span>
+                            </div>
+                            <div class="latest-item__thumb">
+                                <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=200&h=200&fit=crop"
+                                    alt="" loading="lazy">
+                                <span class="latest-item__play"><i class="fa-solid fa-play"></i></span>
+                            </div>
+                        </a>
+
+                        <a routerLink="/blog" class="latest-item">
+                            <div class="latest-item__text">
+                                <h4>Autismo e Saúde Mental</h4>
+                                <span class="latest-item__date">há 3 dias</span>
+                            </div>
+                            <div class="latest-item__thumb">
+                                <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=200&h=200&fit=crop"
+                                    alt="" loading="lazy">
+                                <span class="latest-item__play"><i class="fa-solid fa-play"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             BLOG DESTAQUES
+             ============================================= -->
+        <section class="blog-highlights-section">
+            <div class="container">
+                <h2>Artigos & Leituras Recomendadas</h2>
+                <p class="section-sub">Conteúdos escritos com clareza para você entender sem esforço</p>
+                
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop" alt="Pessoa tirando uma máscara sorridente" loading="lazy">
+                        </div>
+                        <div class="blog-card-content">
+                            <div class="blog-badge-group">
+                                <span class="badge-time"><i class="fa-regular fa-clock"></i> 3 min de leitura</span>
+                                <span class="badge-type"><i class="fa-solid fa-eye"></i> Resumo Visual</span>
+                            </div>
+                            <h3>O que é Masking e por que ele exaure seu cérebro?</h3>
+                            <p>Entenda o hábito de "camuflar" traços neurodivergentes para se encaixar e como começar a desacelerar.</p>
+                            <a routerLink="/blog/post-masking" class="blog-link">Ler artigo <i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=300&fit=crop" alt="Pessoa organizando tarefas no quadro" loading="lazy">
+                        </div>
+                        <div class="blog-card-content">
+                            <div class="blog-badge-group">
+                                <span class="badge-time"><i class="fa-regular fa-clock"></i> 5 min de leitura</span>
+                                <span class="badge-type"><i class="fa-solid fa-list-check"></i> Passo a Passo</span>
+                            </div>
+                            <h3>O método dos "5 minutos" para vencer a procrastinação</h3>
+                            <p>Uma estratégia prática para enganar a resistência do cérebro sem se cobrar perfeição.</p>
+                            <!-- TODO: criar /blog/post-procrastinacao -->
+                            <a routerLink="/blog" class="blog-link">Ler artigo <i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <div class="blog-card-image">
+                            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop" alt="Pessoa lendo um livro em um ambiente calmo" loading="lazy">
+                        </div>
+                        <div class="blog-card-content">
+                            <div class="blog-badge-group">
+                                <span class="badge-time"><i class="fa-regular fa-clock"></i> 4 min de leitura</span>
+                                <span class="badge-type"><i class="fa-solid fa-brain"></i> Neurociência</span>
+                            </div>
+                            <h3>Neurodivergência e Ansiedade: Como o cérebro atípico processa o medo</h3>
+                            <p>Uma explicação clara sobre por que a ansiedade é tão comum em pessoas neurodivergentes.</p>
+                            <!-- TODO: criar /blog/post-ansiedade -->
+                            <a routerLink="/blog" class="blog-link">Ler artigo <i class="fa-solid fa-chevron-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="section-action">
+                    <a routerLink="/recursos" class="btn-glow">Ver todos os artigos <i class="fa-solid fa-arrow-right"></i></a>
+                    <a routerLink="/blog" class="btn-glow">Ver Blog <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             DIREITOS
+             ============================================= -->
+        <section class="rights-quick-section">
+            <div class="container">
+                <div class="rights-box">
+                    <div class="rights-info">
+                        <span class="section-badge"><i class="fa-solid fa-scale-balanced"></i> Seus Direitos</span>
+                        <h2>Saber seus direitos não precisa ser complicado</h2>
+                        <p>Traduzimos as leis para você saber exatamente o que exigir na escola, no trabalho ou na saúde.</p>
+                        
+                        <div class="rights-chips">
+                            <a href="/direitos/direitos.html#trabalho" class="chip"><i class="fa-solid fa-briefcase"></i> Adaptações no Trabalho</a>
+                            <a href="/direitos/direitos.html#escola" class="chip"><i class="fa-solid fa-graduation-cap"></i> Direitos na Escola/Faculdade</a>
+                            <a href="/direitos/direitos.html#bpc" class="chip"><i class="fa-solid fa-hand-holding-dollar"></i> BPC / LOAS Simplificado</a>
+                            <a href="/direitos/direitos.html#laudo" class="chip"><i class="fa-solid fa-file-medical"></i> Como emitir o Laudo</a>
+                            <a href="/direitos/direitos.html#saude" class="chip"><i class="fa-solid fa-hospital"></i> Saúde e Terapias</a>
+                            <a href="/direitos/direitos.html#inclusao" class="chip"><i class="fa-solid fa-people-group"></i> Inclusão Social</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             RELEASES
+             ============================================= -->
+        <section class="releases" id="destaques-livros">
+            <div class="container">
+                <div class="releases-grid">
+                    <div class="book-card">
+                        <a routerLink="/blog" class="book-cover" aria-label="Ir para o Blog">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=900&fit=crop" alt="Caderno e café — textos do Blog" loading="lazy" />
+                        </a>
+                        <a routerLink="/blog" class="book-title">Blog</a>
+                        <span class="book-category">Textos e histórias da comunidade</span>
+                    </div>
+
+                    <div class="book-card">
+                        <a routerLink="/direitos" class="book-cover" aria-label="Ir para Direitos">
+                            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&h=900&fit=crop" alt="Balança da justiça — Direitos" loading="lazy" />
+                        </a>
+                        <a routerLink="/direitos" class="book-title">Direitos</a>
+                        <span class="book-category">Leis e benefícios traduzidos</span>
+                    </div>
+
+                    <div class="book-card">
+                        <a routerLink="/comunidade" class="book-cover" aria-label="Ir para a Comunidade">
+                            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=900&fit=crop" alt="Grupo de amigos — Comunidade" loading="lazy" />
+                        </a>
+                        <a routerLink="/comunidade" class="book-title">Comunidade</a>
+                        <span class="book-category">Conecte-se com a comunidade</span>
+                    </div>
+
+                    <div class="book-card">
+                        <a routerLink="/recursos" class="book-cover" aria-label="Ir para Recursos">
+                            <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=900&fit=crop" alt="Biblioteca — Recursos e guias" loading="lazy" />
+                        </a>
+                        <a routerLink="/recursos" class="book-title">Recursos</a>
+                        <span class="book-category">Guias e materiais de apoio</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             QUEM SOMOS
+             ============================================= -->
+        <section class="whoweare-section">
+            <div class="whoweare-container">
+                <div class="whoweare-content">
+                    <span class="section-badge"><i class="fa-solid fa-people-group"></i> Quem Somos</span>
+                    <h2>Um espaço feito por pessoas neurodivergentes para pessoas neurodivergentes.</h2>
+                    <p>O <strong>Amor NeuroDivergente</strong> nasceu da necessidade de um lugar onde a informação sobre neurodiversidade fosse acessível, as ferramentas de organização fossem visuais e a comunidade fosse acolhedora.</p>
+                    <p>Somos um ecossistema digital que une <strong>conhecimento, ferramentas práticas e conexão humana</strong> — tudo pensado para respeitar o ritmo, as necessidades sensoriais e a autonomia de cada pessoa.</p>
+                    <p>Nosso compromisso é com a <strong>tradução de direitos</strong>, a <strong>desconstrução do capacitismo</strong> e a <strong>celebração da diversidade neurológica</strong> como uma parte natural e valiosa da experiência humana.</p>
+                </div>
+                <div class="whoweare-image">
+                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&h=500&fit=crop" alt="Equipe Amor NeuroDivergente" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             CTA COMUNIDADE (removido — card fictício de marketing)
+             ============================================= -->
+
+        <!-- =============================================
+             FOOTER
+             ============================================= -->
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="footer-col"><h4>Navegue</h4><a routerLink="/">Início</a><a routerLink="/explorar">Explorar</a><a routerLink="/comunidade">Comunidade</a><a routerLink="/direitos">Direitos</a><a routerLink="/blog">Blog</a></div>
+                <div class="footer-col"><h4>Apoie</h4><a routerLink="/loja">Loja</a><a routerLink="/apoiar">Doações</a></div>
+                <div class="footer-col"><h4>Conta</h4><a routerLink="/login">Entrar</a><a routerLink="/configuracoes">Configurações</a></div>
+            </div>
+            <div class="footer-bottom"><a routerLink="/politica-privacidade">Política de Privacidade</a><a routerLink="/termos-de-uso">Termos de Uso</a><p>© 2026 Amor NeuroDivergente</p></div>
+        </footer>

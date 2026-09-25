@@ -1,0 +1,458 @@
+<div class="settings-wrapper">
+  <input
+    #searchInput
+    type="text"
+    class="search-bar-settings"
+    placeholder="Pesquisar nas configurações"
+    aria-label="Pesquisar nas configurações"
+    [(ngModel)]="busca"
+    (input)="abaAtiva = abasFiltradas()[0]?.id || abaAtiva"
+  />
+
+  <div class="page-header">
+    <h1>{{ tituloPagina }}</h1>
+    <p>Conta</p>
+  </div>
+
+  @if (carregando) {
+    <p class="settings-sync-note" role="status">Sincronizando...</p>
+  }
+  <div class="settings-container">
+    <div class="settings-nav-card">
+      <div class="settings-account-summary">
+        <img [src]="avatarUrl" alt="Foto do perfil" (error)="onAvatarErro()" />
+        <div>
+          <strong>{{ nome }}</strong>
+          <span>{{ email }}</span>
+        </div>
+      </div>
+      <a class="view-profile-btn" routerLink="/comunidade/perfil">ver perfil</a>
+
+      @for (aba of abasFiltradas(); track aba.id) {
+        <button
+          type="button"
+          class="tab-button"
+          [class.active]="abaAtiva === aba.id"
+          (click)="trocarAba(aba.id)"
+        >
+          <i [class]="aba.icone"></i> {{ aba.rotulo }}
+        </button>
+      }
+    </div>
+
+    <div class="settings-content-area">
+      @if (abaAtiva === 'minhaConta') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <div class="settings-section-heading">
+              <h3>Informações Pessoais</h3>
+              <button type="button" class="btn-outline-edit" (click)="irParaPerfil()">Editar perfil</button>
+            </div>
+            <div class="settings-field-grid">
+              <div class="settings-field"><label>Nome completo</label><p>{{ nome }}</p></div>
+              <div class="settings-field"><label>E-mail</label><p>{{ email }}</p></div>
+              <div class="settings-field">
+                <label for="cfgTelefone">Telefone <span class="settings-optional">(opcional)</span></label>
+                <input id="cfgTelefone" type="tel" class="form-control" [(ngModel)]="telefone" placeholder="Ex: +55 71 99999-9999" />
+                <small class="settings-hint">Não é obrigatório. Usamos só para contato sobre sua conta.</small>
+              </div>
+            </div>
+            @if (bannerUrl) {
+              <div class="settings-banner-preview">
+                <img [src]="bannerUrl" alt="Banner do perfil" />
+              </div>
+            }
+            <div class="settings-action-group" style="margin-top: 12px;">
+              <button type="button" class="btn-primary-purple" (click)="salvarPerfil()" [disabled]="salvando">
+                {{ salvando ? 'Salvando...' : 'Salvar alterações' }}
+              </button>
+              <button type="button" class="btn-secondary-light" style="margin-left:0;" (click)="abrirSeletorBanner()">Alterar banner</button>
+              <input #bannerInput type="file" accept="image/*" hidden (change)="onBannerSelecionado($event)" />
+            </div>
+          </div>
+
+          <div class="profile-reading-dashboard">
+            <section class="profile-reading-section">
+              <h3>Artigos Favoritos</h3>
+              <div class="profile-articles-carousel" aria-live="polite">
+                @if (favoritos.length === 0) {
+                  <p class="reading-preview-status">Nenhum conteúdo salvo ainda.</p>
+                } @else {
+                  @for (fav of favoritos.slice(0, 8); track $index) {
+                    <article class="profile-article-card">
+                      @if (fav.image) {
+                        <img class="profile-article-cover" [src]="fav.image" [alt]="fav.title || 'Conteúdo salvo'" loading="lazy" />
+                      } @else {
+                        <div class="profile-article-cover reading-preview-placeholder" aria-label="Sem capa cadastrada">Leitura</div>
+                      }
+                      <div class="profile-article-body">
+                        <h4>{{ fav.title || 'Conteúdo salvo' }}</h4>
+                        <p>{{ fav.author || 'Amor NeuroDivergente' }}</p>
+                      </div>
+                    </article>
+                  }
+                }
+              </div>
+            </section>
+            <section class="profile-reading-section">
+              <h3>Lendo Atualmente</h3>
+              <div class="profile-reading-card">
+                <div class="profile-reading-cover reading-preview-placeholder">Leitura</div>
+                <div class="profile-reading-details">
+                  <h4>{{ leituraAtual?.title || 'Você ainda não começou uma leitura' }}</h4>
+                  <p>{{ leituraAtual?.author || 'Escolha um artigo, blog ou guia para acompanhar seu progresso.' }}</p>
+                  <div class="reading-progress-track"><span [style.width.%]="progressoLeitura"></span></div>
+                  <div class="reading-progress-stats">
+                    <span>{{ leituraAtual?.chapter || 'Sem progresso salvo' }}</span>
+                    <strong>{{ progressoLeitura }}%</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-lock"></i> Senha de autenticação</div>
+            <button type="button" class="btn-secondary-light" style="margin-left:0;" (click)="abrirModalSenha()">Mudar senha</button>
+          </div>
+
+          @if (modalSenhaAberto) {
+            <div class="settings-content-modal" style="display:block;">
+              <div class="settings-container-center">
+                <div class="painel-mudar">
+                  <h1 class="modal-title"><i class="fas fa-lock"></i> Senha</h1>
+                  <button type="button" class="bnt-x" (click)="fecharModalSenha()" aria-label="Fechar">X</button>
+                </div>
+                <div class="senha-antiga">
+                  <p>Escolha uma senha forte</p>
+                  <div class="input-wrapper">
+                    <input
+                      [type]="verSenhaAtual ? 'text' : 'password'"
+                      class="senha-antiga-input"
+                      placeholder="Digite a senha atual"
+                      [(ngModel)]="senhaAtual"
+                    />
+                    <button type="button" (click)="verSenhaAtual = !verSenhaAtual" aria-label="Mostrar senha">Ver</button>
+                  </div>
+                </div>
+                <div class="senha-nova">
+                  <h2><i class="fas fa-shield-alt"></i> Senha Nova</h2>
+                  <div class="input-wrapper">
+                    <input
+                      [type]="verNovaSenha ? 'text' : 'password'"
+                      class="senha-nova-input"
+                      placeholder="Digite a nova senha"
+                      [(ngModel)]="novaSenha"
+                    />
+                    <button type="button" (click)="verNovaSenha = !verNovaSenha" aria-label="Mostrar senha">Ver</button>
+                  </div>
+                </div>
+                <button type="button" class="btn-salvar" (click)="trocarSenha()" [disabled]="trocandoSenha">
+                  <h2>{{ trocandoSenha ? 'Salvando...' : 'Salvar' }}</h2>
+                </button>
+              </div>
+            </div>
+          }
+
+          <div class="settings-content-card">
+            <div class="panel-title" style="color:#ef4444;"><i class="fa-solid fa-trash-alt"></i> Remoção da conta</div>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Desativar sua conta significa que você poderá recuperá-la quando quiser.</p>
+            <button type="button" class="btn-danger-red" (click)="desativarConta()">Desativar conta</button>
+            <button type="button" class="btn-danger-outline" (click)="excluirConta()">Excluir conta</button>
+          </div>
+
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-right-from-bracket"></i> Sessão</div>
+            <button type="button" class="btn-secondary-light" style="margin-left:0;" (click)="sair()">Sair da conta</button>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'perfil') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <div class="avatar-edit-container">
+              <div class="avatar-wrapper-relative">
+                <img [src]="avatarUrl" alt="Avatar Perfil" (error)="onAvatarErro()" />
+                <button type="button" class="camera-overlay-btn" (click)="abrirSeletorAvatar()" aria-label="Alterar foto">
+                  <i class="fa-solid fa-camera"></i>
+                </button>
+              </div>
+            </div>
+            <input #avatarInput type="file" accept="image/*" hidden (change)="onAvatarSelecionado($event)" />
+            <div class="form-group">
+              <label for="profileName">Nome</label>
+              <input id="profileName" type="text" class="form-control" [(ngModel)]="nome" />
+            </div>
+            <div class="form-group">
+              <label for="profileEmail">E-mail</label>
+              <input id="profileEmail" type="email" class="form-control" [value]="email" disabled />
+            </div>
+            <div class="form-group">
+              <label for="profileBio">Sobre mim</label>
+              <textarea id="profileBio" class="form-control" style="min-height:100px;" placeholder="Conte sobre você" [(ngModel)]="bio"></textarea>
+            </div>
+            <button type="button" class="btn-primary-purple" (click)="salvarPerfil()" [disabled]="salvando">
+              {{ salvando ? 'Salvando...' : 'Salvar alterações' }}
+            </button>
+            <button type="button" class="btn-secondary-light" (click)="removerAvatar()">Remover avatar</button>
+            @if (enviandoAvatar) {
+              <p class="settings-card-intro">Enviando imagem...</p>
+            }
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'idioma') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <button type="button" class="item-row-setting" style="width:100%; cursor:pointer; padding: 12px; border-radius: 8px;" (click)="aplicarIdioma('pt')">
+              <span style="font-weight: 600;">Português (Brasil)</span>
+              <span>{{ idioma === 'pt' ? 'Selecionado' : '' }}</span>
+            </button>
+            <button type="button" class="item-row-setting" style="width:100%; cursor:pointer; padding: 12px;" (click)="aplicarIdioma('en')">
+              <span>English</span>
+              <span>{{ idioma === 'en' ? 'Selecionado' : '' }}</span>
+            </button>
+            <button type="button" class="item-row-setting" style="width:100%; cursor:pointer; padding: 12px;" (click)="aplicarIdioma('es')">
+              <span>Español</span>
+              <span>{{ idioma === 'es' ? 'Selecionado' : '' }}</span>
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'privacidade') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <h3 style="margin-bottom:15px;">Privacidade e Segurança</h3>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Perfil público</h4>
+                <p>Permitir que outros vejam seu perfil</p>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" [(ngModel)]="perfilPublico" (change)="salvarPrivacidade()" />
+                <span class="slider-round"></span>
+              </label>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Mostrar atividade</h4>
+                <p>Exibir suas atividades na comunidade</p>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" [(ngModel)]="mostrarAtividade" (change)="salvarPrivacidade()" />
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'aparencia') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-palette"></i> Aparência</div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Modo escuro</h4>
+                <p>Reduz o brilho e adapta as cores da interface.</p>
+              </div>
+              <button type="button" class="a11y-option settings-action-button" (click)="alternarAcessibilidade('darkMode')">
+                <span>{{ statusA11y(darkMode) }}</span>
+              </button>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Movimento reduzido</h4>
+                <p>Limita transições e animações da interface.</p>
+              </div>
+              <button type="button" class="a11y-option settings-action-button" (click)="alternarAcessibilidade('reduceMotion')">
+                <span>{{ statusA11y(reduceMotion) }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'acessibilidade') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-universal-access"></i> Acessibilidade</div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Tamanho do texto</h4>
+                <p>Escolha o tamanho mais confortável para ler.</p>
+              </div>
+              <div class="settings-action-group">
+                <button type="button" class="a11y-option settings-action-button" (click)="ajustarTexto(-1)" aria-label="Diminuir texto">A-</button>
+                <button type="button" class="a11y-option settings-action-button" (click)="ajustarTexto(1)" aria-label="Aumentar texto">A+</button>
+              </div>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Fonte para dislexia</h4>
+                <p>Ativa uma tipografia mais confortável para leitura.</p>
+              </div>
+              <button type="button" class="a11y-option settings-action-button" (click)="alternarAcessibilidade('dyslexiaFont')">
+                <span>{{ statusA11y(dyslexiaFont) }}</span>
+              </button>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Destacar links</h4>
+                <p>Deixa os links mais fáceis de localizar na página.</p>
+              </div>
+              <button type="button" class="a11y-option settings-action-button" (click)="alternarAcessibilidade('highlightLinks')">
+                <span>{{ statusA11y(highlightLinks) }}</span>
+              </button>
+            </div>
+            <button type="button" class="a11y-reset settings-reset-button" (click)="resetarAcessibilidade()">
+              <i class="fa-solid fa-rotate-left"></i> Restaurar acessibilidade
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'notificacoes') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-bell"></i> Notificações</div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Novos eventos</h4>
+                <p>Receber avisos sobre encontros e atividades.</p>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" [(ngModel)]="notifEventos" (change)="salvarNotificacoes()" />
+                <span class="slider-round"></span>
+              </label>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Atividade da comunidade</h4>
+                <p>Receber atualizações sobre suas interações.</p>
+              </div>
+              <label class="switch-toggle">
+                <input type="checkbox" [(ngModel)]="notifComunidade" (change)="salvarNotificacoes()" />
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'acolheria') {
+        <div class="settings-pane active">
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-robot"></i> AcolherIA</div>
+            <div class="item-row-setting">
+              <div class="item-setting-info">
+                <h4>Acolhimento e informação</h4>
+                <p>A AcolherIA oferece informação e apoio inicial, mas não substitui profissionais de saúde.</p>
+              </div>
+              <a class="btn-secondary-light" routerLink="/">Abrir AcolherIA</a>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (abaAtiva === 'leitura') {
+        <div class="settings-pane active">
+          <div class="settings-content-card reading-preferences-card">
+            <div class="panel-title"><i class="fa-solid fa-book-open-reader"></i> Preferências de leitura</div>
+            <p class="settings-card-intro">Personalize como você consome artigos, blogs e guias.</p>
+            <div class="item-row-setting">
+              <div class="item-setting-info"><h4>Continuar de onde parei</h4><p>Retoma o último ponto salvo de cada conteúdo.</p></div>
+              <label class="switch-toggle"><input type="checkbox" [(ngModel)]="leitura.continueReading" (change)="salvarLeitura('continueReading')" /><span class="slider-round"></span></label>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info"><h4>Modo leitura</h4><p>Abre conteúdos com uma apresentação mais limpa.</p></div>
+              <label class="switch-toggle"><input type="checkbox" [(ngModel)]="leitura.readingMode" (change)="salvarLeitura('readingMode')" /><span class="slider-round"></span></label>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info"><h4>Salvar progresso automaticamente</h4><p>Registra seu avanço enquanto você lê.</p></div>
+              <label class="switch-toggle"><input type="checkbox" [(ngModel)]="leitura.saveProgress" (change)="salvarLeitura('saveProgress')" /><span class="slider-round"></span></label>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info"><h4>Mostrar autor e data</h4><p>Exibe contexto editorial nos cards de conteúdo.</p></div>
+              <label class="switch-toggle"><input type="checkbox" [(ngModel)]="leitura.metadata" (change)="salvarLeitura('metadata')" /><span class="slider-round"></span></label>
+            </div>
+            <div class="item-row-setting">
+              <div class="item-setting-info"><h4>Índice e progresso por seção</h4><p>Mostra navegação adicional em guias.</p></div>
+              <label class="switch-toggle"><input type="checkbox" [(ngModel)]="leitura.guideIndex" (change)="salvarLeitura('guideIndex')" /><span class="slider-round"></span></label>
+            </div>
+          </div>
+          <div class="settings-content-card">
+            <div class="panel-title"><i class="fa-solid fa-images"></i> Conteúdos recentes</div>
+            <p class="settings-card-intro">As capas abaixo vêm do conteúdo mais recente disponível.</p>
+            <div class="reading-preview-grid" aria-live="polite">
+              <article class="reading-preview-card">
+                <div class="reading-preview-body">
+                  <span class="reading-preview-type">Artigo</span>
+                  <h4>{{ previews.artigo }}</h4>
+                </div>
+              </article>
+              <article class="reading-preview-card">
+                <div class="reading-preview-body">
+                  <span class="reading-preview-type">Blog</span>
+                  <h4>{{ previews.blog }}</h4>
+                </div>
+              </article>
+              <article class="reading-preview-card">
+                <div class="reading-preview-body">
+                  <span class="reading-preview-type">Guia</span>
+                  <h4>{{ previews.guia }}</h4>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (toastMsg) {
+    <div
+      class="toast-message"
+      role="status"
+      [style.background]="toastErro ? '#ef4444' : '#10b981'"
+      style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);color:#fff;padding:12px 24px;border-radius:12px;font-size:14px;font-weight:500;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.15);"
+    >{{ toastMsg }}</div>
+  }
+
+  @if (confirmAberto) {
+    <div
+      class="modal-overlay active"
+      style="position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;"
+      (click)="resolverConfirm(false)"
+    >
+      <div
+        style="background:#fff;color:#111;border-radius:16px;padding:24px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);"
+        (click)="$event.stopPropagation()"
+      >
+        <h3 style="margin:0 0 12px;font-size:18px;">{{ confirmTitulo }}</h3>
+        <p style="margin:0 0 20px;font-size:14px;line-height:1.5;">{{ confirmMensagem }}</p>
+        @if (confirmExigePalavra) {
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Digite EXCLUIR para confirmar"
+            [(ngModel)]="confirmPalavra"
+            style="margin-bottom:16px;"
+          />
+        }
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" class="btn-secondary-light" style="margin:0;" (click)="resolverConfirm(false)">Cancelar</button>
+          <button
+            type="button"
+            [class]="confirmDanger ? 'btn-danger-red' : 'btn-primary-purple'"
+            style="margin:0;"
+            (click)="resolverConfirm(true)"
+          >{{ confirmTexto }}</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

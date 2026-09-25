@@ -1,0 +1,165 @@
+        <!-- =============================================
+        HERO DA DOAÇÃO — COM IMAGEM DE FUNDO FOFA
+        ============================================= -->
+        <section class="donation-hero">
+            <div class="donation-hero-content">
+                <span class="hero-badge"><i class="fa-solid fa-heart"></i> Transforme vidas</span>
+                <h1>Juntos, podemos fazer <span>a diferença</span></h1>
+                <p>Cada doação ajuda a levar acolhimento, terapias e esperança para crianças neurodivergentes em situação de vulnerabilidade.</p>
+            </div>
+        </section>
+
+        <!-- =============================================
+        IMPACTO — COM IMAGENS REAIS E FOFRAS
+        ============================================= -->
+        <section class="impact-section">
+            <h2 class="section-title">O que sua doação proporciona</h2>
+            <p class="section-subtitle">Veja como cada contribuição se transforma em amor e cuidado</p>
+            
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-image">
+                        <img src="https://images.unsplash.com/photo-1607453998774-d533f65dac99?w=500&h=350&fit=crop" 
+                             alt="Crianças brincando com brinquedos sensoriais" loading="lazy">
+                    </div>
+                    <div class="impact-text">
+                        <span class="impact-icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+                        <h3>Materiais Sensoriais</h3>
+                        <p>Kits com fidgets, brinquedos táteis e materiais pedagógicos para estimular o desenvolvimento de crianças autistas.</p>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-image">
+                        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=350&fit=crop" 
+                             alt="Terapeuta trabalhando com criança" loading="lazy">
+                    </div>
+                    <div class="impact-text">
+                        <span class="impact-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+                        <h3>Terapias Gratuitas</h3>
+                        <p>Sessões de terapia ocupacional, fonoaudiologia e psicologia para crianças de famílias de baixa renda.</p>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-image">
+                        <img src="https://images.unsplash.com/photo-1531844251246-9a1bfaae09fc?w=500&h=350&fit=crop" 
+                             alt="Criança com fone de ouvido em ambiente acolhedor" loading="lazy">
+                    </div>
+                    <div class="impact-text">
+                        <span class="impact-icon"><i class="fa-solid fa-headphones"></i></span>
+                        <h3>Kits de Acolhimento</h3>
+                        <p>Fones antirruído, óculos escuros e mantas sensoriais para crianças com hipersensibilidade sensorial.</p>
+                    </div>
+                </div>
+
+                <div class="impact-card">
+                    <div class="impact-image">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=500&h=350&fit=crop" 
+                             alt="Grupo de apoio com famílias" loading="lazy">
+                    </div>
+                    <div class="impact-text">
+                        <span class="impact-icon"><i class="fa-solid fa-people-group"></i></span>
+                        <h3>Apoio às Famílias</h3>
+                        <p>Grupos de acolhimento, orientação parental e materiais educativos para famílias recém-diagnosticadas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+        CARROSSEL 3D COVERFLOW (removido — depoimentos fictícios)
+        ============================================= -->
+
+        <!-- =============================================
+        INSTITUIÇÕES — estilo cards do Explorar
+        ============================================= -->
+        <section class="inst-section" id="instituicoes">
+            <header class="inst-section__head">
+                <span class="section-badge"><i class="fa-solid fa-hand-holding-heart"></i> Para onde doar</span>
+                <h2 class="section-title">Instituições que ajudam neurodivergentes</h2>
+                <p class="section-subtitle">Cada uma atua de um jeito — escolha a causa mais próxima de você e doe direto no site oficial.</p>
+            </header>
+
+            <div class="inst-grid">
+                @for (inst of instituicoes; track inst.nome) {
+                <article class="inst-card">
+                    <span class="inst-card__eyebrow">
+                        <i [class]="inst.icone"></i> {{ inst.tag }}
+                    </span>
+                    <h3 class="inst-card__title">{{ inst.nome }}</h3>
+                    <p class="inst-card__description">{{ inst.descricao }}</p>
+                    <div class="inst-card__footer">
+                        <span class="inst-card__domain">{{ inst.dominio }}</span>
+                        <a [href]="inst.url" target="_blank" rel="noopener" class="inst-card__cta">
+                            Visitar site <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+                }
+            </div>
+        </section>
+
+        <!-- =============================================
+        DICA DE SEGURANÇA — confira o CNPJ
+        ============================================= -->
+        <section class="cnpj-banner">
+            <div class="cnpj-banner__container">
+                <h3 class="cnpj-banner__title">
+                    <i class="fa-solid fa-shield-halved"></i> Antes de doar, confira o CNPJ
+                </h3>
+                <p class="cnpj-banner__text">
+                    Consulte o CNPJ da instituição no site da Receita Federal para confirmar que ela está ativa e regular.
+                    É uma boa prática para qualquer doação online. O Instituto Autismo e Vida mantém uma lista de ONGs
+                    por estado — vale conferir a mais próxima da sua região, já que várias atuam só localmente.
+                </p>
+                <div class="cnpj-banner__list">
+                    <a href="https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-building-columns"></i> Consultar CNPJ na Receita
+                    </a>
+                    <a href="https://www.autismoevida.org.br/" target="_blank" rel="noopener" class="source-pill">
+                        <i class="fa-solid fa-list-ul"></i> ONGs por estado
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+        FOOTER
+        ============================================= -->
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="footer-col">
+                    <h4>Navegue</h4>
+                    <a routerLink="/">Início</a>
+                    <a routerLink="/explorar">Explorar</a>
+                    <a routerLink="/comunidade">Comunidade</a>
+                    <a routerLink="/direitos">Direitos</a>
+                    <a href="/chat-Ia/chat-Ia.html">AcolherIA</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Sobre</h4>
+                    <a routerLink="/quem-somos">Quem somos</a>
+                    <a routerLink="/blog">Blog</a>
+                    <a routerLink="/contato">Contato</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Apoie</h4>
+                    <a routerLink="/loja">Loja</a>
+                    <a routerLink="/apoiar">Doações</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Redes</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <a routerLink="/politica-privacidade">Política de Privacidade</a>
+                <a routerLink="/termos-de-uso">Termos de Uso</a>
+                <p>© 2026 Amor NeuroDivergente</p>
+            </div>
+        </footer>

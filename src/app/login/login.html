@@ -1,0 +1,154 @@
+<div class="login-container">
+
+    <section class="form-section">
+        <a routerLink="/" class="btn-back-site" aria-label="Voltar para o site principal">
+            <i class="fa-solid fa-arrow-left"></i> Voltar para o site
+        </a>
+
+        <!-- CARD LOGIN -->
+        <div class="form-box" id="loginCard" [hidden]="modo !== 'login'">
+            <div class="form-header">
+                <h1>Faça seu login.</h1>
+                <p class="subtitle">Seja bem-vindo de volta ao seu espaço seguro.</p>
+            </div>
+
+            <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                <div class="input-group">
+                    <label for="loginEmail">
+                        <i class="fa-regular fa-envelope"></i> Email
+                    </label>
+                    <input type="email" id="loginEmail" formControlName="email" placeholder="seu@email.com" autocomplete="off" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="loginPassword">
+                        <i class="fa-solid fa-lock"></i> Senha
+                    </label>
+                    <div class="password-wrapper">
+                        <input [type]="mostrarSenhaLogin ? 'text' : 'password'" id="loginPassword" formControlName="senha" placeholder="Sua senha" required>
+                        <i class="fa-regular toggle-password" [class.fa-eye]="mostrarSenhaLogin" [class.fa-eye-slash]="!mostrarSenhaLogin" (click)="mostrarSenhaLogin = !mostrarSenhaLogin"></i>
+                    </div>
+                </div>
+
+                <div class="forgot-password">
+                    <a routerLink="/redefinir-senha" id="btnForgotPassword">Esqueci minha senha</a>
+                </div>
+
+                <button type="submit" class="btn-login" [disabled]="carregando">
+                    {{ carregando ? 'Entrando...' : 'Entrar' }}
+                </button>
+            </form>
+
+            <div class="register-link">
+                <a href="#" class="toggle-link" (click)="alternarModo($event, 'cadastro')">Ainda não tem uma conta? <span>Cadastre-se</span></a>
+            </div>
+
+            <!-- TODO: fluxo administrativo removido nesta etapa -->
+            <div class="admin-access">
+                <a href="#" class="toggle-link admin-link" (click)="$event.preventDefault()">
+                    <i class="fa-solid fa-shield-halved"></i> Acesso Administrativo
+                </a>
+            </div>
+        </div>
+
+        <!-- CARD CADASTRO -->
+        <div class="form-box" id="registerCard" [hidden]="modo !== 'cadastro'">
+            <div class="form-header">
+                <h1>Criar conta.</h1>
+                <p class="subtitle">Junte-se à nossa comunidade acolhedora.</p>
+            </div>
+
+            <form id="registerForm" [formGroup]="cadastroForm" (ngSubmit)="onCadastro()">
+                <div class="input-row">
+                    <div class="input-group half">
+                        <label for="regFirstName"><i class="fa-regular fa-user"></i> Nome</label>
+                        <input type="text" id="regFirstName" formControlName="nome" placeholder="Seu nome" required>
+                    </div>
+                    <div class="input-group half">
+                        <label for="regLastName"><i class="fa-regular fa-user"></i> Sobrenome</label>
+                        <input type="text" id="regLastName" formControlName="sobrenome" placeholder="Sobrenome" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regEmail"><i class="fa-regular fa-envelope"></i> Email</label>
+                    <input type="email" id="regEmail" formControlName="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="regPassword"><i class="fa-solid fa-lock"></i> Senha</label>
+                    <div class="password-wrapper">
+                        <input [type]="mostrarSenhaCad ? 'text' : 'password'" id="regPassword" formControlName="senha" placeholder="Crie uma senha" required>
+                        <i class="fa-regular toggle-password" [class.fa-eye]="mostrarSenhaCad" [class.fa-eye-slash]="!mostrarSenhaCad" (click)="mostrarSenhaCad = !mostrarSenhaCad"></i>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="regConfirmPassword"><i class="fa-solid fa-lock"></i> Confirmar</label>
+                    <div class="password-wrapper">
+                        <input [type]="mostrarSenhaConf ? 'text' : 'password'" id="regConfirmPassword" formControlName="confirmarSenha" placeholder="Confirme sua senha" required>
+                        <i class="fa-regular toggle-password" [class.fa-eye]="mostrarSenhaConf" [class.fa-eye-slash]="!mostrarSenhaConf" (click)="mostrarSenhaConf = !mostrarSenhaConf"></i>
+                    </div>
+                </div>
+
+                <label class="lgpd-check">
+                    <input type="checkbox" [checked]="aceitouTermos" (change)="aceitouTermos = !aceitouTermos">
+                    <span>Li e concordo com a <a routerLink="/politica-privacidade">Política de Privacidade</a> e os <a routerLink="/termos-de-uso">Termos de Uso</a></span>
+                </label>
+
+                <button type="submit" class="btn-login" [disabled]="carregando">
+                    {{ carregando ? 'Criando...' : 'Criar conta' }}
+                </button>
+            </form>
+
+            <div class="register-link">
+                <a href="#" class="toggle-link" (click)="alternarModo($event, 'login')">← Voltar ao login</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="illustration-section">
+        <div class="illustration-overlay">
+            <img src="img/logo-LHN9gCw1.png" alt="Logo Amor NeuroDivergente" class="side-giant-logo">
+
+            <div class="illustration-content">
+                <h2>Amor NeuroDivergente</h2>
+                <p>Um espaço seguro, previsível e acolhedor para mentes singulares.</p>
+                <div class="illustration-features">
+                    <span><i class="fa-solid fa-heart"></i> Acolhimento</span>
+                    <span><i class="fa-solid fa-brain"></i> Neurodiversidade</span>
+                    <span><i class="fa-solid fa-people-group"></i> Comunidade</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<!-- TODO: modal "Esqueci senha" inerte por enquanto (implementar com resetPasswordForEmail) -->
+<div id="forgotModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <button type="button" class="modal-close" id="closeForgotModal" aria-label="Fechar">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="form-header">
+            <h1>Recuperar senha.</h1>
+            <p class="subtitle">Enviaremos um link para redefinir sua senha.</p>
+        </div>
+
+        <form id="forgotForm" (ngSubmit)="$event.preventDefault()">
+            <div class="input-group">
+                <label for="forgotEmail">
+                    <i class="fa-regular fa-envelope"></i> Email cadastrado
+                </label>
+                <input type="email" id="forgotEmail" placeholder="seu@email.com" required>
+            </div>
+
+            <button type="submit" class="btn-login">Enviar link</button>
+        </form>
+
+        <div class="register-link">
+            <a href="#" id="backToLoginFromForgot" (click)="$event.preventDefault()">← Voltar ao login</a>
+        </div>
+    </div>
+</div>

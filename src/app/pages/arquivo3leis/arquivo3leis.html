@@ -1,0 +1,207 @@
+    <div class="document-container">
+        
+        <!-- BARRA DE AÇÕES (Não aparece na impressão) -->
+        <div class="action-bar no-print">
+            
+                <a routerLink="/direitos" class="btn btn-voltar">
+                <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+            <button (click)="baixarDocumento()" class="btn btn-baixar">
+                <i class="fas fa-download"></i> Baixar Documento
+            </button>
+        </div>
+
+        <div class="content-inner">
+            <!-- CAPA -->
+            <div class="capa">
+                <i class="fas fa-balance-scale icone-principal"></i>
+                <h1>NOSSAS 3 LEIS APLICADAS</h1>
+                <div class="subtitulo">Estrutura Jurídica do Projeto • Amor Neuro Divergente</div>
+                <div class="grupo">
+                    <strong>GRUPO 06</strong> | Jonatas · João Miguel · Guilherme · Victor · David Araujo · David Costa
+                </div>
+            </div>
+
+            <!-- VISÃO GERAL -->
+            <div class="visao-geral">
+                O projeto <strong>Amor Neuro Divergente</strong> organiza sua seção jurídica em <strong>três eixos fundamentais</strong> que guiam o usuário do desconhecimento à ação prática, garantindo autonomia e clareza no exercício da cidadania.
+            </div>
+
+            <!-- 3 PILARES -->
+            <div class="pilares-container">
+                <div class="pilar-card">
+                    <i class="fas fa-book-reader icone-pilar"></i>
+                    <h2>Quais são meus direitos?</h2>
+                    <p><strong>Objetivo:</strong> Apresentar garantias legais com tradução para linguagem simples, exemplos do cotidiano e esclarecimento de limites.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check"></i> Leis sem juridiquês</li>
+                        <li><i class="fas fa-check"></i> Direitos por categoria (educação, saúde, trabalho)</li>
+                        <li><i class="fas fa-check"></i> Checklist "Você tem direito?"</li>
+                    </ul>
+                </div>
+                <div class="pilar-card">
+                    <i class="fas fa-file-signature icone-pilar"></i>
+                    <h2>Como eu uso esses direitos?</h2>
+                    <p><strong>Transformamos informação em ação.</strong> Oferecemos modelos prontos, passo a passo e orientação para solicitações formais.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check"></i> Requerimentos prontos</li>
+                        <li><i class="fas fa-check"></i> Documentos necessários</li>
+                        <li><i class="fas fa-check"></i> Como agir em caso de negativa</li>
+                    </ul>
+                </div>
+                <div class="pilar-card">
+                    <i class="fas fa-landmark icone-pilar"></i>
+                    <h2>Onde encontro ajuda formal?</h2>
+                    <p><strong>Encaminhamento institucional.</strong> Quando o direito é violado, o usuário sabe exatamente a qual órgão público recorrer.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check"></i> Defensoria Pública & Ministério Público</li>
+                        <li><i class="fas fa-check"></i> Secretarias e CRAS</li>
+                        <li><i class="fas fa-check"></i> Conselho Tutelar</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3 LEIS BASE -->
+            <div class="secao-leis">
+                <h2 class="titulo-secao"><i class="fas fa-gavel"></i> As 3 Leis Base do Projeto</h2>
+                <div class="grid-leis">
+                    <div class="lei-card">
+                        <div class="lei-header">
+                            <h3>Lei 13.146/2015</h3>
+                            <small>Lei Brasileira da Inclusão (LBI)</small>
+                        </div>
+                        <div class="lei-content">
+                            <p><strong>O que garante:</strong> Pessoas com deficiência (incluindo neurodivergências com impacto funcional) têm direito à educação, trabalho, saúde, atendimento prioritário e adaptações razoáveis.</p>
+                            <p><strong>Exemplo prático:</strong> A escola não pode negar tempo adicional em provas, material adaptado ou acompanhante especializado.</p>
+                            <span class="badge">Direito Universal</span>
+                        </div>
+                    </div>
+                    <div class="lei-card">
+                        <div class="lei-header">
+                            <h3>Lei 12.764/2012</h3>
+                            <small>Lei Berenice Piana (Autismo)</small>
+                        </div>
+                        <div class="lei-content">
+                            <p><strong>Reconhecimento legal:</strong> A Pessoa com Transtorno do Espectro Autista (TEA) é considerada pessoa com deficiência para todos os efeitos legais.</p>
+                            <p><strong>Garantias principais:</strong> Matrícula obrigatória em escola regular, acompanhante especializado e acesso prioritário ao SUS.</p>
+                            <span class="badge">Direitos do Autismo</span>
+                        </div>
+                    </div>
+                    <div class="lei-card">
+                        <div class="lei-header">
+                            <h3>Lei 13.977/2020</h3>
+                            <small>CIPTEA - Carteira de Identificação</small>
+                        </div>
+                        <div class="lei-content">
+                            <p><strong>O que é:</strong> Documento oficial gratuito, válido em todo território nacional, que comprova a condição de pessoa com autismo e facilita o atendimento prioritário.</p>
+                            <p><strong>Importante:</strong> Emissão em até 30 dias, sem custos. Evita constrangimentos e garante acesso ágil a direitos básicos.</p>
+                            <span class="badge">Documento Gratuito</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MÉTODO PRÁTICO (COMO USAR) -->
+            <div class="fluxo-metodo">
+                <h2 class="titulo-secao" style="margin-top: 0; border: none; padding: 0;"><i class="fas fa-project-diagram"></i> Passo a Passo Prático</h2>
+                <div class="passos-fluxo">
+                    <div class="passo">
+                        <div class="numero-passo">1</div>
+                        <strong>Laudo Médico</strong><br>
+                        <span style="font-size: 0.9em; color: var(--text-light);">Laudo com CID e assinatura de especialista atualizado.</span>
+                    </div>
+                    <div class="passo">
+                        <div class="numero-passo">2</div>
+                        <strong>Solicitação Formal</strong><br>
+                        <span style="font-size: 0.9em; color: var(--text-light);">Use nosso modelo de requerimento para instituições.</span>
+                    </div>
+                    <div class="passo">
+                        <div class="numero-passo">3</div>
+                        <strong>Exija Protocolo</strong><br>
+                        <span style="font-size: 0.9em; color: var(--text-light);">Comprovante com data, nome e assinatura do recebedor.</span>
+                    </div>
+                    <div class="passo">
+                        <div class="numero-passo">4</div>
+                        <strong>Caso Neguem</strong><br>
+                        <span style="font-size: 0.9em; color: var(--text-light);">Acione órgãos competentes (Defensoria, MP).</span>
+                    </div>
+                </div>
+                <div class="destaque-modelo">
+                    <i class="fas fa-file-download" style="color: var(--secondary-color); font-size: 1.2rem; margin-bottom: 10px;"></i>
+                    <p><strong>Modelo de requerimento escolar disponível na plataforma.</strong><br> 
+                    Solicite formalmente tempo extra em provas, ledor, sala adaptada e acompanhante especializado.</p>
+                </div>
+            </div>
+
+            <!-- ONDE ENCONTRAR AJUDA FORMAL -->
+            <div>
+                <h2 class="titulo-secao"><i class="fas fa-hands-helping"></i> Onde encontrar ajuda formal?</h2>
+                <div class="tabela-wrapper">
+                    <table class="tabela-ajuda">
+                        <thead>
+                            <tr>
+                                <th>Órgão Responsável</th>
+                                <th>Escopo de Atuação</th>
+                                <th>Custo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Defensoria Pública</strong></td>
+                                <td>Advocacia para pessoas sem condições financeiras. Casos de recusa de adaptação, planos de saúde e discriminação.</td>
+                                <td><span class="gratuito-badge">GRATUITO</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ministério Público</strong></td>
+                                <td>Fiscalização da lei. Violações coletivas (ex: município sem atendimento, escolas que recusam matrícula sistematicamente).</td>
+                                <td><span class="gratuito-badge">GRATUITO</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sec. de Educação</strong></td>
+                                <td>Resolução de conflitos em escolas: falta de adaptações, acompanhante ou material acessível.</td>
+                                <td><span class="gratuito-badge">GRATUITO</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Sec. de Saúde / SUS</strong></td>
+                                <td>Garantia de acesso a diagnósticos, tratamentos, terapias e medicamentos.</td>
+                                <td><span class="gratuito-badge">GRATUITO</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>CRAS / CREAS</strong></td>
+                                <td>Apoio à família em vulnerabilidade social, orientação sobre benefícios e direitos assistenciais (BPC/LOAS).</td>
+                                <td><span class="gratuito-badge">GRATUITO</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Conselho Tutelar</strong></td>
+                                <td>Proteção de crianças e adolescentes em situação de violação de direitos em qualquer esfera.</td>
+                                <td><span class="gratuito-badge">GRATUITO</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- JUSTIFICATIVA ESTRUTURA -->
+            <div class="caixa-justificativa">
+                <h3><i class="fas fa-brain" style="margin-right: 10px;"></i> Por que esta estrutura é eficaz?</h3>
+                <p><strong>1. Compreender o direito:</strong> Reduz a ansiedade e a desinformação. Pessoas neurodivergentes se beneficiam da previsibilidade e clareza das regras.</p>
+                <p><strong>2. Saber como aplicar:</strong> Transforma a teoria em prática. O uso de modelos prontos respeita possíveis desafios relacionados às funções executivas e planejamento.</p>
+                <p><strong>3. Saber a quem recorrer:</strong> Assegura proteção institucional efetiva, garantindo que o usuário saiba agir frente a negativas.</p>
+                <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+                <p style="margin-bottom: 0;"><strong>Conclusão:</strong> O projeto não atua apenas como canal informativo, mas como ferramenta de empoderamento cívico para a pessoa neurodivergente.</p>
+            </div>
+
+            <!-- AVISO LEGAL -->
+            <div class="aviso-legal">
+                <strong><i class="fas fa-exclamation-triangle"></i> Aviso Importante:</strong><br>
+                O material disponibilizado pelo projeto <em>Amor Neuro Divergente</em> possui caráter estritamente educativo e orientativo, não substituindo o aconselhamento jurídico especializado. Para litígios e casos complexos, recomenda-se a consulta a um advogado ou o acionamento da Defensoria Pública.
+            </div>
+
+            <!-- RODAPÉ -->
+            <div class="rodape">
+                <p><strong>Amor Neuro Divergente</strong> – Projeto de TCC | Grupo 06</p>
+                <p style="margin: 5px 0;">Jonatas · João Miguel · Guilherme · Victor · David Araujo · David Costa</p>
+                <p><em>Plataforma digital de apoio, inclusão e direitos para pessoas neurodivergentes.</em></p>
+            </div>
+        </div>
+    </div>

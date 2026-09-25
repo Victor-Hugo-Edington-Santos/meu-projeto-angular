@@ -1,0 +1,162 @@
+<aside class="dev-tools-sidebar" [class.collapsed]="sidebarRecolhida">
+    <div class="sidebar-header">
+        <div class="sidebar-title"><i class="fa-solid fa-gear"></i> Dev Tools</div>
+        <button class="close-sidebar-btn" (click)="fecharSidebar()" aria-label="Fechar painel"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="sidebar-scroll-content">
+        <span class="section-label">Ações Rápidas</span>
+        <div class="quick-actions-grid">
+            <div class="action-card">
+                <span class="icon"><i class="fa-solid fa-bug"></i></span>
+                <span>Debugar</span>
+            </div>
+            <div class="action-card">
+                <span class="icon"><i class="fa-solid fa-bolt"></i></span>
+                <span>Otimizar</span>
+            </div>
+            <div class="action-card">
+                <span class="icon"><i class="fa-solid fa-wrench"></i></span>
+                <span>Corrigir AcolherIA</span>
+            </div>
+            <div class="action-card">
+                <span class="icon"><i class="fa-solid fa-code"></i></span>
+                <span>Gerar Componente</span>
+            </div>
+        </div>
+
+        <!-- TODO: Painel SAC ainda não migrado (ver item 4) -->
+        <span class="btn-sac-panel"><i class="fa-solid fa-headset"></i> Painel SAC</span>
+
+        <div class="management-row">
+            <!-- TODO: páginas de gestão ainda não migradas (ver item 4) -->
+            <span class="btn-manage-outline grupos">
+                <span class="btn-icon"><i class="fa-solid fa-users"></i></span>
+                <span class="btn-label">Grupos</span>
+            </span>
+            <span class="btn-manage-outline eventos">
+                <span class="btn-icon"><i class="fa-regular fa-calendar"></i></span>
+                <span class="btn-label">Eventos</span>
+            </span>
+            <span class="btn-manage-outline moderacao">
+                <span class="btn-icon"><i class="fa-solid fa-flag"></i></span>
+                <span class="btn-label">Moderação</span>
+            </span>
+        </div>
+
+        <span class="btn-store-panel"><i class="fa-solid fa-store"></i> Gerenciar Loja</span>
+
+        <nav class="nav-list-group">
+            <a routerLink="/configuracoes" class="nav-list-item">
+                <div class="nav-list-item-left"><i class="fa-solid fa-gear"></i> Configurações</div>
+                <span class="chevron"><i class="fa-solid fa-chevron-right"></i></span>
+            </a>
+            <div class="nav-list-item">
+                <div class="nav-list-item-left"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</div>
+                <span class="chevron"><i class="fa-solid fa-chevron-right"></i></span>
+            </div>
+            <div class="nav-list-item">
+                <div class="nav-list-item-left"><i class="fa-solid fa-folder-open"></i> Logs / Status</div>
+                <span class="chevron"><i class="fa-solid fa-chevron-right"></i></span>
+            </div>
+            <div class="nav-list-item">
+                <div class="nav-list-item-left"><i class="fa-solid fa-book"></i> Conhecimento</div>
+                <span class="chevron"><i class="fa-solid fa-chevron-right"></i></span>
+            </div>
+            <div class="nav-list-item">
+                <div class="nav-list-item-left"><i class="fa-solid fa-laptop-code"></i> Editor de Código</div>
+                <span class="chevron"><i class="fa-solid fa-chevron-right"></i></span>
+            </div>
+        </nav>
+    </div>
+</aside>
+
+<div class="main-wrapper" [class.expanded]="sidebarRecolhida">
+    <header class="navbar">
+        <div class="nav-left">
+            <button class="menu-toggle-btn" (click)="alternarSidebar()" aria-label="Abrir navegação"><i class="fa-solid fa-bars"></i></button>
+            <a routerLink="/" class="brand-link">
+                <img src="img/logo-LHN9gCw1.png" alt="Amor NeuroDivergente" class="brand-logo-img">
+                <span class="brand-text">Amor NeuroDivergente</span>
+            </a>
+        </div>
+        <div class="nav-right-actions">
+            <button class="search-btn" aria-label="Pesquisar" (click)="usarSugestao('Quais arquivos compõem o site?')"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <img src="img/foto-padrão.jpg" alt="Avatar" class="user-avatar">
+        </div>
+    </header>
+
+    <div class="assistant-status-bar">
+        <div class="status-left">
+            <span><i class="fa-solid fa-bolt"></i> Dev Assistant</span>
+        </div>
+        <div class="status-right">
+            <span class="status-indicator-dot"></span> Online
+        </div>
+    </div>
+
+    <main class="chat-container">
+        <section class="assistant-header-hero">
+            <h1><i class="fa-solid fa-screwdriver-wrench"></i> Assistente Dev</h1>
+            <p>Sua IA especialista no código do Amor NeuroDivergente</p>
+        </section>
+
+        <div class="input-box-wrapper">
+            <textarea [(ngModel)]="textoAssistente" #areaTexto placeholder="Peça uma análise, correção ou melhoria..."></textarea>
+            <div class="input-box-footer">
+                <div class="assistant-tag-label">
+                    <span><i class="fa-solid fa-bolt"></i></span> Dev Assistant • Especialista no projeto
+                </div>
+                <button class="send-message-btn" (click)="enviarMensagem()" aria-label="Enviar"><i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <div class="suggestions-chips-container">
+            @for (s of sugestoes; track s) {
+            <button class="suggestion-chip" [class.active]="sugestaoAtiva === s" (click)="usarSugestao(s)">{{ s }}</button>
+            }
+        </div>
+    </main>
+
+    <footer class="footer-main">
+        <div class="footer-inner-layout">
+            <div class="footer-links-row">
+                <div class="footer-column-nav">
+                    <a routerLink="/recursos">Dúvidas frequentes</a>
+                    <a routerLink="/recursos">Quem Somos</a>
+                    <a routerLink="/recursos">Recursos</a>
+                    <a routerLink="/direitos">Direitos</a>
+                    <a routerLink="/explorar">Fale conosco (SAC)</a>
+                </div>
+            </div>
+            <div class="footer-copyright-bar">
+                Amor Neuro Divergente • Dev Assistant com IA <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<button class="accessibility-btn" (click)="alternarA11y($event)" aria-label="Abrir menu de acessibilidade">
+    <i class="fa-solid fa-person"></i>
+</button>
+
+@if (a11yAberto) {
+<div class="accessibility-menu active">
+    <div class="accessibility-header">
+        <h3>Acessibilidade</h3>
+        <button class="close-accessibility" (click)="fecharA11y()" aria-label="Fechar painel">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div class="accessibility-grid">
+        <button class="access-btn" [class.active]="a11yAtivo('darkMode')" (click)="alternarA11yOpcao('darkMode')"><i class="fa-regular fa-moon"></i><span>Escurecer</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('highContrast')" (click)="alternarA11yOpcao('highContrast')"><i class="fa-solid fa-circle-half-stroke"></i><span>Alto<br>Contraste</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('large')" (click)="alternarA11yOpcao('large')"><i class="fa-solid fa-text-height"></i><span>Texto<br>Maior</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('small')" (click)="alternarA11yOpcao('small')"><i class="fa-solid fa-compress"></i><span>Texto<br>Menor</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('spacing')" (click)="alternarA11yOpcao('spacing')"><i class="fa-solid fa-arrows-left-right"></i><span>Espaçamento</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('highlightLinks')" (click)="alternarA11yOpcao('highlightLinks')"><i class="fa-solid fa-link"></i><span>Links</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('saturation')" (click)="alternarA11yOpcao('saturation')"><i class="fa-solid fa-droplet"></i><span>Saturação</span></button>
+        <button class="access-btn" [class.active]="a11yAtivo('dyslexia')" (click)="alternarA11yOpcao('dyslexia')"><i class="fa-regular fa-eye"></i><span>Fonte<br>Dislexia</span></button>
+        <button class="access-btn" (click)="alternarA11yOpcao('reset')"><i class="fa-solid fa-rotate-left"></i><span>Reset</span></button>
+    </div>
+</div>
+}

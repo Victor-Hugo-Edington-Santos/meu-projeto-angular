@@ -1,0 +1,876 @@
+    <header class="header-glass" id="headerGlass">
+        <a routerLink="/" class="logo">
+            <img src="img/logo-LHN9gCw1.png" alt="Amor NeuroDivergente" class="logo-img">
+            <span class="logo-text">Amor NeuroDivergente</span>
+        </a>
+
+        <a routerLink="/" class="btn-voltar-site">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Voltar ao site</span>
+        </a>
+
+        <button class="header-profile-btn" id="headerProfileBtn" aria-label="Perfil" routerLink="/comunidade/perfil">
+            <img src="img/foto-padrão.jpg" alt="Perfil" class="header-avatar" id="headerAvatar">
+        </button>
+    </header>
+
+    <!-- ============================================
+         NAV SECUNDÁRIA — Fórum / Grupos / Eventos / Conversa
+         Background atrás, passando logo abaixo do header
+         ============================================ -->
+    <nav class="community-subnav" id="communitySubnav" role="tablist">
+        <div class="community-subnav-inner">
+            <button class="subnav-tab" [class.active]="aba === 'forum'" (click)="trocarAba('forum')" role="tab" [attr.aria-selected]="aba === 'forum'">
+                <i class="fa-regular fa-message"></i>
+                <span>Fórum</span>
+            </button>
+            <button class="subnav-tab" [class.active]="aba === 'grupos'" (click)="trocarAba('grupos')" role="tab" [attr.aria-selected]="aba === 'grupos'">
+                <i class="fa-solid fa-users"></i>
+                <span>Grupos</span>
+            </button>
+            <button class="subnav-tab" [class.active]="aba === 'eventos'" (click)="trocarAba('eventos')" role="tab" [attr.aria-selected]="aba === 'eventos'">
+                <i class="fa-regular fa-calendar"></i>
+                <span>Eventos</span>
+            </button>
+            <button class="subnav-tab" [class.active]="aba === 'conversa'" (click)="trocarAba('conversa')" role="tab" [attr.aria-selected]="aba === 'conversa'">
+                <i class="fa-regular fa-comment-dots"></i>
+                <span>Conversa</span>
+                <span class="subnav-dot">●</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         CONTEÚDO PRINCIPAL — Fórum é o central
+         ============================================ -->
+    <main class="community-main" id="mainContent">
+
+        <!-- Tela: FÓRUM -->
+        <section class="community-screen" [class.active]="aba === 'forum'" [hidden]="aba !== 'forum'" id="screen-forum" role="tabpanel">
+            <div class="screen-header">
+                <h2><i class="fa-regular fa-message"></i> Fórum</h2>
+                <div class="screen-header-actions">
+                    <button class="btn-notif" id="notifBellBtn" title="Notificações" (click)="alternarPainelNotif()">
+                        <i class="fa-regular fa-bell"></i>
+                        @if (notificacoesNaoLidas > 0) {
+                        <span class="friend-request-count">{{ notificacoesNaoLidas }}</span>
+                        }
+                    </button>
+                    <button class="btn-create-post" id="openPostModalBtn" (click)="abrirModalPost()">
+                        <i class="fa-regular fa-pen-to-square"></i> Novo Post
+                    </button>
+                </div>
+            </div>
+            @if (mostrarPainelNotif) {
+            <div class="notif-panel" id="notifPanel">
+                <div class="notif-panel-header">
+                    <strong>Notificações</strong>
+                    <button class="btn-request-action" (click)="marcarTodasLidas()">Marcar todas como lidas</button>
+                </div>
+                @for (n of notificacoes; track n.id) {
+                <div class="notif-item" [class.lida]="n.lida">
+                    <i class="fa-regular {{ n.icone }}"></i>
+                    <div>
+                        <p>{{ n.texto }}</p>
+                        <small>{{ n.tempo }}</small>
+                    </div>
+                </div>
+                }
+                @if (notificacoes.length === 0) {
+                <p class="profile-empty">Nenhuma notificação ainda.</p>
+                }
+            </div>
+            }
+
+            <!-- Caixa de postagem rápida (original) -->
+            <div class="quick-post">
+                <img [src]="avatarUsuario" (error)="corrigirAvatar($event)" alt="Seu avatar" class="quick-post-avatar" id="quickPostAvatar">
+                <input type="text" id="quickPostInput" #postRapido placeholder="O que você está pensando? Compartilhe com a comunidade..." (keydown.enter)="postarRapido()">
+                <button class="btn-quick-post" id="quickPostBtn" (click)="postarRapido()">Postar</button>
+            </div>
+
+            <!-- Banner de regras (espelha addRulesBanner do original) -->
+            <div id="rulesBanner" class="rules-banner">
+                <div class="rules-banner-info">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div>
+                        <span>Regras da Comunidade</span>
+                        <p>Ajude a manter um ambiente acolhedor</p>
+                    </div>
+                </div>
+                <button (click)="mostrarModalRegras = true"><i class="fa-regular fa-eye"></i> Ver regras</button>
+            </div>
+
+            <!-- Feed de posts (original: post-card estilo X) -->
+            <div class="posts-feed" id="postsFeed">
+                <div class="forum-filtros" role="group" aria-label="Filtrar posts">
+                    <button class="pill-filtro" [class.ativa]="filtroForum === 'recentes'" (click)="filtroForum = 'recentes'">Mais recentes</button>
+                    <button class="pill-filtro" [class.ativa]="filtroForum === 'curtidos'" (click)="filtroForum = 'curtidos'">Mais curtidos</button>
+                    <button class="pill-filtro" [class.ativa]="filtroForum === 'meus'" (click)="filtroForum = 'meus'">Meus posts</button>
+                    <select class="pill-filtro" [value]="filtroCategoriaForum" (change)="filtroCategoriaForum = $any($event.target).value" aria-label="Filtrar por categoria">
+                        <option value="todas">Todas as categorias</option>
+                        @for (c of categoriasForum; track c.id) {
+                        <option [value]="c.id">{{ c.rotulo }}</option>
+                        }
+                    </select>
+                </div>
+                @for (post of postsFiltrados; track post.id; let ultimo = $last) {
+                @if (postVisivelMod(post)) {
+                <div class="post-card" [attr.data-post-id]="post.id">
+                    <div class="post-header">
+                        <div class="post-author-avatar-wrapper">
+                            <img [src]="post.avatar" (error)="ocultarAvatarPost($event, post.id)" class="post-author-avatar" [alt]="post.autor">
+                            <div class="post-author-fallback" [style.display]="avatarQuebrado(post.id) ? 'flex' : 'none'">{{ post.autor.charAt(0).toUpperCase() }}</div>
+                        </div>
+                        <div class="post-body">
+                            <div class="post-author-info">
+                                <span class="post-author-name" (mouseenter)="mostrarPerfil(post, $event)" (mouseleave)="esconderPerfil()">{{ post.autor }}</span>
+                                <span class="post-author-handle">@{{ post.autor.toLowerCase().replaceAll(' ', '') }}</span>
+                                <span class="post-date">{{ post.tempo }}</span>
+                                @if (post.categoria && post.categoria !== 'conversa') {
+                                <span class="post-category-badge">{{ post.categoria }}</span>
+                                }
+                                <button class="post-menu-btn" aria-label="Opções" title="Mais opções" (click)="alternarMenuMod(post.id)">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </button>
+                                @if (menuModId === post.id) {
+                                <div class="post-menu">
+                                    <button (click)="denunciarPost(post)">Denunciar</button>
+                                    <button (click)="ocultarPost(post)">Ocultar</button>
+                                    <button (click)="citarPost(post)">Citar</button>
+                                    <button (click)="bloquearUsuario(post)">Bloquear usuário</button>
+                                    @if (ehMeuPost(post)) {
+                                    <button (click)="editarPost(post)">Editar</button>
+                                    <button (click)="excluirPost(post)">Excluir</button>
+                                    }
+                                </div>
+                                }
+                            </div>
+                            <p class="post-text">{{ post.texto }}</p>
+                            @if (post.imagem) {
+                            <div class="post-image-container">
+                                <img [src]="post.imagem" alt="Imagem do post" loading="lazy">
+                            </div>
+                            }
+                            @if (post.video) {
+                            <div class="post-video-container">
+                                <video controls preload="metadata" playsinline [src]="post.video"></video>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">
+                            <button class="action-btn like-btn" [class.liked]="post.curtido" (click)="alternarCurtida(post)">
+                                <i [class]="post.curtido ? 'fa-solid fa-heart' : 'fa-regular fa-heart'"></i>
+                                <span class="count" (click)="alternarCurtidas(post); $event.stopPropagation()">{{ post.curtidas }}</span>
+                            </button>
+                            <button class="action-btn comment-toggle-btn" (click)="alternarComentarios(post)">
+                                <i class="fa-regular fa-comment"></i>
+                                <span class="count">{{ post.comentarios.length }}</span>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fa-solid fa-retweet"></i>
+                                <span class="count">0</span>
+                            </button>
+                            <button class="action-btn" (click)="copiarLink(post)">
+                                <i class="fa-regular fa-share-from-square"></i>
+                            </button>
+                        </div>
+                        <button class="btn-saiba-mais" (click)="alternarExpandido(post)">Saiba Mais</button>
+                        @if (curtidasExpandidasId === post.id) {
+                        <div class="post-menu">
+                            @for (nome of quemCurtiu(post); track nome) {
+                            <span>{{ nome }}</span>
+                            }
+                            @if (quemCurtiu(post).length === 0) {
+                            <span>Ninguém curtiu ainda</span>
+                            }
+                        </div>
+                        }
+                    </div>
+                    @if (post.mostrarComentarios) {
+                    <div class="comments-section">
+                        <div class="comments-list">
+                            @for (c of post.comentarios; track c.id) {
+                            <div class="comment-item">
+                                <strong>{{ c.autor }}</strong>
+                                <p>{{ c.texto }}</p>
+                                <small>{{ c.tempo }}</small>
+                            </div>
+                            }
+                        </div>
+                        <div class="add-comment">
+                            <input [placeholder]="'Responder como ' + nomeComentario" #inputComentario (keydown.enter)="comentarRapido(post, inputComentario)">
+                            <button (click)="comentarRapido(post, inputComentario)">Enviar</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+                }
+                @if (carregandoForum) {
+                <div class="no-content">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size:32px;display:block;margin-bottom:16px;opacity:0.4;"></i>
+                    <p style="font-size:16px;font-weight:500;">Carregando posts...</p>
+                </div>
+                } @else if (postsFiltrados.length === 0) {
+                <div class="no-content">
+                    <i class="fa-solid fa-feather" style="font-size:48px;display:block;margin-bottom:16px;opacity:0.3;"></i>
+                    <p style="font-size:16px;font-weight:500;">Nenhum post ainda</p>
+                    <p style="font-size:14px;color:#666;">Seja o primeiro a compartilhar algo com a comunidade!</p>
+                </div>
+                }
+            </div>
+
+            <!-- Mini-perfil hover (espelha hoverPerfilCard do original: escuro, banner, badges, stats) -->
+            @if (usuarioHover) {
+            <div class="hover-card" [style.left.px]="hoverX" [style.top.px]="hoverY"
+                (mouseenter)="manterPerfilAberto()" (mouseleave)="esconderPerfil()" (click)="$event.stopPropagation()">
+                <div class="hover-banner">
+                    @if (usuarioHover.banner) {
+                    <img [src]="usuarioHover.banner" alt="" (error)="usuarioHover.banner = null">
+                    } @else {
+                    <span class="hover-banner-placeholder">Sem banner</span>
+                    }
+                </div>
+                <div class="hover-body">
+                    <div class="hover-top">
+                        @if (!avatarHoverQuebrado && usuarioHover.avatar !== 'img/foto-padrão.jpg') {
+                        <img class="hover-avatar" [src]="usuarioHover.avatar" alt="Avatar" (error)="avatarHoverQuebrado = true">
+                        } @else {
+                        <div class="hover-avatar-fallback">{{ usuarioHover.nome.charAt(0).toUpperCase() }}</div>
+                        }
+                        <button class="hover-ver-perfil" (click)="irParaPerfil(usuarioHover)">Ver Perfil</button>
+                    </div>
+                    <h3 class="hover-name">{{ usuarioHover.nome }}</h3>
+                    <span class="hover-handle">{{ usuarioHover.username }}</span>
+                    <p class="hover-bio">{{ usuarioHover.bio }}</p>
+                    <div class="hover-badges">
+                        @if (usuarioHover.is_admin || usuarioHover.role === 'admin') {
+                        <span class="hover-badge badge-admin"><i class="fa-solid fa-crown"></i> Admin</span>
+                        } @else if (usuarioHover.is_collaborator) {
+                        <span class="hover-badge badge-collab"><i class="fa-solid fa-hand-holding-heart"></i> Colaborador</span>
+                        } @else {
+                        <span class="hover-badge badge-member"><i class="fa-solid fa-user"></i> Membro</span>
+                        }
+                    </div>
+                    <div class="hover-stats">
+                        <div>
+                            <div class="hover-stat-num">{{ usuarioHover.seguidores }}</div>
+                            <div class="hover-stat-label">seguidores</div>
+                        </div>
+                        <div>
+                            <div class="hover-stat-num">{{ usuarioHover.contribuicoes }}</div>
+                            <div class="hover-stat-label">contribuição</div>
+                        </div>
+                    </div>
+                    <div class="hover-actions">
+                        <button class="hover-btn-msg" (click)="mensagemHover()"><i class="fa-regular fa-comment-dots"></i> Mensagem</button>
+                        <button class="hover-btn-add" (click)="alternarAdicionar(usuarioHover)"><i class="fa-solid fa-user-plus"></i> Adicionar</button>
+                    </div>
+                </div>
+            </div>
+            }
+
+            <!-- Modal de regras (espelha showCommunityRules do original) -->
+            @if (mostrarModalRegras) {
+            <div class="modal-overlay" (click)="mostrarModalRegras = false">
+                <div class="modal-container modal-sm regras-modal" (click)="$event.stopPropagation()">
+                    <div class="modal-header regras-header">
+                        <div>
+                            <h2>Combinados da casa</h2>
+                        </div>
+                        <button class="modal-close" (click)="mostrarModalRegras = false"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        @for (r of regrasComunidade; track r.titulo; let i = $index) {
+                        <div class="regra-item">
+                            <i class="fa-solid {{ r.icone }}"></i>
+                            <div>
+                                <strong>{{ r.titulo }}</strong>
+                                <p>{{ r.texto }}</p>
+                            </div>
+                        </div>
+                        }
+                        <button class="btn-submit" (click)="mostrarModalRegras = false">Fechado!</button>
+                    </div>
+                </div>
+            </div>
+            }
+        </section>
+<!-- Tela: GRUPOS (conteúdo MOCK na Parte B: amizades/grupos/realtime) -->
+        <section class="community-screen" [class.active]="aba === 'grupos'" [hidden]="aba !== 'grupos'" id="screen-grupos" role="tabpanel">
+            <div class="screen-header">
+                <h2><i class="fa-solid fa-users"></i> Grupos</h2>
+                <div class="screen-header-actions">
+                    <button class="btn-use-invite" id="useInviteCodeBtn" (click)="mostrarModalConvite = true">
+                        <i class="fa-solid fa-key"></i> Usar código
+                    </button>
+                    <button class="btn-create-group" id="openCreateGroupBtn" (click)="mostrarModalGrupo = true">
+                        <i class="fa-solid fa-plus"></i> Criar Grupo
+                    </button>
+                </div>
+            </div>
+            <div class="groups-toolbar">
+                <div class="groups-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="buscaGrupos" placeholder="Buscar grupos..." aria-label="Buscar grupos" (input)="aoBuscarGrupos($event)">
+                </div>
+                <div class="groups-pills" role="group" aria-label="Filtrar por categoria">
+                    @for (cat of categoriasGrupos; track cat) {
+                    <button class="pill-filtro" [class.ativa]="cat === filtroGrupoCat" (click)="filtrarGrupos(cat)">{{ cat }}</button>
+                    }
+                </div>
+            </div>
+            <div class="groups-grid" id="groupsGrid">
+                @for (g of gruposFiltrados; track g.id) {
+                <div class="group-card" [attr.data-group-id]="g.id">
+                    <div class="group-card-image">
+                        @if (g.imagem) {
+                        <img [src]="g.imagem" (error)="esconderImgGrupo($event)" [alt]="g.nome">
+                        } @else {
+                        <span>{{ g.nome.charAt(0).toUpperCase() }}</span>
+                        }
+                    </div>
+                    <div class="group-card-body">
+                        <div class="group-card-title">
+                            <span class="group-card-name">{{ g.nome }}</span>
+                            <div class="group-card-badges">
+                                <span class="badge badge-public">Público</span>
+                                @if (g.participo) {
+                                <span class="badge badge-member">Membro</span>
+                                }
+                            </div>
+                        </div>
+                        <p class="group-card-description">{{ g.descricao }}</p>
+                        <div class="group-card-meta">
+                            <span><i class="fa-regular fa-user"></i> {{ g.membros }} membros</span>
+                            <span><i class="fa-regular fa-tag"></i> {{ g.categoria }}</span>
+                        </div>
+                        <div class="group-card-actions">
+                            @if (g.participo) {
+                            <button class="btn-chat" (click)="irParaConversa()">
+                                <i class="fa-regular fa-comments"></i> Conversar
+                            </button>
+                            <button class="btn-leave" (click)="alternarGrupo(g)">
+                                <i class="fa-solid fa-right-from-bracket"></i> Sair
+                            </button>
+                            } @else {
+                            <button class="btn-join" (click)="alternarGrupo(g)">
+                                <i class="fa-solid fa-right-to-bracket"></i> Entrar
+                            </button>
+                            }
+                            <button class="btn-chat" (click)="alternarMembros(g)">Membros</button>
+                            <button class="btn-chat" (click)="gerarConviteReal(g)">Convidar</button>
+                            <button class="btn-chat" (click)="abrirAddAmigo(g)">Adicionar amigo</button>
+                        </div>
+                        @if (membrosVisiveisId === g.id) {
+                        <div class="post-menu">
+                            @for (m of membrosMock(g); track m) {
+                            <span>{{ m }}</span>
+                            }
+                            @if (g.codigoConvite) {
+                            <span>Código: {{ g.codigoConvite }}</span>
+                            }
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </section>
+
+        <!-- Tela: EVENTOS (conteúdo MOCK na Parte B) -->
+        <section class="community-screen" [class.active]="aba === 'eventos'" [hidden]="aba !== 'eventos'" id="screen-eventos" role="tabpanel">
+            <div class="screen-header">
+                <h2><i class="fa-regular fa-calendar"></i> Eventos</h2>
+                <button class="btn-create-event" id="openCreateEventBtn" (click)="mostrarModalEvento = true">
+                    <i class="fa-solid fa-plus"></i> Criar Evento
+                </button>
+            </div>
+            <div class="events-grid" id="eventsGrid">
+                @for (e of eventos; track e.id) {
+                <div class="event-card-mock">
+                    <div class="event-date-badge">
+                        <span class="event-day">{{ e.data.split(' ')[0] }}</span>
+                        <span class="event-month">EVENTO</span>
+                    </div>
+                    <div class="event-info">
+                        <h3>{{ e.titulo }}</h3>
+                        @if (e.descricao) {
+                        <p>{{ e.descricao }}</p>
+                        }
+                        <div class="event-meta">
+                            <span><i class="fa-regular fa-calendar"></i> {{ e.data }}</span>
+                            <span><i class="fa-regular fa-user"></i> {{ e.participantes }} participantes</span>
+                        </div>
+                    </div>
+                    <div class="post-menu">
+                        <button [class.ativa]="e.rsvp === 'vou'" (click)="definirRsvp(e, 'vou')">Vou</button>
+                        <button [class.ativa]="e.rsvp === 'nao'" (click)="definirRsvp(e, 'nao')">Não vou</button>
+                        <button [class.ativa]="e.rsvp === 'talvez'" (click)="definirRsvp(e, 'talvez')">Talvez</button>
+                        <button (click)="alternarDetalhesEvento(e)">Detalhes</button>
+                    </div>
+                    @if (detalhesEventoId === e.id) {
+                    <p>Evento da comunidade. Traga sua experiência e participe no seu ritmo.</p>
+                    }
+                </div>
+                }
+            </div>
+            @if (mostrarModalEvento) {
+            <div class="modal-overlay" (click)="mostrarModalEvento = false">
+                <div class="modal-container modal-sm" (click)="$event.stopPropagation()">
+                    <div class="modal-header">
+                        <h2>Criar Evento</h2>
+                        <button class="modal-close" (click)="mostrarModalEvento = false"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" #novoEventoTitulo placeholder="Título do evento">
+                        <input type="text" #novoEventoData placeholder="Data (ex: Sábado, 10h)">
+                        <textarea #novoEventoDesc rows="2" placeholder="Descrição (opcional)"></textarea>
+                        <button (click)="criarEvento(novoEventoTitulo.value, novoEventoData.value, novoEventoDesc.value)">Criar</button>
+                    </div>
+                </div>
+            </div>
+            }
+        </section>
+
+        <!-- Tela: CONVERSA (chat MOCK na Parte B: canais/mensagens/realtime) -->
+        <section class="community-screen" [class.active]="aba === 'conversa'" [hidden]="aba !== 'conversa'" id="screen-conversa" role="tabpanel">
+            <div class="screen-header">
+                <h2><i class="fa-regular fa-comment-dots"></i> Conversa</h2>
+            </div>
+
+            <div class="user-search-section">
+                <div class="user-search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <!-- Busca real via rpc search_users -->
+                    <input type="text" id="userSearchInput" #buscaUsuario placeholder="Pesquisar usuário..." autocomplete="off" (input)="buscarUsuarios(buscaUsuario.value)">
+                </div>
+                <div id="userSearchResults" class="user-search-results" [hidden]="resultadosBusca.length === 0">
+                    @for (u of resultadosBusca; track u.id) {
+                    <div class="user-search-result">
+                        <img class="user-search-avatar" [src]="u.avatar || 'img/foto-padrão.jpg'" (error)="corrigirAvatar($event)" [alt]="u.nome">
+                        <span>{{ u.nome }}</span>
+                        <button class="btn-add-friend chat" (click)="abrirConversaCom(u.id, u.nome)">Conversar</button>
+                        <button class="btn-add-friend add" (click)="enviarConviteAmizade(u.id)">Adicionar</button>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="chat-full-layout">
+                <aside class="chat-channels">
+                    <div class="chat-channels-header">
+                        <h3><i class="fa-regular fa-comments"></i> Conversas</h3>
+                        <button class="btn-new-channel" id="openCreateGroupFromChatBtn" title="Nova conversa" (click)="focarBuscaUsuario()">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div id="friendRequestsSection" class="friends-section" [hidden]="solicitacoes.length === 0">
+                        <div class="friends-section-header">
+                            <span><i class="fa-solid fa-user-clock"></i> Solicitações</span>
+                            <span class="friend-request-count" id="friendRequestCount">{{ solicitacoes.length }}</span>
+                        </div>
+                        <div id="friendRequestsList" class="friend-requests-list">
+                            @for (s of solicitacoes; track s.id) {
+                            <div class="friend-request-card">
+                                <img class="friend-avatar" [src]="s.avatar || 'img/foto-padrão.jpg'" (error)="corrigirAvatar($event)" [alt]="s.nome">
+                                <span>{{ s.nome }}</span>
+                                <button class="btn-request-action btn-request-accept" (click)="responderConvite(s.id, 'aceitar')">Aceitar</button>
+                                <button class="btn-request-action btn-request-reject" (click)="responderConvite(s.id, 'recusar')">Recusar</button>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div id="friendsSection" class="friends-section">
+                        <div class="friends-section-header">
+                            <span><i class="fa-solid fa-user-group"></i> Amigos</span>
+                        </div>
+                        <div id="friendsList" class="friends-list">
+                            @for (a of amigos; track a.id) {
+                            <div class="friend-item" (click)="irParaPerfil(a)">
+                                @if (a.avatar && a.avatar !== 'img/foto-padrão.jpg') {
+                                <img class="friend-avatar" [src]="a.avatar" (error)="corrigirAvatarAmigo($event, a)" [alt]="a.nome">
+                                } @else {
+                                <div class="friend-avatar-fallback" [style.background]="corAmigo(a.friend_id || a.id)">{{ a.nome.charAt(0).toUpperCase() }}</div>
+                                }
+                                <div class="friend-info">
+                                    <span class="friend-name">{{ a.nome }}</span>
+                                    <span class="friend-handle">@{{ a.username || a.nome.toLowerCase().replace(/\s+/g, '') }}</span>
+                                </div>
+                                <button class="friend-chat-btn" (click)="$event.stopPropagation(); mensagemAmigo(a)" title="Conversar">
+                                    <i class="fa-regular fa-comment-dots"></i>
+                                </button>
+                            </div>
+                            }
+                            @if (amigos.length === 0) {
+                            <div class="empty-friends">Pesquise usuários acima para adicionar amigos</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="channels-divider">
+                        <span>Canais</span>
+                    </div>
+
+                    <div class="channels-list" id="channelsList">
+                        @for (c of conversas; track c.id) {
+                        <button class="channel-item" [class.active]="conversaAtiva?.id === c.id" (click)="selecionarConversa(c)">
+                            <i class="fa-solid fa-hashtag"></i> {{ c.nome }}
+                            @if (c.naoLidas > 0) {
+                            <span class="friend-request-count">{{ c.naoLidas }}</span>
+                            }
+                        </button>
+                        }
+                    </div>
+                </aside>
+
+                <div class="chat-messages-area">
+                    <div class="chat-area-header">
+                        <div class="chat-area-title">
+                            <i class="fa-solid fa-hashtag" style="color:var(--primary);"></i>
+                            <span id="chatCurrentChannel">{{ conversaAtiva?.nome || 'Geral' }}</span>
+                        </div>
+                        <div class="chat-area-actions">
+                            <span class="chat-area-members" id="chatMemberCount">{{ conversaAtiva?.membros || '' }}</span>
+                            @if (conversaAtiva) {
+                            <button class="btn-apagar-conversa" title="Apagar conversa" (click)="apagarConversa()">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="chat-messages-container" id="chatMessagesContainer">
+                        <div class="chat-messages" id="chatMessages">
+                            @for (m of conversaAtiva?.mensagens || []; track m.id) {
+                            <div class="chat-message" [class.sent]="m.minha" [class.received]="!m.minha" [attr.data-message-id]="m.id" [attr.data-sender-id]="m.senderId">
+                                @if (!m.minha) {
+                                <div class="msg-avatar">
+                                    <img [src]="m.avatar" (error)="corrigirAvatar($event)" [alt]="m.autor">
+                                </div>
+                                }
+                                <div class="msg-content">
+                                    @if (!m.minha) {
+                                    <div class="msg-author">{{ m.autor }}</div>
+                                    }
+                                    @if (urlAudioMsg(m)) {
+                                    <audio controls [src]="urlAudioMsg(m)" class="msg-audio"></audio>
+                                    } @else {
+                                    <div class="msg-text">{{ m.texto }}</div>
+                                    }
+                                    <div class="msg-time">{{ m.tempo }}
+                                        @if (m.minha) {
+                                        <button class="msg-delete-btn" title="Apagar mensagem" (click)="apagarMensagem(m)">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            @if ((conversaAtiva?.mensagens || []).length === 0) {
+                            <div class="chat-placeholder">
+                                <i class="fa-solid fa-comments"></i>
+                                <p>Nenhuma mensagem ainda</p>
+                                <p style="font-size:12px;color:#aaa;">Seja a primeira pessoa a dizer oi!</p>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <button class="chat-attach-btn" title="Anexar arquivo" (click)="anexoInput.click()">
+                            <i class="fa-solid fa-paperclip"></i>
+                        </button>
+                        <input type="file" #anexoInput hidden (change)="aoAnexarArquivo($event)">
+                        @if (anexoNome) {
+                        <span class="forum-pill">{{ anexoNome }}</span>
+                        }
+                        <button class="chat-attach-btn" [class.gravando]="gravandoAudio" title="Mandar áudio" (click)="alternarGravacaoAudio()">
+                            <i class="fa-solid {{ gravandoAudio ? 'fa-stop' : 'fa-microphone' }}"></i>
+                        </button>
+                        @if (gravandoAudio) {
+                        <span class="forum-pill gravando-pill">Gravando... toque para enviar</span>
+                        }
+                        <input type="text" id="chatInput" #chatTexto placeholder="Digite sua mensagem..." class="chat-input" (keydown.enter)="enviarChat(chatTexto.value, chatTexto)">
+                        <button id="sendChatBtn" class="chat-send-btn" (click)="enviarChat(chatTexto.value, chatTexto)">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================
+         MODAIS (mantidos iguais)
+         ============================================ -->
+
+    <!-- Modal: Criar Grupo -->
+    <div class="modal-overlay" id="createGroupModal" [hidden]="!mostrarModalGrupo">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-users-plus"></i> Criar Grupo</h2>
+                <button class="modal-close" id="closeCreateGroupModal" (click)="mostrarModalGrupo = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="createGroupForm" (ngSubmit)="criarGrupo(nomeGrupo.value, descGrupo.value, catGrupo.value, urlGrupo.value, privGrupo.checked); mostrarModalGrupo = false">
+                    <div class="form-group">
+                        <label for="groupName">Nome do Grupo *</label>
+                        <input type="text" id="groupName" #nomeGrupo placeholder="Ex: Neurodiversidade no Trabalho" required maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="groupDescription">Descrição</label>
+                        <textarea id="groupDescription" #descGrupo rows="3" placeholder="Descreva o propósito do grupo..." maxlength="200"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="groupCategory">Categoria</label>
+                        <select id="groupCategory" #catGrupo>
+                            <option value="geral">Geral</option>
+                            <option value="apoio">Apoio</option>
+                            <option value="educacao">Educação</option>
+                            <option value="trabalho">Trabalho</option>
+                            <option value="social">Social</option>
+                            <option value="arte">Arte & Cultura</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="groupImage">URL da Imagem do Grupo</label>
+                        <input type="url" id="groupImage" #urlGrupo placeholder="https://exemplo.com/imagem.jpg">
+                        <small style="color:var(--text-muted);font-size:12px;display:block;margin-top:4px;">Ou clique no botão abaixo para fazer upload</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="group-image-upload-area" id="groupImageUploadArea" (click)="imagemGrupoInput.click()">
+                            <i class="fa-regular fa-image"></i>
+                            <p>Clique para adicionar imagem do grupo</p>
+                            <small>PNG, JPG, GIF, WebP ou SVG (máx 10MB)</small>
+                        </div>
+                        <input type="file" #imagemGrupoInput accept="image/*" hidden (change)="aoEscolherImagemGrupo($event)">
+                        <div id="groupImagePreviewContainer"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="groupPrivate" #privGrupo>
+                            Grupo Privado (apenas convidados)
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="fa-solid fa-plus"></i> Criar Grupo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Novo Post -->
+    <div class="modal-overlay" id="postModalOverlay" [hidden]="!mostrarModalPost">
+        <div class="x-modal" id="postModal">
+            <div class="x-modal-header">
+                <button class="x-modal-close-btn" id="closeModalBtn" aria-label="Fechar" (click)="fecharModais()"><i class="fa-solid fa-xmark"></i></button>
+                <span class="x-modal-action-text">Novo Post</span>
+            </div>
+            <div class="x-modal-body">
+                <div class="compose-inline-box">
+                    <img [src]="avatarUsuario" alt="Sua foto de perfil" class="timeline-avatar user-current-avatar" id="postModalAvatar">
+                    <div class="compose-workspace">
+                        <textarea id="postContentInput" #textoNovoPost placeholder="O que está acontecendo?" rows="4"></textarea>
+                        <select id="postCategorySelect" [value]="categoriaNovoPost" (change)="categoriaNovoPost = $any($event.target).value" aria-label="Categoria do post" class="post-category-select">
+                            @for (c of categoriasForum; track c.id) {
+                            <option [value]="c.id">{{ c.rotulo }}</option>
+                            }
+                        </select>
+                        <div class="privacy-scope-selector">
+                            <button type="button" class="btn-scope"><i class="fa-solid fa-earth-americas"></i> Qualquer pessoa pode responder</button>
+                        </div>
+                        <div id="videoPreviewContainer"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="x-modal-footer">
+                <div class="compose-toolbar">
+                    <button type="button" title="Mídia" id="postMediaBtn" (click)="videoPostInput.click()"><i class="fa-regular fa-image"></i></button>
+                    <input type="file" #videoPostInput accept="video/mp4,video/webm,video/ogg" hidden (change)="aoEscolherVideo($event)">
+                    <button type="button" title="GIF"><i class="fa-solid fa-film"></i></button>
+                    <button type="button" title="Enquete"><i class="fa-solid fa-square-poll-horizontal"></i></button>
+                    <button type="button" title="Emoji"><i class="fa-regular fa-face-smile"></i></button>
+                </div>
+                <button class="x-btn-primary" id="submitPostBtn" (click)="criarPost()">Postar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Responder -->
+    <div class="modal-overlay" id="replyModalOverlay" [hidden]="!mostrarModalResposta">
+        <div class="x-modal" id="replyModal">
+            <div class="x-modal-header">
+                <button class="x-modal-close-btn" id="closeReplyModalBtn" aria-label="Fechar" (click)="fecharModais()"><i class="fa-solid fa-xmark"></i></button>
+                <span class="x-modal-action-text">Responder</span>
+            </div>
+            <div class="x-modal-body">
+                <div class="parent-post-thread">
+                    <div class="thread-left">
+                        <img [src]="respostaAlvo?.avatar || avatarUsuario" alt="Avatar do Autor" class="thread-avatar" id="replyParentAvatar">
+                        <div class="thread-line"></div>
+                    </div>
+                    <div class="thread-right">
+                        <div class="post-meta-info">
+                            <span class="post-author-name" id="replyParentName">{{ respostaAlvo?.autor || 'Nome do Autor' }}</span>
+                            <span class="post-author-handle" id="replyParentHandle">@usuario</span>
+                            <span class="post-timestamp" id="replyParentTime">{{ respostaAlvo?.tempo || '' }}</span>
+                        </div>
+                        <p class="post-text-content" id="replyParentContent">{{ respostaAlvo?.texto || 'Conteúdo do post original...' }}</p>
+                        <div class="replying-to-label">
+                            Respondendo a <a href="#" class="mention-link" id="replyParentMention" (click)="$event.preventDefault()">@usuario</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="current-user-reply-box">
+                    <img [src]="avatarUsuario" alt="Sua foto de perfil" class="timeline-avatar user-current-avatar">
+                    <div class="reply-input-wrap">
+                        <textarea id="replyContentInput" #textoResposta placeholder="Poste sua resposta" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="x-modal-footer">
+                <div class="compose-toolbar">
+                    <button type="button" title="Mídia" id="replyMediaBtn"><i class="fa-regular fa-image"></i></button>
+                    <button type="button" title="GIF"><i class="fa-solid fa-film"></i></button>
+                    <button type="button" title="Enquete"><i class="fa-solid fa-square-poll-horizontal"></i></button>
+                    <button type="button" title="Emoji"><i class="fa-regular fa-face-smile"></i></button>
+                </div>
+                <button class="x-btn-primary" id="submitReplyBtn" (click)="enviarResposta()">Responder</button>
+            </div>
+        </div>
+    </div>
+
+
+    <input type="file" id="videoUploadInput" accept="video/*" style="display:none;">
+    <input type="file" id="imageUploadInput" accept="image/*" style="display:none;">
+
+    <!-- Modais pequenos -->
+    @if (mostrarModalAddAmigo && grupoAlvoAddAmigo) {
+    <div class="modal-overlay" id="addFriendToGroupModal" (click)="mostrarModalAddAmigo = false">
+        <div class="modal-container modal-sm" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-user-plus"></i> Adicionar amigo</h2>
+                <button class="modal-close" id="closeAddFriendToGroupModal" (click)="mostrarModalAddAmigo = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle">Adicionar a {{ grupoAlvoAddAmigo.nome }}</p>
+                <div class="modal-search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchFriendForGroupInput" #buscaAmigoGrupoInput placeholder="Pesquisar entre seus amigos..." autocomplete="off" (input)="buscaAmigoGrupo = buscaAmigoGrupoInput.value">
+                </div>
+                <div id="friendsForGroupList" class="friends-for-group-list">
+                    @for (a of amigosFiltradosAddGrupo; track a.id) {
+                    <div class="group-for-friend-item">
+                        <img class="friend-avatar" [src]="a.avatar || 'img/foto-padrão.jpg'" (error)="corrigirAvatar($event)" [alt]="a.nome">
+                        <span>{{ a.nome }}</span>
+                        <button class="btn-add-friend add" (click)="adicionarAmigoAoGrupo(a.id)">Adicionar</button>
+                    </div>
+                    }
+                    @if (amigosFiltradosAddGrupo.length === 0) {
+                    <p class="profile-empty">Nenhum amigo encontrado.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    @if (mostrarModalEscolherGrupo) {
+    <div class="modal-overlay" id="selectGroupForFriendModal" (click)="mostrarModalEscolherGrupo = false">
+        <div class="modal-container modal-sm" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-users"></i> Adicionar a um grupo</h2>
+                <button class="modal-close" id="closeSelectGroupModal" (click)="mostrarModalEscolherGrupo = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle" id="selectGroupSubtitle">Selecione um grupo para {{ amigoAlvoGrupo?.nome }}</p>
+                <div id="groupsForFriendList" class="groups-for-friend-list">
+                    @for (g of grupos; track g.id) {
+                    <button class="group-for-friend-item" (click)="escolherGrupoParaAmigo(g.id)">
+                        <span>{{ g.nome }}</span>
+                        <span class="friend-request-count">{{ g.membros }}</span>
+                    </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    @if (mostrarModalCodigo && grupoAlvoCodigo) {
+    <div class="modal-overlay" id="inviteCodeModal" (click)="mostrarModalCodigo = false">
+        <div class="modal-container modal-sm" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-key"></i> Convite para o grupo</h2>
+                <button class="modal-close" id="closeInviteCodeModal" (click)="mostrarModalCodigo = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body invite-code-body">
+                <p class="modal-subtitle" id="inviteCodeGroupName">{{ grupoAlvoCodigo.nome }}</p>
+                <div class="invite-code-display">
+                    <span id="inviteCodeValue" class="invite-code-text">{{ codigoConviteAtual || '-----' }}</span>
+                </div>
+                <p class="invite-code-expiry" id="inviteCodeExpiry">{{ codigoConviteExpira }}</p>
+                <div class="invite-code-actions">
+                    <button class="btn-invite-action" id="copyInviteCodeBtn" (click)="copiarCodigoConvite()">
+                        <i class="fa-regular fa-clipboard"></i> Copiar código
+                    </button>
+                    <button class="btn-invite-action btn-secondary" id="regenerateInviteCodeBtn" (click)="regenerarCodigo()">
+                        <i class="fa-solid fa-rotate"></i> Gerar novo código
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+    <div class="modal-overlay" id="useInviteCodeModal" [hidden]="!mostrarModalConvite">
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-key"></i> Usar código de convite</h2>
+                <button class="modal-close" id="closeUseInviteCodeModal" (click)="mostrarModalConvite = false"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body invite-code-body">
+                <p class="modal-subtitle">Digite o código do convite para entrar em um grupo</p>
+                <div class="invite-code-input-group">
+                    <input type="text" id="inviteCodeInput" #codigoConvite class="invite-code-input" maxlength="5" placeholder="00000" autocomplete="off">
+                </div>
+                <button class="btn-submit btn-enter-group" id="submitInviteCodeBtn" (click)="usarCodigoConvite(codigoConvite.value); mostrarModalConvite = false">
+                    <i class="fa-solid fa-right-to-bracket"></i> Entrar no grupo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="friendProfileModal" [hidden]="!amigoAlvo">
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-user"></i> Perfil</h2>
+                <button class="modal-close" id="closeFriendProfileModal" (click)="amigoAlvo = null"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body friend-profile-body">
+                @if (amigoAlvo) {
+                <div class="friend-profile-avatar-wrapper">
+                    <img [src]="amigoAlvo.avatar" (error)="corrigirAvatar($event)" alt="Avatar" class="friend-profile-avatar" id="friendProfileAvatar">
+                </div>
+                <h3 class="friend-profile-name" id="friendProfileName">{{ amigoAlvo.nome }}</h3>
+                <p class="friend-profile-handle" id="friendProfileHandle">{{ amigoAlvo.username }}</p>
+                <div class="friend-profile-actions">
+                    <button class="btn-friend-action btn-chat-friend" id="friendProfileChatBtn" (click)="mensagemParaAmigo()">
+                        <i class="fa-regular fa-comment-dots"></i> Conversar
+                    </button>
+                    <button class="btn-friend-action btn-add-to-group" id="friendProfileAddToGroupBtn" (click)="amigoAlvo && abrirEscolherGrupo({ id: amigoAlvo.id, nome: amigoAlvo.nome })">
+                        <i class="fa-solid fa-users"></i> Adicionar a grupo
+                    </button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>

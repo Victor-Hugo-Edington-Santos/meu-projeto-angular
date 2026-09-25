@@ -1,0 +1,135 @@
+    <!-- =============================================
+         MODAL ACOLHERIA
+         ============================================= -->
+    <div class="acolheria-modal-overlay" id="acolheriaOverlay" hidden>
+        <div class="acolheria-modal">
+            <div class="acolheria-modal-header">
+                <div class="acolheria-modal-title">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>AcolherIA</span>
+                    <span class="acolheria-badge">Online</span>
+                </div>
+                <button class="acolheria-modal-close" id="acolheriaClose" aria-label="Fechar AcolherIA">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="acolheria-modal-body" id="acolheriaChatBody"></div>
+            <div class="acolheria-suggestions" id="acolheriaSuggestions">
+                <button class="acolheria-suggestion" data-prompt="O que é TDAH?">TDAH</button>
+                <button class="acolheria-suggestion" data-prompt="O que é autismo?">Autismo</button>
+                <button class="acolheria-suggestion" data-prompt="Dicas de organização">Organização</button>
+                <button class="acolheria-suggestion" data-prompt="Como lidar com crise sensorial?">Crise sensorial</button>
+                <button class="acolheria-suggestion" data-prompt="Quais são meus direitos?">Direitos</button>
+                <button class="acolheria-suggestion" data-prompt="Quero desabafar">Desabafar</button>
+            </div>
+            <div class="acolheria-modal-footer">
+                <div class="acolheria-input-wrapper">
+                    <textarea class="acolheria-input" id="acolheriaInput" placeholder="Digite sua mensagem..." rows="1" aria-label="Digite sua mensagem"></textarea>
+                    <button class="acolheria-send-btn" id="acolheriaSend" aria-label="Enviar mensagem">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="acolheria-footer-note">
+                    <i class="fa-regular fa-circle-check"></i> AcolherIA • Especialista em neurodivergência
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acolheria-overlay-bg" id="acolheriaOverlayBg" hidden></div>
+
+    <!-- =============================================
+         SIDEBAR TOGGLE
+         ============================================= -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" #sidebarToggleBtn aria-label="Abrir menu lateral" title="Menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- =============================================
+         SIDEBAR
+         ============================================= -->
+    <aside class="sidebar" id="sidebar" #sidebar aria-label="Navegação principal">
+        <div class="sidebar-profile" id="sidebarProfile">
+            <button class="profile-toggle" id="profileToggle" #profileToggle aria-label="Mostrar ou esconder perfil" aria-expanded="false">
+                <img src="img/foto-padrão.jpg" alt="Sua foto de perfil" id="sidebarAvatar">
+                <span id="sidebarUserName">Visitante</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="profile-detail" id="profileDetail" #profileDetail hidden>
+                <p id="sidebarUserEmail">carregando@email.com</p>
+                <a routerLink="/configuracoes" class="profile-link">Editar perfil</a>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Principal">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-link"><i class="fa-solid fa-house"></i> Início</a>
+            <a routerLink="/explorar" routerLinkActive="active" class="sidebar-link"><i class="fa-solid fa-compass"></i> Explorar</a>
+            <a routerLink="/comunidade" routerLinkActive="active" class="sidebar-link"><i class="fa-regular fa-comments"></i> Comunidade</a>
+            <a routerLink="/direitos" routerLinkActive="active" class="sidebar-link"><i class="fa-solid fa-scale-balanced"></i> Seus Direitos</a>
+        </nav>
+
+        <div class="sidebar-secondary">
+            <a routerLink="/loja" routerLinkActive="active" class="sidebar-link small"><i class="fa-solid fa-bag-shopping"></i> Loja</a>
+            <a routerLink="/apoiar" routerLinkActive="active" class="sidebar-link small"><i class="fa-regular fa-heart"></i> Apoiar</a>
+            <a href="login/login.html" class="sidebar-link small" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+        </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" #sidebarOverlay></div>
+
+    <!-- =============================================
+         CONTEÚDO PRINCIPAL
+         ============================================= -->
+    <main class="main-content" id="mainContent">
+        
+        <!-- HEADER -->
+        <header class="header-glass" id="headerGlass" #headerGlass>
+             <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                @for (item of trilha; track item.rotulo; let ultimo = $last) {
+                    @if (!ultimo && item.url) {
+                        <a [routerLink]="item.url">{{ item.rotulo }}</a><span class="breadcrumb-sep">›</span>
+                    } @else {
+                        <span>{{ item.rotulo }}</span>
+                    }
+                }
+            </nav>
+            <a routerLink="/" class="logo">
+                <img src="img/logo-LHN9gCw1.png" alt="Amor NeuroDivergente" class="logo-img">
+                <span class="logo-text">Amor NeuroDivergente</span>
+            </a>
+            <nav class="header-links">
+                <a routerLink="/explorar" routerLinkActive="active">Explorar</a>
+                <a routerLink="/comunidade" routerLinkActive="active">Comunidade</a>
+                <a href="Chat-Ia/Chat-Ia.html">AcolherIA</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a routerLink="/login" class="btn-text">Entrar</a>
+                <a routerLink="/login" class="btn-primary">Criar Conta</a>
+            </div>
+        </header>
+
+        <router-outlet></router-outlet>
+    </main>
+<!-- HUB FLUTUANTE -->
+    <div class="floating-hub" id="floatingHub">
+        <button class="floating-hub-toggle" id="floatingHubToggle" #floatingHubToggle aria-label="Abrir menu de ajuda" title="Ajuda">
+            <i class="fa-regular fa-circle-question"></i>
+            <span class="floating-hub-label">Ajuda</span>
+        </button>
+        <div class="floating-hub-menu" id="floatingHubMenu" #floatingHubMenu hidden>
+            <div class="floating-hub-menu-inner">
+                <div class="floating-hub-group">
+                    <span class="floating-hub-group-label"><i class="fa-regular fa-circle-question"></i> Precisa de ajuda?</span>
+                    <div class="floating-hub-actions">
+                        <a href="/chat-Ia/chat-Ia.html" class="hub-action" title="Falar com AcolherIA"><i class="fa-solid fa-robot"></i><span class="hub-action-label">AcolherIA</span></a>
+                        <a routerLink="/comunidade" class="hub-action" title="Comunidade"><i class="fa-regular fa-comments"></i><span class="hub-action-label">Comunidade</span></a>
+                        <a href="/Quem somos/CONTATE-NOS/contate.html" class="hub-action" title="Perguntas Frequentes"><i class="fa-regular fa-circle-question"></i><span class="hub-action-label">FAQ</span></a>
+                        <a href="mailto:contato@amorneurodivergente.com" class="hub-action" title="E-mail"><i class="fa-regular fa-envelope"></i><span class="hub-action-label">E-mail</span></a>
+                        <a href="https://wa.me/5511999999999" class="hub-action hub-action-whatsapp" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i><span class="hub-action-label">WhatsApp</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-overlay" id="floatingOverlay" #floatingOverlay hidden></div>

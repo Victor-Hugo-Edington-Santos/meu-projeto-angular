@@ -1,0 +1,71 @@
+<div class="reset-wrapper">
+    @if (estado === 'pedido') {
+    <div class="form-box">
+        <div class="form-header">
+            <h1>Recuperar senha.</h1>
+            <p class="subtitle">Enviaremos um link para redefinir sua senha.</p>
+        </div>
+        <form (ngSubmit)="enviarLink()">
+            <div class="input-group">
+                <label for="resetEmail"><i class="fa-regular fa-envelope"></i> Email cadastrado</label>
+                <input type="email" id="resetEmail" name="resetEmail" [(ngModel)]="email" placeholder="seu@email.com" required>
+            </div>
+            <button type="submit" class="btn-login" [disabled]="carregando">
+                {{ carregando ? 'Enviando...' : 'Enviar link' }}
+            </button>
+        </form>
+        <div class="register-link">
+            <a routerLink="/login">← Voltar ao login</a>
+        </div>
+    </div>
+    } @else if (estado === 'enviado') {
+    <div class="form-box" style="text-align:center;">
+        <div class="form-header">
+            <h1>Verifique seu email.</h1>
+            <p class="subtitle">Enviamos um link para seu email. Verifique também o spam.</p>
+        </div>
+        <div class="register-link">
+            <a routerLink="/login">← Voltar ao login</a>
+        </div>
+    </div>
+    } @else if (estado === 'redefinir') {
+    <div class="form-box">
+        <div class="form-header">
+            <h1>Nova senha.</h1>
+            <p class="subtitle">Escolha uma nova senha para sua conta.</p>
+        </div>
+        <form (ngSubmit)="salvarNovaSenha()">
+            <div class="input-group">
+                <label for="newPassword"><i class="fa-solid fa-lock"></i> Nova senha</label>
+                <div class="password-wrapper">
+                    <input [type]="mostrarNova ? 'text' : 'password'" id="newPassword" name="newPassword" [(ngModel)]="novaSenha" placeholder="Mínimo 6 caracteres" required minlength="6">
+                    <i class="fa-regular toggle-password" [class.fa-eye]="mostrarNova" [class.fa-eye-slash]="!mostrarNova" (click)="mostrarNova = !mostrarNova"></i>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword"><i class="fa-solid fa-lock"></i> Confirmar senha</label>
+                <div class="password-wrapper">
+                    <input [type]="mostrarConf ? 'text' : 'password'" id="confirmPassword" name="confirmPassword" [(ngModel)]="confirmarSenha" placeholder="Repita a senha" required minlength="6">
+                    <i class="fa-regular toggle-password" [class.fa-eye]="mostrarConf" [class.fa-eye-slash]="!mostrarConf" (click)="mostrarConf = !mostrarConf"></i>
+                </div>
+            </div>
+            <button type="submit" class="btn-login" [disabled]="carregando">
+                {{ carregando ? 'Salvando...' : 'Salvar nova senha' }}
+            </button>
+        </form>
+        <div class="register-link">
+            <a routerLink="/login">← Voltar ao login</a>
+        </div>
+    </div>
+    } @else {
+    <div class="form-box" style="text-align:center;">
+        <div class="form-header">
+            <h1>Link inválido.</h1>
+            <p class="subtitle">Este link expirou ou já foi usado. Solicite outro.</p>
+        </div>
+        <div class="register-link">
+            <a routerLink="/login">← Voltar ao login</a>
+        </div>
+    </div>
+    }
+</div>

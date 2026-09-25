@@ -1,0 +1,318 @@
+        <!-- =============================================
+        HERO — Banner editorial
+        ============================================= -->
+        <section class="blog-banner">
+            <div class="blog-banner__media">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1920&h=900&fit=crop"
+                     alt="Pessoa lendo em ambiente tranquilo" loading="eager">
+                <div class="blog-banner__overlay"></div>
+            </div>
+            <div class="blog-banner__content">
+                <span class="blog-banner__eyebrow"><i class="fa-solid fa-pen-nib"></i> Blog</span>
+                <h1 class="blog-banner__title">
+                    Histórias, reflexões <br>
+                    <span class="blog-banner__title-accent">e informação de verdade</span>
+                </h1>
+                <p class="blog-banner__sub">
+                    Textos e vídeos sobre autismo, TDAH, direitos e vida neurodivergente. No seu tempo, do seu jeito.
+                </p>
+            </div>
+        </section>
+
+        <!-- =============================================
+        NAV DE CATEGORIAS — Chips sticky
+        ============================================= -->
+        <nav class="blog-nav" aria-label="Categorias do Blog">
+            <div class="blog-nav__container">
+                <button class="blog-nav__chip active" data-filter="todos">
+                    <i class="fa-solid fa-border-all"></i> Todos
+                </button>
+                <button class="blog-nav__chip" data-filter="autismo">
+                    <i class="fa-solid fa-puzzle-piece"></i> Autismo
+                </button>
+                <button class="blog-nav__chip" data-filter="tdah">
+                    <i class="fa-solid fa-bolt"></i> TDAH
+                </button>
+                <button class="blog-nav__chip" data-filter="comunicacao">
+                    <i class="fa-solid fa-comments"></i> Comunicação
+                </button>
+                <button class="blog-nav__chip" data-filter="terapia">
+                    <i class="fa-solid fa-hand-holding-heart"></i> Terapia
+                </button>
+                <button class="blog-nav__chip" data-filter="direitos">
+                    <i class="fa-solid fa-scale-balanced"></i> Direitos
+                </button>
+                <button class="blog-nav__chip" data-filter="saude-mental">
+                    <i class="fa-solid fa-brain"></i> Saúde Mental
+                </button>
+                <button class="blog-nav__chip" data-filter="familia">
+                    <i class="fa-solid fa-people-roof"></i> Família
+                </button>
+            </div>
+        </nav>
+
+        <!-- =============================================
+        GRID EDITORIAL — Artigos e Vídeos
+        ============================================= -->
+        <section class="blog-grid-section">
+            <div class="blog-grid-section__container">
+
+                <header class="blog-grid-section__head">
+                    <div>
+                        <span class="blog-grid-section__eyebrow"><i class="fa-solid fa-fire"></i> Em alta</span>
+                        <h2>Conteúdos da comunidade</h2>
+                        <p>Artigos e vídeos produzidos por profissionais, pessoas neurodivergentes e aliados.</p>
+                    </div>
+                </header>
+
+                <!-- GRID 3 COLUNAS -->
+                <div class="editorial-grid" id="blogGrid">
+
+                    <!-- CARD 1 — ARTIGO -->
+                    <article class="editorial-card editorial-card--article" data-category="autismo">
+                        <a routerLink="/blog/post-masking" class="editorial-card__media">
+                            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80"
+                                 alt="Pessoa tomando café em ambiente calmo" loading="lazy">
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a routerLink="/blog/post-masking">O dia em que você para de sobreviver e começa a viver</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 2 — VÍDEO -->
+                    <article class="editorial-card editorial-card--video" data-category="comunicacao">
+                        <a href="#" class="editorial-card__media editorial-card__media--video" data-video-id="dQw4w9WgXcQ">
+                            <div class="video-thumb">
+                                <div class="video-thumb__split">
+                                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80" alt="Comunicação inclusiva" loading="lazy">
+                                    <div class="video-thumb__text">
+                                        <span class="video-thumb__label">PORTAL DOS<br>NEURODIVERGENTES</span>
+                                        <p class="video-thumb__desc">Como tornar a comunicação mais inclusiva para profissionais neurodivergentes.</p>
+                                        <span class="video-thumb__author">por Isabella Saes, Jornalista</span>
+                                    </div>
+                                </div>
+                                <button class="video-thumb__play" aria-label="Reproduzir vídeo">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                            </div>
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Como tornar a comunicação mais inclusiva para profissionais neurodivergentes</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 3 — VÍDEO -->
+                    <article class="editorial-card editorial-card--video" data-category="autismo">
+                        <a href="#" class="editorial-card__media editorial-card__media--video" data-video-id="dQw4w9WgXcQ">
+                            <div class="video-thumb">
+                                <div class="video-thumb__split">
+                                    <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&q=80" alt="Neurodivergência na infância" loading="lazy">
+                                    <div class="video-thumb__text">
+                                        <span class="video-thumb__label">PORTAL DOS<br>NEURODIVERGENTES</span>
+                                        <p class="video-thumb__desc">Neurodivergência na infância e adolescência</p>
+                                        <span class="video-thumb__author">Tatiane Arruda, Psicóloga</span>
+                                    </div>
+                                </div>
+                                <button class="video-thumb__play" aria-label="Reproduzir vídeo">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                            </div>
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Neurodivergência na infância e adolescência</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 4 — ARTIGO -->
+                    <article class="editorial-card editorial-card--article" data-category="reflexao">
+                        <a href="#" class="editorial-card__media">
+                            <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&q=80"
+                                 alt="Pessoa refletindo" loading="lazy">
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Descobrindo o extraordinário que existe no comum</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 5 — VÍDEO -->
+                    <article class="editorial-card editorial-card--video" data-category="saude-mental">
+                        <a href="#" class="editorial-card__media editorial-card__media--video" data-video-id="dQw4w9WgXcQ">
+                            <div class="video-thumb">
+                                <div class="video-thumb__split">
+                                    <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=400&q=80" alt="Autismo e Saúde Mental" loading="lazy">
+                                    <div class="video-thumb__text">
+                                        <span class="video-thumb__label">INCLUSÃO EM<br>MOVIMENTO</span>
+                                        <p class="video-thumb__desc">Eu quero trazer vocês para uma reflexão sobre inclusão.</p>
+                                        <span class="video-thumb__author">por Thayane Abreu, Psicóloga</span>
+                                    </div>
+                                </div>
+                                <button class="video-thumb__play" aria-label="Reproduzir vídeo">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                            </div>
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Autismo e Saúde Mental: olhando além do diagnóstico</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 6 — ARTIGO -->
+                    <article class="editorial-card editorial-card--article" data-category="familia">
+                        <a href="#" class="editorial-card__media">
+                            <img src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=800&q=80"
+                                 alt="Burnout materno" loading="lazy">
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Burnout em mães atípicas: quem cuida de quem cuida?</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 7 — ARTIGO -->
+                    <article class="editorial-card editorial-card--article" data-category="tdah">
+                        <a href="#" class="editorial-card__media">
+                            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80"
+                                 alt="Método dos 5 minutos" loading="lazy">
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">O método dos "5 minutos" para vencer a procrastinação</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 8 — VÍDEO -->
+                    <article class="editorial-card editorial-card--video" data-category="direitos">
+                        <a href="#" class="editorial-card__media editorial-card__media--video" data-video-id="dQw4w9WgXcQ">
+                            <div class="video-thumb">
+                                <div class="video-thumb__split">
+                                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&q=80" alt="Direitos" loading="lazy">
+                                    <div class="video-thumb__text">
+                                        <span class="video-thumb__label">DIREITOS<br>NEURODIVERGENTES</span>
+                                        <p class="video-thumb__desc">Como solicitar adaptações no trabalho e na escola.</p>
+                                        <span class="video-thumb__author">por Equipe Amor NeuroDivergente</span>
+                                    </div>
+                                </div>
+                                <button class="video-thumb__play" aria-label="Reproduzir vídeo">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                            </div>
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Como solicitar adaptações no trabalho: passo a passo</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                    <!-- CARD 9 — ARTIGO -->
+                    <article class="editorial-card editorial-card--article" data-category="terapia">
+                        <a href="#" class="editorial-card__media">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80"
+                                 alt="Comunicação alternativa" loading="lazy">
+                        </a>
+                        <div class="editorial-card__body">
+                            <h3 class="editorial-card__title">
+                                <a href="#">Comunicação alternativa e aumentativa: o que é e como usar</a>
+                            </h3>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- Paginação -->
+                <nav class="blog-pagination" aria-label="Paginação do blog">
+                    <button class="blog-pagination__page is-active">1</button>
+                    <button class="blog-pagination__page">2</button>
+                    <button class="blog-pagination__page">3</button>
+                    <button class="blog-pagination__page">4</button>
+                    <button class="blog-pagination__page">5</button>
+                </nav>
+
+                <!-- Estado vazio -->
+                <div class="blog-empty" id="blogEmpty" hidden>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>Nenhum artigo encontrado</h3>
+                    <p>Tente outra categoria ou volte para "Todos".</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =============================================
+        NEWSLETTER
+        ============================================= -->
+        <section class="blog-newsletter">
+            <div class="blog-newsletter__card">
+                <span class="blog-newsletter__icon"><i class="fa-regular fa-envelope"></i></span>
+                <h2>Receba novos conteúdos por e-mail</h2>
+                <p>Um resumo quinzenal com os melhores artigos e vídeos. Sem spam, prometido.</p>
+                <form class="blog-newsletter__form" (ngSubmit)="assinarNewsletter($event)">
+                    <input type="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+                    <button type="submit" class="btn-primary">
+                        Inscrever <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="footer-col">
+                    <h4>Navegue</h4>
+                    <a routerLink="/">Início</a>
+                    <a routerLink="/explorar">Explorar</a>
+                    <a routerLink="/comunidade">Comunidade</a>
+                    <a routerLink="/direitos">Direitos</a>
+                    <a href="/chat-Ia/chat-Ia.html">AcolherIA</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Sobre</h4>
+                    <a routerLink="/quem-somos">Quem somos</a>
+                    <a routerLink="/blog">Blog</a>
+                    <a routerLink="/contato">Contato</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Apoie</h4>
+                    <a routerLink="/loja">Loja</a>
+                    <a routerLink="/apoiar">Doações</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Redes</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <a routerLink="/politica-privacidade">Política de Privacidade</a>
+                <a routerLink="/termos-de-uso">Termos de Uso</a>
+                <p>© 2026 Amor NeuroDivergente</p>
+            </div>
+        </footer>
+
+    <div class="video-modal" id="videoModal" hidden>
+        <div class="video-modal__bg" id="videoModalBg"></div>
+        <div class="video-modal__content">
+            <button class="video-modal__close" id="videoModalClose" aria-label="Fechar vídeo">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="video-modal__embed" id="videoModalEmbed">
+                <!-- iframe injetado via JS -->
+            </div>
+        </div>
+    </div>

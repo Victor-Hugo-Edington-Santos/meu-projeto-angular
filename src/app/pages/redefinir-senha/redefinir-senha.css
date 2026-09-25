@@ -1,0 +1,19 @@
+.reset-wrapper {
+    width: 100%;
+    max-width: 460px;
+    padding: 20px;
+    margin: 48px auto;
+}
+
+.lgpd-check {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 13px;
+    margin: 12px 0;
+    line-height: 1.5;
+}
+
+.lgpd-check input {
+    margin-top: 3px;
+}

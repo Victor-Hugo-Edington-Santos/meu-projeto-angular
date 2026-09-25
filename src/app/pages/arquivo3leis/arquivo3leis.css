@@ -1,0 +1,455 @@
+        :root {
+            --primary-color: #1A365D; /* Azul Marinho Profundo */
+            --secondary-color: #2B6CB0; /* Azul Clássico */
+            --text-main: #2D3748; /* Cinza Escuro para leitura */
+            --text-light: #4A5568;
+            --bg-page: #F4F7F6;
+            --bg-card: #FFFFFF;
+            --border-color: #E2E8F0;
+            --alert-bg: #FFF5F5;
+            --alert-text: #C53030;
+            --success-color: #2F855A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-page);
+            padding: 20px 10px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+        }
+
+        /* Container principal estilo ofício/relatório */
+        .document-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            border-top: 8px solid var(--primary-color);
+            overflow: hidden;
+        }
+
+        /* BARRA DE AÇÕES (Botões) */
+        .action-bar {
+            background-color: #EDF2F7;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-voltar {
+            background-color: #CBD5E0;
+            color: #2D3748;
+        }
+
+        .btn-voltar:hover {
+            background-color: #A0AEC0;
+        }
+
+        .btn-baixar {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-baixar:hover {
+            background-color: #1A365D;
+            box-shadow: 0 2px 8px rgba(43, 108, 176, 0.4);
+        }
+
+        .content-inner {
+            padding: 40px 70px 60px;
+        }
+
+        /* CAPA E CABEÇALHO */
+        .capa {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .icone-principal {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.4rem;
+            margin-bottom: 15px;
+            font-weight: 900;
+            line-height: 1.3;
+        }
+
+        .subtitulo {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .grupo {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background: #EDF2F7;
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 4px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        /* VISÃO GERAL */
+        .visao-geral {
+            font-size: 1.1rem;
+            text-align: justify;
+            color: var(--text-main);
+            background: #F8FAFC;
+            padding: 24px 32px;
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 4px;
+            margin: 30px 0;
+        }
+
+        /* ESTRUTURA DE TRÊS PILARES */
+        .pilares-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .pilar-card {
+            flex: 1;
+            min-width: 250px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 30px 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: border-color 0.2s;
+        }
+
+        .pilar-card:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .icone-pilar {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .pilar-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .pilar-card p {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .check-list {
+            list-style: none;
+        }
+
+        .check-list li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .check-list li i {
+            color: var(--success-color);
+            font-size: 0.8rem;
+        }
+
+        /* SEÇÃO LEIS */
+        .secao-leis {
+            margin: 60px 0;
+        }
+
+        .titulo-secao {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .grid-leis {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .lei-card {
+            background: var(--bg-card);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .lei-header {
+            padding: 20px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .lei-header h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .lei-header small {
+            opacity: 0.85;
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .lei-content {
+            padding: 20px;
+            font-size: 0.95rem;
+        }
+
+        .lei-content p {
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            background: #EDF2F7;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            display: inline-block;
+        }
+
+        /* FLUXO METODOLÓGICO */
+        .fluxo-metodo {
+            background: #F8FAFC;
+            border-radius: 8px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .passos-fluxo {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .passo {
+            flex: 1;
+            background: var(--bg-card);
+            padding: 24px 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .numero-passo {
+            width: 40px;
+            height: 40px;
+            background: var(--secondary-color);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .destaque-modelo {
+            background: var(--bg-card);
+            border: 1px solid var(--secondary-color);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* TABELA DE ÓRGÃOS */
+        .tabela-wrapper {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+
+        .tabela-ajuda {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .tabela-ajuda th {
+            background: var(--primary-color);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .tabela-ajuda td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+
+        .tabela-ajuda tr:nth-child(even) {
+            background-color: #F8FAFC;
+        }
+
+        .gratuito-badge {
+            background: var(--success-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* JUSTIFICATIVA FINAL */
+        .caixa-justificativa {
+            background: var(--primary-color);
+            border-radius: 8px;
+            padding: 40px;
+            color: white;
+            margin: 50px 0;
+        }
+
+        .caixa-justificativa h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .caixa-justificativa p {
+            margin-bottom: 15px;
+            color: #E2E8F0;
+            font-size: 1rem;
+        }
+
+        .aviso-legal {
+            background: var(--alert-bg);
+            border: 1px solid #FEB2B2;
+            border-left: 5px solid var(--alert-text);
+            padding: 20px;
+            margin: 40px 0;
+            border-radius: 4px;
+            color: #9B2C2C;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* RODAPÉ */
+        .rodape {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 880px) {
+            .content-inner {
+                padding: 30px 20px;
+            }
+            .pilares-container, .passos-fluxo {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .action-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ESCONDER BOTÕES NA IMPRESSÃO/PDF */
+        @media print {
+            body { background: white; padding: 0; }
+            .document-container { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+            .content-inner { padding: 0; }
+            .no-print { display: none !important; }
+        }
+/* :root/body do original adaptados para :host (encapsulacao emulada) */
+:host {
+    display: block;
+    background-color: #F4F7F6;
+    padding: 20px 10px;
+    --primary-color: #1A365D;
+    --secondary-color: #2B6CB0;
+    --text-main: #2D3748;
+    --text-light: #4A5568;
+    --bg-page: #F4F7F6;
+    --bg-card: #FFFFFF;
+    --border-color: #E2E8F0;
+    --alert-bg: #FFF5F5;
+    --alert-text: #C53030;
+    --success-color: #2F855A;
+}
